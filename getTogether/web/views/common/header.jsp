@@ -1,6 +1,8 @@
-<%@ page import="com.gt.gettogether.employee.model.vo.*" %>
+<%@ page import="com.gt.gettogether.employee.model.vo.*, java.util.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%  ArrayList<String> roomList = (ArrayList<String>)application.getAttribute("roomList");
+	Employee e = (Employee)request.getAttribute("e"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -122,13 +124,66 @@
    #logout {
    		background : #404040;
    }
+
+
+   /* chat style part */
+   .first{
+   		position : relative;
+   		z-index: 8;
+   		float: right;
+		margin-top: 63px;
+		margin-right: 120px;
+		width:450px;
+		height: 520px;
+		border: 1px solid #5f4d8c;
+		background: white;
+		display: none;
+		overflow-y:scroll;	
+	}
+	.first::-webkit-scrollbar {display: none;}
+
+	#fieldBox{
+	margin: 8px;
+	cursor: pointer;
+	}
+	
+	.chatBox{display: none;}
+	.third{
+	position:absolute;
+	display:inline-block;
+	z-index: 8;
+	background: #5f4d8c;
+	width: 100%;
+	height: 5px;
+	 padding-top : 15px;
+     padding-bottom : 15px;
+	}
+	.fourth{height: 475px;}
+	#back{
+	color: white;
+	font-weight:bold;
+	font-size: 1.5em;
+	margin-top: -20px;
+	margin-left: 12px;
+	cursor: pointer;
+	}
+	#participants{
+	color: white; 
+	float:right;
+	display:inline-block;
+	font-weight:bold;
+	font-size: 1.2em;
+	margin-top: -28px;
+	margin-right: 12px;
+	cursor: pointer;
+	}
 </style>
 </head>
 <body>
    <div id="header" class="hAll">
       <a href="<%=request.getContextPath()%>/main.jsp" class="hText" id="title">GETTOGETHER</a>
       <div class="hAll" id="right-side">
-         <div class="hAll" id="chat" onclick=""></div>
+         <div class="hAll" id="chat" onclick="onoffChat();"></div>
          <div class="hAll" id="empWrap" onclick="dropdownMenu();">
             <div class="hAll" id="profile" style="content:url('/gt/resources/images/common/profile.png');"></div>
             <div class="hText hAll" id="empName"></div>
@@ -143,6 +198,30 @@
 			<div class="dropBtn" id="updateEmp" onclick="goMyPage();">정보수정</div>
 			<div class="dropBtn" id="adminMode" onclick="goAdmin();">관리자모드</div>
 			<div class="dropBtn" id="logout" onclick="logout();">로그아웃</div>
+		</div>
+	 </div>
+
+
+ <!-- chat 구현뷰(view) -->
+	 <div class="box first">
+		<% for (int i=0;i<roomList.size();i++) {%>
+		<div class="box second" onclick="inChatroom();">
+			<fieldset id="fieldBox">
+			<legend name="chatRoom"><%=roomList %></legend>
+			<label>참여 인원 : <%-- <%=numberOfPerson %> --%>n명 </label>
+			</fieldset>
+		</div>
+		<%} %>
+		<div class="box chatBox">
+		<div class="box third">
+		<div id="back" onclick="backPage();">←</div>
+		<div id="participants">▼ 참여자(<!-- 참여하는 명 수 들어갈 예정 -->)</div> 
+		</div>
+		<div class="box fourth"></div>
+		<hr>
+		<div class="box fifth">
+		<input type="text" id="" size="50" style="margin-left: 2px;">&nbsp;<input type="submit" value="보내기" />
+		</div>
 		</div>
 	 </div>
 	 
@@ -183,6 +262,26 @@
 	    function logout() {
 			sessionStorage.clear();
 			location.href = "<%=request.getContextPath()%>/login.jsp";
+		}
+
+
+/* chat workpart */
+   		function onoffChat(){
+   				if($('.first').css("display") == "none") $(".first").css("display", "block");
+   				else $(".first").css("display", "none");
+   		
+   				if($("#dropdown").css("display") == "block")	$("#dropdown").css("display", "none");
+   				location.href="<%= request.getContextPath() %>/multiView.do";
+   		<%-- location.href="<%= request.getContextPath() %>"; --%>
+   		}
+   		
+		function inChatroom(){
+			$(".second").css("display", "none");
+			$(".chatBox").css("display","block");
+		}
+		function backPage(){
+			$(".second").css("display", "block");
+			$(".chatBox").css("display","none");
 		}
   	 </script>	
 </body>
