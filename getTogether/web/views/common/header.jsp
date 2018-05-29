@@ -267,11 +267,13 @@
 
 /* chat workpart */
    		function onoffChat(){
+   			location.href="<%= request.getContextPath() %>/multiView.do";	
+
    				if($('.first').css("display") == "none") $(".first").css("display", "block");
    				else $(".first").css("display", "none");
    		
    				if($("#dropdown").css("display") == "block")	$("#dropdown").css("display", "none");
-   				location.href="<%= request.getContextPath() %>/multiView.do";
+   				
    		<%-- location.href="<%= request.getContextPath() %>"; --%>
    		}
    		
