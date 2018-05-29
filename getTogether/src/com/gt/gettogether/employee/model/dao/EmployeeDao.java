@@ -37,7 +37,6 @@ public class EmployeeDao {
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()){
-				
 				eResult = new Employee();
 				
 				eResult.seteNo(rset.getInt("E_NO"));
@@ -47,8 +46,8 @@ public class EmployeeDao {
 				eResult.setPhone(rset.getString("PHONE"));
 				eResult.setEmail(rset.getString("EMAIL"));
 				eResult.setProfile(rset.getString("PROFILE"));
-				eResult.setrCode(rset.getString("R_CODE"));
-				eResult.setdCode(rset.getString("D_CODE"));
+				eResult.setrCode(rset.getString("R_NAME"));
+				eResult.setdCode(rset.getString("D_NAME"));
 			}
 			
 		} catch (SQLException e) {

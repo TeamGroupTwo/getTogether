@@ -67,14 +67,17 @@
 				success : function(data) {
 					if(data == null)
 						alert("아이디나 비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
-					else{					
+					else{
+						sessionStorage.setItem('loginNo', data.eNo);
+						sessionStorage.setItem('loginName', data.eName);
 						sessionStorage.setItem('loginId', data.eId);
-						sessionStorage.setItem('loginPwd', data.ePassword);
-						sessionStorage.setItem('loginName', data.eName); 
-						<%-- if($(data.eId).equals('admin1') || (data.eId).equals('admin2'))							
+						sessionStorage.setItem('loginPwd', data.ePassword); 
+						sessionStorage.setItem('loginRank', data.rCode);
+						sessionStorage.setItem('loginDept', data.dCode); 
+						
+						if(data.eId == 'admin1' || data.eId == 'admin2')							
 							location.href = "<%=request.getContextPath()%>/views/admin/adminAuthority.jsp";
-						else --%>
-						if(data.email == null)
+						else if(data.email == null)
 							location.href = "<%=request.getContextPath()%>/views/employee/employeeFirstUpdate.jsp";
 						else
 							location.href = "<%=request.getContextPath()%>/main.jsp";		
