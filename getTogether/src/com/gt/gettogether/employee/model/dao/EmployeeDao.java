@@ -61,4 +61,23 @@ public class EmployeeDao {
 		return eResult;
 	}
 
+	public int updateEmployee(Connection con, Employee emp) {
+		return 0;
+	}
+
+	public String checkEmail(Connection con, String email) {
+	
+		return null;
+	}
+
+	public int findId(Connection con, Employee emp) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int findPassword(Connection con, Employee emp) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

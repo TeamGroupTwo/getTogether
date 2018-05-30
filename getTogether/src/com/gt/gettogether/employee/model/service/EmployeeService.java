@@ -24,5 +24,52 @@ public class EmployeeService {
 		
 		return eResult;
 	}
+	
+	public int updateEmployee(Employee emp){
+		
+		Connection con = getConnection();
+		
+		int result = eDao.updateEmployee(con, emp);
+		
+		if(result > 0) commit(con);
+		else rollback(con);
+		
+		close(con);
+		
+		return result;
+	}
+	
+	public String checkEmail(String email){
+		
+		Connection con = getConnection();
+		
+		String result = eDao.checkEmail(con, email);
+		
+		close(con);
+		
+		return result;
+	}
+	
+	public int findId(Employee emp){
+		
+		Connection con = getConnection();
+		
+		int result = eDao.findId(con, emp);
+		
+		close(con);
+		
+		return result;
+	}	
+	
+	public int findPassword(Employee emp){
+		
+		Connection con = getConnection();
+		
+		int result = eDao.findPassword(con, emp);
+		
+		close(con);
+		
+		return result;
+	}	
 
 }
