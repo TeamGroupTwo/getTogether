@@ -1,11 +1,8 @@
 package com.gt.gettogether.department.work.model.vo;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-public class WorkComment implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+public class WorkComment {
 
 	private int wcNo;
 	private String wcWriter;
@@ -78,7 +75,7 @@ public class WorkComment implements Serializable{
 
 	@Override
 	public String toString() {
-		return "WorkComment [wcNo=" + wcNo + ", wcWriter=" + wcWriter + ", wcContent=" + wcContent + ", wcDate="
+		return "BoardComment [wcNo=" + wcNo + ", wcWriter=" + wcWriter + ", wcContent=" + wcContent + ", wcDate="
 				+ wcDate + ", wNo=" + wNo + ", eNo=" + eNo + "]";
 	}
 
