@@ -1,8 +1,12 @@
 package com.gt.gettogether.notice.model.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.gt.gettogether.common.jdbc.JDBCTemplate.close;
+import static com.gt.gettogether.common.jdbc.JDBCTemplate.getConnection;
 
+import java.sql.Connection;
+import java.util.ArrayList;
+
+import com.gt.gettogether.notice.model.dao.NoticeDao;
 import com.gt.gettogether.notice.model.vo.Notice;
 
 public class NoticeService {
@@ -11,9 +15,13 @@ public class NoticeService {
 	
 	public ArrayList<Notice> selectList(){
 		
-		ArrayList<Notice> list = null;
+		Connection con = getConnection();
 		
+		ArrayList<Notice> list = new NoticeDao().selectList(con);
 		
+		close(con);
+		
+		System.out.println("Service 출력 확인용 : "+list);
 		
 		return list;
 	}
