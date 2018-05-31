@@ -26,11 +26,13 @@ public class ProjectInsertServlet extends HttpServlet {
 		pj.setpTitle(pTitle);
 		pj.setdCode(dCode);
 		
-		int result = new ProjectService().insertProject(pj);
+		Project resultPj = new ProjectService().insertProject(pj);
 		
-		if(result < 1) {
+		if(resultPj == null) {
 			request.getRequestDispatcher("views/department/error.jsp");
 		}
+		
+		response.getWriter().print(resultPj.getpNo());
 		
 	}
 

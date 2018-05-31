@@ -22,18 +22,26 @@ public class ProjectService {
 		
 	}
 	
-	public int insertProject(Project pj) {
+	public Project insertProject(Project pj) {
 		
 		Connection con = getConnection();
+		ProjectDao pDao = new ProjectDao();
+		Project resultPj = null;
 		
-		int result = new ProjectDao().insertProject(con, pj);
+		int result = pDao.insertProject(con, pj);
 		
-		if(result > 0) commit(con);
+		if(result > 0) {
+			
+			commit(con);
+			
+			resultPj = pDao.selectInsertOne(con, pj);
+			
+		}
 		else rollback(con);
 		
 		close(con);
 		
-		return result;
+		return resultPj;
 	}
 	
 	public int updateProject(String pTitle, String upTitle) {
@@ -50,11 +58,11 @@ public class ProjectService {
 		return result;
 	}
 	
-	public int deleteProject(String[] chkList) {
+	public int deleteProject(int[] deleteList) {
 		
 		Connection con = getConnection();
 		
-		int result = new ProjectDao().deleteProject(con, chkList);
+		int result = new ProjectDao().deleteProject(con, deleteList);
 		
 		if(result > 0) commit(con);
 		else rollback(con);
