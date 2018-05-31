@@ -47,7 +47,6 @@
    	background: #404040;
    	border-radius: 5px;
    	color : white;
-
    }	
 </style>
 <title>최초 정보 기입</title>
@@ -202,7 +201,9 @@
 		// 이메일이 중복되지 않는지 확인하는 메소드
 		function checkEmail() {
 			
-			if($("#email").val() == "test01"){
+			
+			
+			/* if($("#email").val() == "test01"){
 				emailChk = 'Y';
 				$('#emailLight').css("background", "#57B20B");
 			}
@@ -210,7 +211,7 @@
 				emailChk = 'N';
 				$('#emailLight').css("background", "#ED3200");
 			}
-			checkAll();
+			checkAll(); */
 		}
 		
 		function firstUpdate() {

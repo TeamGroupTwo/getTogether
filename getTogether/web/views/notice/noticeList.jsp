@@ -167,8 +167,8 @@
 </style>
 </head>
 <body>
-	<%@ include file="../common/header.jsp" %>
-	<%@ include file="../common/aside.jsp" %>
+	<%@ include file="../admin/adminHeader.jsp" %>
+	<%@ include file="../admin/adminAside.jsp" %>
 	<div id="whiteArea">
 		<span id="spanTag">공지사항</span>
 			<br><br>
@@ -311,3 +311,11 @@
 	
 </body>
 </html>
+
+
+
+
+
+
+
+

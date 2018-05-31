@@ -14,15 +14,12 @@ import static com.gt.gettogether.common.jdbc.JDBCTemplate.*;
 
 
 import com.gt.gettogether.notice.model.vo.Notice;
+import com.gt.gettogether.notice.model.vo.NoticeNFiles;
 import com.gt.gettogether.notice.model.dao.NoticeDao;
 
 public class NoticeDao {
 
 	private Properties prop;
-	
-	
-	
-	
 	
 	public NoticeDao() {
 		prop = new Properties();
@@ -53,7 +50,7 @@ public class NoticeDao {
 			list = new ArrayList<Notice>();
 			
 			while(rset.next()){
-				Notice n = new Notice();
+				NoticeNFiles n = new NoticeNFiles();
 				
 				n.setnNo(rset.getString("N_NO"));
 				n.setnTitle(rset.getString("N_TITLE"));
@@ -62,6 +59,7 @@ public class NoticeDao {
 				n.setnDate(rset.getDate("N_DATE"));
 				n.setnCount(rset.getInt("N_COUNT"));
 				n.setnFix(rset.getString("N_FIX"));
+				n.setfName(rset.getString("F_NAME"));
 				list.add(n);
 			}
 			
