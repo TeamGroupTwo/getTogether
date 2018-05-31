@@ -13,11 +13,9 @@
       min-width:800px;
    }
    .hText{
-      color : white;
-      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-      -moz-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-      -webkit-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+      color : #5f4d8c;
       vertical-align: middle;
+      font-weight : bolder;
    }
    .hAll{
       display:inline-block;
@@ -27,7 +25,7 @@
    }
    #header{
       position : absolute;
-      background: #5f4d8c;
+      background: white;
       width : 100%;
       min-width: 800px;
       height : 40px;
@@ -41,17 +39,8 @@
       text-decoration: none;
       margin-left : 20px;
    }
-   #chat {
-      content : url("/gt/resources/images/common/chat.png");
-      width : 35px;
-      margin-right : 10px;
-   }
-   #chat:hover{
-   		cursor: pointer;
-   }
    #profile {
       border-radius : 50%;
-      border :1px solid #404040;
       margin : auto;
       width : 34px;
    }
@@ -60,7 +49,6 @@
       vertical-align:middle;
       font-family: 'Nanum Gothic', sans-serif;
       font-size : 1.3em;
-      font-weight : bolder;
       letter-spacing : -1px;
       white-space : nowrap;
       margin-right : 25px;
@@ -81,14 +69,14 @@
  	 width:0;
  	 height: 0;
  	 border-right:12px solid transparent;
-	 border-bottom:15px solid white;
+	 border-bottom:15px solid #5f4d8c;
  	 border-left:12px solid transparent;
  	 margin-left : 160px; 
    }
    #drop-menu{ 	 
    		float : right;
    		display : flex;
-   		background: white;
+   		background: #5f4d8c;
    		width : 200px;
    		height : 30px;
    		padding : 10px;
@@ -96,7 +84,6 @@
    .dropBtn {
    		width : 80px;
    		height : 26px;
-   		color : white;
    		font-family: 'Nanum Gothic', sans-serif;
       	font-size : 1em;
       	font-weight: bolder;
@@ -108,29 +95,24 @@
    .dropBtn:hover {
    		cursor: pointer;
    }
-   #updateEmp {
-   		background : #5f4d8c;
+   #empMode {
+   		color : #404040;
+   		background : white;
    		margin-left : 14px;
    		margin-right: 16px;
    }
-    #adminMode {
-    	width : 100px;
-   		background : #5f4d8c;
-   		margin-left : 5px;
-   		margin-right: 12px;
-   }
    #logout {
    		background : #404040;
+   		color : white;
    }
 </style>
 </head>
 <body>
    <div id="header" class="hAll">
-      <a href="<%=request.getContextPath()%>/main.jsp" class="hText" id="title">GETTOGETHER</a>
+      <a href="<%=request.getContextPath()%>/views/admin/adminAuthority.jsp" class="hText" id="title">GETTOGETHER</a>
       <div class="hAll" id="right-side">
-         <div class="hAll" id="chat" onclick=""></div>
          <div class="hAll" id="empWrap" onclick="dropdownMenu();">
-            <div class="hAll" id="profile" style="content:url('/gt/resources/images/common/profile.png');"></div>
+            <div class="hAll" id="profile" style="content:url('/gt/resources/images/common/adminProfile.png');"></div>
             <div class="hText hAll" id="empName"></div>
          </div>
       </div>
@@ -140,8 +122,7 @@
 	 <div id="dropdown">
 		<div id="drop-triangle"></div>
 		<div id="drop-menu">
-			<div class="dropBtn" id="updateEmp" onclick="goMyPage();">정보수정</div>
-			<div class="dropBtn" id="adminMode" onclick="goAdmin();">관리자모드</div>
+			<div class="dropBtn" id="empMode" onclick="goMain();">사원화면</div>
 			<div class="dropBtn" id="logout" onclick="logout();">로그아웃</div>
 		</div>
 	 </div>
@@ -150,15 +131,7 @@
    		
 	    // 로그인 한 사원의 이름을 가져오는 메소드
 	 	$(function() { 
-	 		var loginName = sessionStorage.getItem('loginName');
-   			$('#empName').text(loginName);
-   			if(loginName == "관리자1" || loginName == "관리자2"){
-   				$("#chat").css("display", "none");
-   				$("#updateEmp").css("display", "none");
-   			}
-   			else{
-   				$("#adminMode").css("display", "none");
-   			}
+   			$('#empName').text(sessionStorage.getItem('loginName'));
    		});
 
 	    // 사원의 프로필 영역을 누르면 내려가는 dropdown 메뉴
@@ -169,14 +142,9 @@
 				$("#dropdown").css("display", "none");
 		}
 	    
-	    // 정보수정하는 페이지로 이동하는 메소드
-	    function goMyPage() {
-	    	location.href = "<%=request.getContextPath()%>/views/employee/employeeUpdate.jsp";
-		}
-	    
-	 	// 관리자 페이지로 이동하는 메소드
-	    function goAdmin() {
-	    	location.href = "<%=request.getContextPath()%>/views/admin/adminAuthority.jsp";
+	    // 메인 페이지로 이동하는 메소드
+	    function goMain() {
+	    	location.href = "<%=request.getContextPath()%>/main.jsp";
 		}
 	    
 	 	// 로그아웃하는 메소드
