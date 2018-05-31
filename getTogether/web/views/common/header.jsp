@@ -283,6 +283,7 @@
    		
 	    // 로그인 한 사원의 이름을 가져오는 메소드
 	 	$(function() { 
+	 		console.log(sessionStorage);
 	 		var loginName = sessionStorage.getItem('loginName');
    			$('#empName').text(loginName);
    			if(loginName == "관리자1" || loginName == "관리자2"){
@@ -321,8 +322,6 @@
 
 		/* chat workpart */
 		
-		var webSocket = null;
-		
    		function onoffChat(){
 			$.ajax({
 				url : "<%= request.getContextPath() %>/roomView.do",
@@ -338,12 +337,21 @@
    				if($("#dropdown").css("display") == "block") $("#dropdown").css("display", "none");
 
    		}
+		
    		
+   		var webSocket = null;
+   		var chat_id = sessionStorage.getItem('loginName')+" "+sessionStorage.getItem('loginRank');	// 채팅ID(닉네임)
+		var $chatArea = $('.messageBox');	
+		var $sendMsg = $('#sendMsg');
+		
+		var n = 0;
+		
 		/* 채팅방 내부 */
 		function inChatroom(){
 			
-			webSocket = new WebSocket('ws://localhost:8088<%=request.getContextPath()%>/multicast/<%=room %>');
-			
+			 if(n==0) {webSocket = new WebSocket('ws://localhost:8088<%=request.getContextPath()%>/multicast/<%=room %>');
+				n++;
+				}
 			$('.first').remove("overflow-y", "hidden");
 			
 			$.ajax({
@@ -355,11 +363,7 @@
 				error : function(data){	console.log("전달 실패!!");}
 			});
 			
-			var chat_id = sessionStorage.getItem('loginName')+" "+sessionStorage.getItem('loginRank');	// 채팅ID(닉네임)
-			var $chatArea = $('.messageBox');	
-			var $sendMsg = $('#sendMsg');
-
-			if(webSocket.close()) webSocket.onopen = function(event){
+				webSocket.onopen = function(event){
 				$chatArea.html("<p>"+chat_id+"님이 입장하셨습니다.</p>");
 				
 				webSocket.send(chat_id+"|님이 입장하셨습니다.");
@@ -370,7 +374,8 @@
 			}
 			
 			webSocket.onerror = function(event){onError(event);}
-			if(!webSocket.close()) webSocket.onclose = function(event){onClose(event);}
+			 if(!(webSocket.readyState == webSocket.CLOSED ||webSocket.readyState == webSocket.CLOSING)) 
+				webSocket.onclose = function(event){onClose(event);}
 		
 		function send(){
 			if($sendMsg.val()==""){	// 메시지를 입력하지 않을 경우
@@ -410,11 +415,13 @@
 			webSocket.close();
 		}); */
 		}
-		
+
 		function backPage(){	/* 뒤로가기(나가기X) */
 			$(".second").css("display", "block");
 			$(".chatBox").css("display","none");
+			n++;
 		}
   	 </script>	
+  	 
 </body>
 </html>

@@ -42,18 +42,12 @@ public class ChattingViewServlet extends HttpServlet {
 			roomList = new ArrayList<String>();
 			
 			switch(dept){
-			case "D1" : roomList.add("회계부"); break;
-//			case "회계부" : roomList.add("회계부"); break;
-			case "D2" : roomList.add("인사부"); break;
-//			case "인사부" : roomList.add("인사부"); break;
-			case "D3" : roomList.add("전략기획부"); break;
-//			case "전략기획부" : roomList.add("전략기획부"); break;
-			case "D4" : roomList.add("영업부"); break;
-//			case "영업부" : roomList.add("영업부"); break;
-			case "D5" : roomList.add("개발부"); break;
-//			case "개발부" : roomList.add("개발부"); break;
-			case "D6" : roomList.add("법무부"); break;
-//			case "법무부" : roomList.add("법무부"); break;
+			case "회계부" : roomList.add("회계부"); break;
+			case "인사부" : roomList.add("인사부"); break;
+			case "전략기획부" : roomList.add("전략기획부"); break;
+			case "영업부" : roomList.add("영업부"); break;
+			case "개발부" : roomList.add("개발부"); break;
+			case "법무부" : roomList.add("법무부"); break;
 			}
 			
 			application.setAttribute("roomList", roomList);
