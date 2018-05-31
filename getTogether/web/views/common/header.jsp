@@ -1,8 +1,10 @@
-<%@ page import="com.gt.gettogether.employee.model.vo.*, java.util.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.gt.gettogether.employee.model.vo.*, java.util.*" %>    
 <%  ArrayList<String> roomList = (ArrayList<String>)application.getAttribute("roomList");
-	Employee e = (Employee)request.getAttribute("e"); %>
+	String chat_id = request.getParameter("chat_id");
+	String room = (String)request.getAttribute("room");
+	%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -134,7 +136,7 @@
 		margin-top: 63px;
 		margin-right: 120px;
 		width:450px;
-		height: 520px;
+		height: 540px;
 		border: 1px solid #5f4d8c;
 		background: white;
 		display: none;
@@ -151,14 +153,18 @@
 	.third{
 	position:absolute;
 	display:inline-block;
-	z-index: 8;
+	z-index: 6;
 	background: #5f4d8c;
 	width: 100%;
 	height: 5px;
-	 padding-top : 15px;
-     padding-bottom : 15px;
+	 padding-top : 20px;
+     padding-bottom : 20px;
 	}
-	.fourth{height: 475px;}
+	.messageBox{
+	padding-top : 40px;
+	height: 455px;
+	overflow-y:scroll;}
+	.messageBox::-webkit-scrollbar {display: none;}
 	#back{
 	color: white;
 	font-weight:bold;
@@ -177,6 +183,53 @@
 	margin-right: 12px;
 	cursor: pointer;
 	}
+	
+	.chat_content{
+    background: rgb(255, 255, 102);
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    position: relative;
+    margin: 10px;
+    float: right;
+    clear: both;
+ }
+ 
+ .chat_content:after{
+    content: '';
+   position: absolute;
+   right: 0;
+   top: 50%;
+   width: 0;
+   height: 0;
+   border: 20px solid transparent;
+   border-left-color: rgb(255, 255, 102);
+   border-right: 0;
+   border-top: 0;
+   margin-top: -3.5px;
+   margin-right: -10px;
+ }
+ 
+ .other-side {
+    background: skyblue;
+    float:left;
+    clear:both;
+ }
+ 
+ .other-side:after{
+    content: '';
+   position: absolute;
+   left: 0;
+   top: 50%;
+   width: 0;
+   height: 0;
+   border: 20px solid transparent;
+   border-right-color: skyblue;
+   border-left: 0;
+   border-top: 0;
+   margin-top: -3.5px;
+   margin-left: -10px;
+ }
 </style>
 </head>
 <body>
@@ -204,23 +257,24 @@
 
  <!-- chat 구현뷰(view) -->
 	 <div class="box first">
-		<% for (int i=0;i<roomList.size();i++) {%>
+		<% if(roomList!=null){for(String r : roomList){%>
 		<div class="box second" onclick="inChatroom();">
 			<fieldset id="fieldBox">
-			<legend name="chatRoom"><%=roomList %></legend>
-			<label>참여 인원 : <%-- <%=numberOfPerson %> --%>n명 </label>
+			<legend><%=r %><% room = r; %></legend>
+			<label style="float: right;">참여 인원 : <%-- <%=numberOfPerson %> --%>n명 </label>
 			</fieldset>
 		</div>
-		<%} %>
+		<%}}%>
 		<div class="box chatBox">
 		<div class="box third">
 		<div id="back" onclick="backPage();">←</div>
-		<div id="participants">▼ 참여자(<!-- 참여하는 명 수 들어갈 예정 -->)</div> 
+		
+		<div id="participants"><%=room %>&nbsp; ▼ 참여자(<!-- 참여하는 명 수 들어갈 예정 -->)</div> 
 		</div>
-		<div class="box fourth"></div>
+		<div class="box messageBox"></div>
 		<hr>
 		<div class="box fifth">
-		<input type="text" id="" size="50" style="margin-left: 2px;">&nbsp;<input type="submit" value="보내기" />
+		<input type="text" id="sendMsg" size="50" style="margin-left: 2px;">&nbsp;<input type="submit" value="보내기" />
 		</div>
 		</div>
 	 </div>
@@ -265,23 +319,99 @@
 		}
 
 
-/* chat workpart */
+		/* chat workpart */
+		
+		var webSocket = null;
+		
    		function onoffChat(){
-   			location.href="<%= request.getContextPath() %>/multiView.do";	
-
+			$.ajax({
+				url : "<%= request.getContextPath() %>/roomView.do",
+				type : "GET",
+				data : {dept : sessionStorage.getItem('loginDept')	},
+				success : function(data){console.log("전달 성공");	},
+				error : function(data){	console.log("전달 실패!");}
+			});
+   				
    				if($('.first').css("display") == "none") $(".first").css("display", "block");
    				else $(".first").css("display", "none");
    		
-   				if($("#dropdown").css("display") == "block")	$("#dropdown").css("display", "none");
-   				
-   		<%-- location.href="<%= request.getContextPath() %>"; --%>
+   				if($("#dropdown").css("display") == "block") $("#dropdown").css("display", "none");
+
    		}
    		
+		/* 채팅방 내부 */
 		function inChatroom(){
+			
+			webSocket = new WebSocket('ws://localhost:8088<%=request.getContextPath()%>/multicast/<%=room %>');
+			
+			$('.first').remove("overflow-y", "hidden");
+			
+			$.ajax({
+				url : "<%= request.getContextPath() %>/chatRoom.do",
+				type : "GET",
+				data : { name : sessionStorage.getItem('loginName')+" "+sessionStorage.getItem('loginRank'),
+						 chatRoom : $('legend').text()},
+				success : function(data){console.log("전달 성공");	},
+				error : function(data){	console.log("전달 실패!!");}
+			});
+			
+			var chat_id = sessionStorage.getItem('loginName')+" "+sessionStorage.getItem('loginRank');	// 채팅ID(닉네임)
+			var $chatArea = $('.messageBox');	
+			var $sendMsg = $('#sendMsg');
+
+			if(webSocket.close()) webSocket.onopen = function(event){
+				$chatArea.html("<p>"+chat_id+"님이 입장하셨습니다.</p>");
+				
+				webSocket.send(chat_id+"|님이 입장하셨습니다.");
+				}
+			
+			webSocket.onmessage = function(event){
+				onMessage(event);		// 동작할 부분
+			}
+			
+			webSocket.onerror = function(event){onError(event);}
+			if(!webSocket.close()) webSocket.onclose = function(event){onClose(event);}
+		
+		function send(){
+			if($sendMsg.val()==""){	// 메시지를 입력하지 않을 경우
+				alert("메세지를 입력해주세요.");
+			}	else{	
+				$chatArea.html($chatArea.html()+"<p class='chat_content'>"+$sendMsg.val()+"</p><br>");
+			
+			webSocket.send(chat_id+"|"+$sendMsg.val());
+			$sendMsg.val("");
+			}
+		}
+		$('#sendMsg').on('keyup', function(){
+			if(window.event.keyCode==13) send();
+		});
+		$('input:submit').on('click', function(){
+			send();});
+		function onMessage(event){
+			var message = event.data.split("|");
+			var sender = message[0];		
+			var content = message[1];		
+			
+			if(content==""){
+				// 전달된 글이 없을 경우 화면에 전달받지 않음
+			}	else{
+				$chatArea.html($chatArea.html()+"<p class='chat_content other-side'>"+sender+" : "+content+"</p><br>");
+			}
+		}
+		
+		function onError(event){alert(event.data);}		
+		function onClose(event){alert(event);}
+
 			$(".second").css("display", "none");
 			$(".chatBox").css("display","block");
+			
+			/* $('#endBtn').on('click', function(){
+			webSocket.send(chat_id+"|님이 퇴장하였습니다.");
+			webSocket.close();
+		}); */
 		}
-		function backPage(){
+		
+		function backPage(){	/* 뒤로가기(나가기X) */
 			$(".second").css("display", "block");
 			$(".chatBox").css("display","none");
 		}
