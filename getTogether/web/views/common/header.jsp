@@ -133,8 +133,8 @@
    		position : relative;
    		z-index: 8;
    		float: right;
-		margin-top: 63px;
-		margin-right: 120px;
+		top: 63px;
+		right: 120px;
 		width:450px;
 		height: 540px;
 		border: 1px solid #5f4d8c;
@@ -147,6 +147,62 @@
 	#fieldBox{
 	margin: 8px;
 	cursor: pointer;
+	}
+	
+	#addRoom{
+	color: white;
+	text-align : center;
+	font-size: 1.3em;
+	font-weight: bold; 
+	background: #5F4D8C;
+	float: right;
+	width: 80px;
+	height: 40px;
+	position:absolute;
+	right: 10px;
+	top : 483px;
+	border-radius: 3cm;
+	padding-left:8px;
+	padding-right:8px;
+	cursor: pointer;
+	}
+	
+	#onlineList{
+	display:none;
+	width: 360px;
+	height: 470px;
+	position: relative;
+	z-index: 7;
+	top : -30px;
+	left : 40px;
+	background:white;
+	border: 1px solid #5f4d8c;
+	}
+	
+	#selectList{
+		background: rgba(95,77,140, 0.8);
+		height: 90px;
+		color:white;
+		overflow-x:scroll;
+	}
+	#searchEngine{
+		height: 26px;
+	}
+	.btncss1{
+		background: #5F4D8C;
+		border: none;
+		border-radius : 1cm;
+		padding-left: 7px;
+		padding-right: 7px;
+		color: white;
+		cursor: pointer;
+	}
+	#memberList{
+		height: 327px;
+		width: 100%;
+	}
+	#inviteArea{
+		
 	}
 	
 	.chatBox{display: none;}
@@ -183,6 +239,17 @@
 	margin-right: 12px;
 	cursor: pointer;
 	}
+	#talkerList{
+	display: none;
+	width: 200px;
+	height: 300px;
+	overflow-y:scroll;
+	border: dashed 1px #5F4D8C;
+	float: right;
+	z-index: 8;
+	background: white;
+	}
+	#talkerList::-webkit-scrollbar {display: none;}
 	
 	.chat_content{
     background: rgb(255, 255, 102);
@@ -196,7 +263,7 @@
  }
  
  .chat_content:after{
-    content: '';
+   content: '';
    position: absolute;
    right: 0;
    top: 50%;
@@ -258,6 +325,7 @@
  <!-- chat 구현뷰(view) -->
 	 <div class="box first">
 		<% if(roomList!=null){for(String r : roomList){%>
+		<!-- 채팅방 리스트 -->
 		<div class="box second" onclick="inChatroom();">
 			<fieldset id="fieldBox">
 			<legend><%=r %><% room = r; %></legend>
@@ -265,11 +333,31 @@
 			</fieldset>
 		</div>
 		<%}}%>
+		<div id="onlineList">
+			<div id="selectList"></div>
+			<div id="searchEngine" align="center">
+				<input type="search" id="searchMember" placeholder="멤버 검색"/>
+				<input type="submit" value="검색" class="btncss1 search"/>
+			</div>
+				<select id="memberList" multiple>
+					<% for(int i=0;i<30;i++) {%>
+					<option value="유저<%=i+1 %>">유저<%=i+1 %></option>
+					<%} %>
+				</select>
+			<div id="inviteArea" align="center">
+			<input type="text" name="newRoom" id="newRoom" placeholder="채팅방 이름을 입력하세요">
+			<button class="btncss1" onclick="invite()">초대</button>
+			<button class="btncss1" onclick="inviteCancel()">취소</button>
+			</div>
+		</div>
+		<div id="addRoom">방 추가</div>
+		
+		<!-- 채팅방 내부 -->
 		<div class="box chatBox">
 		<div class="box third">
 		<div id="back" onclick="backPage();">←</div>
-		
-		<div id="participants"><%=room %>&nbsp; ▼ 참여자(<!-- 참여하는 명 수 들어갈 예정 -->)</div> 
+		<div id="participants"><%=room %>&nbsp; ▼ 참여자(<!-- 참여하는 명 수 들어갈 예정 -->)</div>
+		<div id="talkerList"></div>
 		</div>
 		<div class="box messageBox"></div>
 		<hr>
@@ -331,24 +419,22 @@
 				error : function(data){	console.log("전달 실패!");}
 			});
    				
-   				if($('.first').css("display") == "none") $(".first").css("display", "block");
-   				else $(".first").css("display", "none");
+   				if($('.first').css("display") == "none") $(".first").slideDown();
+   				else $(".first").slideUp();
    		
    				if($("#dropdown").css("display") == "block") $("#dropdown").css("display", "none");
-
    		}
 		
    		
    		var webSocket = null;
    		var chat_id = sessionStorage.getItem('loginName')+" "+sessionStorage.getItem('loginRank');	// 채팅ID(닉네임)
 		var $chatArea = $('.messageBox');	
-		var $sendMsg = $('#sendMsg');
 		
 		var n = 0;
 		
 		/* 채팅방 내부 */
 		function inChatroom(){
-			
+			$('#addRoom').css('display', 'none');
 			 if(n==0) {webSocket = new WebSocket('ws://localhost:8088<%=request.getContextPath()%>/multicast/<%=room %>');
 				n++;
 				}
@@ -376,20 +462,31 @@
 			webSocket.onerror = function(event){onError(event);}
 			 if(!(webSocket.readyState == webSocket.CLOSED ||webSocket.readyState == webSocket.CLOSING)) 
 				webSocket.onclose = function(event){onClose(event);}
-		
+
+			$(".second").css("display", "none");
+			$(".chatBox").css("display","block");
+			
+			/* $('#endBtn').on('click', function(){
+			webSocket.send(chat_id+"|님이 퇴장하였습니다.");
+			webSocket.close();
+		}); */
+		}
 		function send(){
+			var $sendMsg = $('#sendMsg');
+			
 			if($sendMsg.val()==""){	// 메시지를 입력하지 않을 경우
 				alert("메세지를 입력해주세요.");
-			}	else{	
+			}	else{
 				$chatArea.html($chatArea.html()+"<p class='chat_content'>"+$sendMsg.val()+"</p><br>");
 			
-			webSocket.send(chat_id+"|"+$sendMsg.val());
-			$sendMsg.val("");
+				webSocket.send(chat_id+"|"+$sendMsg.val());
+				$sendMsg.val("");
+
 			}
+			scrollDown();
 		}
 		$('#sendMsg').on('keyup', function(){
-			if(window.event.keyCode==13) send();
-		});
+			if(window.event.keyCode==13) send();});
 		$('input:submit').on('click', function(){
 			send();});
 		function onMessage(event){
@@ -402,26 +499,64 @@
 			}	else{
 				$chatArea.html($chatArea.html()+"<p class='chat_content other-side'>"+sender+" : "+content+"</p><br>");
 			}
+			scrollDown();
 		}
-		
+
 		function onError(event){alert(event.data);}		
 		function onClose(event){alert(event);}
-
-			$(".second").css("display", "none");
-			$(".chatBox").css("display","block");
-			
-			/* $('#endBtn').on('click', function(){
-			webSocket.send(chat_id+"|님이 퇴장하였습니다.");
-			webSocket.close();
-		}); */
+		
+		function scrollDown(){		/* 최신글로 이동 */
+			/* console.log("현재 길이 : "+$('.messageBox').prop('scrollHeight')); */
+			$('.messageBox').scrollTop($('.messageBox').prop('scrollHeight'));
 		}
-
+		
+		
 		function backPage(){	/* 뒤로가기(나가기X) */
 			$(".second").css("display", "block");
 			$(".chatBox").css("display","none");
+			if($('#addRoom').css("display") == "none") $("#addRoom").css("display", "block");
 			n++;
 		}
-  	 </script>	
-  	 
+		
+		$('#participants').on('click', function(){	/* 참여자 목록 가져오기 */
+			if($('#talkerList').css('display')=="none") $('#talkerList').slideDown(250);
+			else $('#talkerList').slideUp(100);
+		});
+		
+		$('#addRoom').on('click',function(){	/* 방 추가 버튼  */
+			if($('#onlineList').css('display')=='none'){
+				$('#onlineList').css('display', 'block');
+				$('.first').css({'background':'rgba(0,0,0,.6)'});
+			}
+		});
+	
+		
+		$('select').change(function(){
+			var selectedMember = "";
+			$("select option:selected").each(function(){
+				selectedMember += $(this).text()+ " ";
+			});
+			$('#selectList').text(selectedMember);
+		});
+		
+		$('.btncss1 search').on('click', function(){
+			$.ajax({
+				url : "<%= request.getContextPath() %>/memberSearch.do?member="+$('#searchMember').val(),
+				type : "GET",
+				data : {member : $('option').text()},
+				success : function(data){console.log("전달 성공");	},
+				error : function(data){	console.log("전달 실패!!");}
+			});
+		});
+		
+		
+		function inviteCancel() {	/* 방 추가 취소 */
+			$('#onlineList').css('display', 'none');
+			$('.first').css('background', 'white');
+			$("select option:selected").prop("selected", false);
+			$('#selectList').text("");
+		}
+		
+  	 </script>
 </body>
 </html>
