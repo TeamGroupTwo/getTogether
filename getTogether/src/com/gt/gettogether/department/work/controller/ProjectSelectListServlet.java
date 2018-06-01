@@ -23,7 +23,7 @@ public class ProjectSelectListServlet extends HttpServlet {
 		ArrayList<Project> pjList = new ProjectService().selectProjectList();
 		
 		String page = "";
-		if(pjList.size() > 0) {
+		if(pjList != null) {
 			
 			page = "views/department/work/workHome.jsp";
 			request.setAttribute("pjList", pjList);
