@@ -1,23 +1,23 @@
 package com.gt.gettogether.notice.model.service;
 
-import static com.gt.gettogether.common.jdbc.JDBCTemplate.close;
-import static com.gt.gettogether.common.jdbc.JDBCTemplate.getConnection;
+import static com.gt.gettogether.common.jdbc.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 
 import com.gt.gettogether.notice.model.dao.NoticeDao;
 import com.gt.gettogether.notice.model.vo.Notice;
+import com.gt.gettogether.notice.model.vo.NoticeNFiles;
 
 public class NoticeService {
 
 	
 	
-	public ArrayList<Notice> selectList(){
+	public ArrayList<NoticeNFiles> selectList(){
 		
 		Connection con = getConnection();
 		
-		ArrayList<Notice> list = new NoticeDao().selectList(con);
+		ArrayList<NoticeNFiles> list = new NoticeDao().selectList(con);
 		
 		close(con);
 		
@@ -26,11 +26,18 @@ public class NoticeService {
 		return list;
 	}
 	
-	public int insertNotice(){
+	public int insertNotice(NoticeNFiles nf1){
 		
-		int result = 0 ;
+		Connection con = getConnection();
 		
+		int result = new NoticeDao().insertNotice(con, nf1);
 		
+		if(result > 0) commit(con);
+		else rollback(con);
+		
+		close(con);
+		
+		System.out.println("게시판Insert Service : "+result);
 		return result;
 	}
 	
@@ -82,4 +89,17 @@ public class NoticeService {
 		return list;
 		
 	}
+	public int fileUpload(NoticeNFiles nf) {
+		Connection con = getConnection();
+		
+		int result = new NoticeDao().fileUpload(con, nf);
+		
+		if(result > 0) commit(con);
+		else rollback(con);
+		
+		close(con);
+		System.out.println("파일Insert Service : "+result);
+		return result;
+	}
+	
 }

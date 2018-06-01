@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,9 +36,9 @@ public class NoticeDao {
 	}
 
 	
-	public ArrayList<Notice> selectList(Connection con){
+	public ArrayList<NoticeNFiles> selectList(Connection con){
 		
-		ArrayList<Notice> list = null;
+		ArrayList<NoticeNFiles> list = null;
 		Statement stmt = null;
 		ResultSet rset = null;
 		
@@ -47,19 +48,18 @@ public class NoticeDao {
 			stmt = con.createStatement();
 			rset = stmt.executeQuery(query);
 			
-			list = new ArrayList<Notice>();
+			list = new ArrayList<NoticeNFiles>();
 			
 			while(rset.next()){
 				NoticeNFiles n = new NoticeNFiles();
 				
-				n.setnNo(rset.getString("N_NO"));
+				n.setnNo(rset.getInt("N_NO"));
 				n.setnTitle(rset.getString("N_TITLE"));
-				n.setnWriter(rset.getString("N_WRITER"));
 				n.setnWriter(rset.getString("N_WRITER"));
 				n.setnDate(rset.getDate("N_DATE"));
 				n.setnCount(rset.getInt("N_COUNT"));
 				n.setnFix(rset.getString("N_FIX"));
-				n.setfName(rset.getString("F_NAME"));
+//				n.setfName(rset.getString("F_NAME"));
 				list.add(n);
 			}
 			
@@ -75,11 +75,33 @@ public class NoticeDao {
 	}
 	
 	
-	public int insertNotice(){
+	public int insertNotice(Connection con,NoticeNFiles nf1){
 		
 		int result = 0 ;
 		
+		PreparedStatement pstmt = null;
 		
+		try{
+			
+			String query = prop.getProperty("insertNotice");
+			
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, nf1.getnTitle());
+			pstmt.setString(2, nf1.getnContent());
+			pstmt.setString(3, nf1.getnWriter());
+			pstmt.setString(4, nf1.getnFix());
+			pstmt.setInt(5, nf1.geteNo());
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			
+			close(pstmt);			
+		}
+		System.out.println("게시판 Insert DAO : "+result);
 		return result;
 	}
 	
@@ -146,6 +168,38 @@ public class NoticeDao {
 		
 		
 		return result;
+	}
+
+
+	public int fileUpload(Connection con, NoticeNFiles nf) {
+		
+		int result = 0 ;
+		
+		PreparedStatement pstmt = null;
+		
+		try{
+			
+			String query = prop.getProperty("insertFile");
+			
+			pstmt = con.prepareStatement(query);
+			
+			
+			pstmt.setString(1, nf.getfPath());
+			pstmt.setString(2, nf.getfName());
+			
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			
+			close(pstmt);			
+		}
+		System.out.println("파일Insert DAO : "+result);
+		return result;
+		
+		
 	}
 	
 }

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"  import="java.util.*, com.gt.gettogether.notice.model.vo.*" %>
 
 <%
-	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
+	ArrayList<NoticeNFiles> list = (ArrayList<NoticeNFiles>)request.getAttribute("list");
 %>
 
 <!DOCTYPE html>
@@ -63,7 +63,7 @@
 		font-weight:bold; 
 		font-size:15px; 
 		position:absolute;
-		margin-left:830px; 
+		margin-left:792px; 
 		cursor: pointer;  
 	
 	}
@@ -96,7 +96,7 @@
 	
 	
 	th{
-		
+		color:white;
 		background: #5f4d8c;
 		font-size:20px;
 	}
@@ -152,12 +152,12 @@
 		 border: 1px solid gray; 
 		 border-bottom-color: gray; 
 		 border-radius: .25em; } /* named upload */ 
-	.filebox .upload-name { 
+	.filebox .file { 
 		
 		 padding: .5em .75em; /* label의 패딩값과 일치 */  	 
 		 vertical-align: middle; 
 		 background-color: white;
-		 color:rgb(95,77,140);
+		 color: rgb(95,77,140);
 		 font-weight:bold; 
 		 border: 1px solid gray;
 		 border-radius: .25em; 
@@ -191,20 +191,22 @@
 					<th>글구분</th>
 					<th>제목</th>
 					<th>파일</th>
-					<th>작성자</th>
 					<th>작성일</th>
 					<th>조회수</th>
 				</thead>
 				<tbody>
-					<% for (Notice n:list){ %>
+					<% for (NoticeNFiles n:list){ %>
 					<tr>
 						<% if(n.getnFix() == "N"){ %>
 						<td style="width:70px;"><%= n.getnNo()%></td>
 						<% }else{ %>
 						<td style="width:70px; color:red;" ><b>공지</b></td>
 						<% }%>
-						<td style="width:450px;"><%= n.getnTitle()%></td>
-						<% if(n.getnWriter() != null || n.getnWriter().length() > 0) { %>
+						
+						<td style="width:450px;"><b><%= n.getnTitle()%></b></td>
+						
+						
+						<% if(n.getfName() != null) { %>
 						<td style="width:80px;">
 							<img src="<%=request.getContextPath()%>/resources/images/common/button_search.png">
 						</td>
@@ -213,7 +215,8 @@
 							X
 						</td>
 						<% } %>
-						<td style="width:70px;"><%= n.getnWriter()%></td>
+						
+					
 						<td style="width:100px;"><%= n.getnDate()%></td>
 						<td style="width:70px;"><%= n.getnCount()%></td>
 					</tr>
@@ -227,30 +230,25 @@
 	
 	<div id="writeNotice1">
 		<span id="writeNoticeSpan">공지사항 글작성</span>
+			<form action="<%= request.getContextPath() %>/insert.no" method="post" enctype="multipart/form-data">
 			<div id="writeNotice2" style=" border-radius: .25em; background: white; width: 500px; height:650px; margin-left:auto; margin-right:auto; margin-top:20px; border:3px solid rgb(95,77,140);  ">
-				<form action="">
+				
 				<table style="background: white; border-collapse: collapse; margin-left:auto; margin-right:auto; ">
 					<tr>
 						<td style="width:60px; text-align:center;">제목</td>
 						<td><input type="text" name="title" size="50px;" style=" border-radius: 5px; height:20px;" /></td>	
 					</tr>
 					<tr>
-						<td style="text-align:center;">작성자</td>
-						<td>
-						<input type="hidden" name="userId" value=""/>
-						</td>	
-					</tr>
-					<tr>
 						<td style="text-align:center;">공지여부</td>
 						<td>
-						<input type="checkbox" name="noticeYN" value=""/>
+						<input type="checkbox" name="noticeYN" id="noticeYN" value="Y" checked/>
 						</td>	
 					</tr>
 					<tr>
 						<td style="text-align:center;">첨부파일</td>
 						<td>
 							<div class="filebox"> 
-							<input class="upload-name" value="" disabled="disabled"> 
+							<input class="file" disabled="disabled" placeholder="파일을 첨부해주세요"> 
 							<label for="ex_filename">파일 첨부</label> 
 							<input type="file" id="ex_filename" class="upload-hidden"> 
 							</div>
@@ -274,9 +272,9 @@
 		               <button type="submit" style="background:rgb(95,77,140); color:white; height:25px; cursor: pointer; border:0; border-radius: .25em;">등록하기</button>
 		            </div>
 			</div>
-			
+			</form>
 	</div>
-	</form>
+	
 	<script>
 		$(function(){
 			$('#writeTextBtn').click(function(){
@@ -292,7 +290,7 @@
 		});
 		
 		
-		$(document).ready(function(){ 
+		$(function(){ 
 			
 			var fileTarget = $('.filebox .upload-hidden'); 
 			
@@ -303,9 +301,29 @@
 					var filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
 					} 
 				// 추출한 파일명 삽입 
-					$(this).siblings('.upload-name').val(filename); 
+					$(this).siblings('.file').val(filename); 
 				}); 
 			}); 
+		$('#noticeYN').on('change',function(){
+			if($('#noticeYN').is(":checked")){
+				$(this).val('Y');
+				alert('공지 사항으로 글을 게시합니다.');
+				console.log($('#noticeYN').val());
+			}else{
+				$(this).val('N');
+				alert('일반 글로 글을 게시합니다. ');
+				console.log($('#noticeYN').val());
+			}
+			
+		});
+		
+		
+		     
+		   
+	
+			
+		
+		
 	
 	</script>
 	

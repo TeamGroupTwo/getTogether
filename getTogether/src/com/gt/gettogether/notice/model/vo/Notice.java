@@ -7,7 +7,7 @@ public class Notice implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String nNo;
+	private int nNo;
 	private String nTitle;
 	private String nContent;
 	private String nWriter;
@@ -20,7 +20,7 @@ public class Notice implements Serializable {
 		super();
 	}
 
-	public Notice(String nNo, String nTitle, String nContent, String nWriter, int nCount, Date nDate, String nFix,
+	public Notice(int nNo, String nTitle, String nContent, String nWriter, int nCount, Date nDate, String nFix,
 			int eNo) {
 		super();
 		this.nNo = nNo;
@@ -33,10 +33,10 @@ public class Notice implements Serializable {
 		this.eNo = eNo;
 	}
 	
-	public String getnNo() {
+	public int getnNo() {
 		return nNo;
 	}
-	public void setnNo(String nNo) {
+	public void setnNo(int nNo) {
 		this.nNo = nNo;
 	}
 	public String getnTitle() {
@@ -88,65 +88,6 @@ public class Notice implements Serializable {
 				+ ", nCount=" + nCount + ", nDate=" + nDate + ", nFix=" + nFix + ", eNo=" + eNo + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + eNo;
-		result = prime * result + ((nContent == null) ? 0 : nContent.hashCode());
-		result = prime * result + nCount;
-		result = prime * result + ((nDate == null) ? 0 : nDate.hashCode());
-		result = prime * result + ((nFix == null) ? 0 : nFix.hashCode());
-		result = prime * result + ((nNo == null) ? 0 : nNo.hashCode());
-		result = prime * result + ((nTitle == null) ? 0 : nTitle.hashCode());
-		result = prime * result + ((nWriter == null) ? 0 : nWriter.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Notice other = (Notice) obj;
-		if (eNo != other.eNo)
-			return false;
-		if (nContent == null) {
-			if (other.nContent != null)
-				return false;
-		} else if (!nContent.equals(other.nContent))
-			return false;
-		if (nCount != other.nCount)
-			return false;
-		if (nDate == null) {
-			if (other.nDate != null)
-				return false;
-		} else if (!nDate.equals(other.nDate))
-			return false;
-		if (nFix == null) {
-			if (other.nFix != null)
-				return false;
-		} else if (!nFix.equals(other.nFix))
-			return false;
-		if (nNo == null) {
-			if (other.nNo != null)
-				return false;
-		} else if (!nNo.equals(other.nNo))
-			return false;
-		if (nTitle == null) {
-			if (other.nTitle != null)
-				return false;
-		} else if (!nTitle.equals(other.nTitle))
-			return false;
-		if (nWriter == null) {
-			if (other.nWriter != null)
-				return false;
-		} else if (!nWriter.equals(other.nWriter))
-			return false;
-		return true;
-	}
+	
 	
 }

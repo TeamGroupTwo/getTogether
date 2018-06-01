@@ -9,19 +9,17 @@ public class Files implements Serializable {
 	private int fNo;
 	private String fName;
 	private String fPath;
-	private String fBoard;
 	private String fType;
 
 	public Files() {
 		super();
 	}
 
-	public Files(int fNo, String fName, String fPath, String fBoard, String fType) {
+	public Files(int fNo, String fName, String fPath, String fType) {
 		super();
 		this.fNo = fNo;
 		this.fName = fName;
 		this.fPath = fPath;
-		this.fBoard = fBoard;
 		this.fType = fType;
 	}
 
@@ -49,13 +47,6 @@ public class Files implements Serializable {
 		this.fPath = fPath;
 	}
 
-	public String getfBoard() {
-		return fBoard;
-	}
-
-	public void setfBoard(String fBoard) {
-		this.fBoard = fBoard;
-	}
 
 	public String getfType() {
 		return fType;
@@ -67,7 +58,7 @@ public class Files implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Files [fNo=" + fNo + ", fName=" + fName + ", fPath=" + fPath + ", fBoard=" + fBoard + ", fType=" + fType
+		return "Files [fNo=" + fNo + ", fName=" + fName + ", fPath=" + fPath + ", fType=" + fType
 				+ "]";
 	}
 
@@ -75,7 +66,6 @@ public class Files implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((fBoard == null) ? 0 : fBoard.hashCode());
 		result = prime * result + ((fName == null) ? 0 : fName.hashCode());
 		result = prime * result + fNo;
 		result = prime * result + ((fPath == null) ? 0 : fPath.hashCode());
@@ -92,11 +82,6 @@ public class Files implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Files other = (Files) obj;
-		if (fBoard == null) {
-			if (other.fBoard != null)
-				return false;
-		} else if (!fBoard.equals(other.fBoard))
-			return false;
 		if (fName == null) {
 			if (other.fName != null)
 				return false;

@@ -44,10 +44,19 @@
 			<img class="aImage" src="<%= request.getContextPath() %>/resources/images/common/employeeManage.png"/>
 			<p class="aText" id="workTxt">사원관리</p>
 		</div>
-		<div class="menu" onclick="">
+		<div class="menu" onclick="gotoNoticeList()">
 			<img class="aImage" src="<%= request.getContextPath() %>/resources/images/common/notice.png"/>
 			<p class="aText" id="noticeTxt">공지사항</p>
 		</div>
 	</div>
+	
+	<script>
+		function gotoNoticeList(){
+			location.href="/gt/selectList.no";
+		};
+			
+		
+	</script>
+	
 </body>
 </html>

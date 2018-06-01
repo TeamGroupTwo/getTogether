@@ -16,7 +16,7 @@ public class NoticeNFiles extends Notice {
 		super();
 	}
 	
-	public NoticeNFiles(String nNo, String nTitle, String nContent, String nWriter, int nCount, Date nDate, String nFix,
+	public NoticeNFiles(int nNo, String nTitle, String nContent, String nWriter, int nCount, Date nDate, String nFix,
 			int eNo) {
 		super(nNo, nTitle, nContent, nWriter, nCount, nDate, nFix, eNo);
 	}
