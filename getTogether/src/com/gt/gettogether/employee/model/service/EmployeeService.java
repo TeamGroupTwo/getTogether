@@ -39,11 +39,11 @@ public class EmployeeService {
 		return result;
 	}
 	
-	public String checkEmail(String email){
+	public int checkEmail(String email){
 		
 		Connection con = getConnection();
 		
-		String result = eDao.checkEmail(con, email);
+		int result = eDao.checkEmail(con, email);
 		
 		close(con);
 		

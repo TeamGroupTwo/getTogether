@@ -15,6 +15,8 @@ public class Employee implements Serializable{
 	private String profile;
 	private String rCode;
 	private String dCode;
+	private String rName;
+	private String dName;
 	
 	public Employee() {
 		super();
@@ -32,6 +34,22 @@ public class Employee implements Serializable{
 		this.profile = profile;
 		this.rCode = rCode;
 		this.dCode = dCode;
+	}
+
+	public Employee(int eNo, String eId, String ePassword, String eName, String phone, String email, String profile,
+			String rCode, String dCode, String rName, String dName) {
+		super();
+		this.eNo = eNo;
+		this.eId = eId;
+		this.ePassword = ePassword;
+		this.eName = eName;
+		this.phone = phone;
+		this.email = email;
+		this.profile = profile;
+		this.rCode = rCode;
+		this.dCode = dCode;
+		this.rName = rName;
+		this.dName = dName;
 	}
 
 	public int geteNo() {
@@ -105,11 +123,28 @@ public class Employee implements Serializable{
 	public void setdCode(String dCode) {
 		this.dCode = dCode;
 	}
+	
+	public String getrName() {
+		return rName;
+	}
+
+	public void setrName(String rName) {
+		this.rName = rName;
+	}
+
+	public String getdName() {
+		return dName;
+	}
+
+	public void setdName(String dName) {
+		this.dName = dName;
+	}
 
 	@Override
 	public String toString() {
 		return "Employee [eNo=" + eNo + ", eId=" + eId + ", ePassword=" + ePassword + ", eName=" + eName + ", phone="
-				+ phone + ", email=" + email + ", profile=" + profile + ", rCode=" + rCode + ", dCode=" + dCode + "]";
+				+ phone + ", email=" + email + ", profile=" + profile + ", rCode=" + rCode + ", dCode=" + dCode
+				+ ", rName=" + rName + ", dName=" + dName + "]";
 	}
 
 	@Override
@@ -117,6 +152,7 @@ public class Employee implements Serializable{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((dCode == null) ? 0 : dCode.hashCode());
+		result = prime * result + ((dName == null) ? 0 : dName.hashCode());
 		result = prime * result + ((eId == null) ? 0 : eId.hashCode());
 		result = prime * result + ((eName == null) ? 0 : eName.hashCode());
 		result = prime * result + eNo;
@@ -125,6 +161,7 @@ public class Employee implements Serializable{
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		result = prime * result + ((rCode == null) ? 0 : rCode.hashCode());
+		result = prime * result + ((rName == null) ? 0 : rName.hashCode());
 		return result;
 	}
 
@@ -141,6 +178,11 @@ public class Employee implements Serializable{
 			if (other.dCode != null)
 				return false;
 		} else if (!dCode.equals(other.dCode))
+			return false;
+		if (dName == null) {
+			if (other.dName != null)
+				return false;
+		} else if (!dName.equals(other.dName))
 			return false;
 		if (eId == null) {
 			if (other.eId != null)
@@ -178,6 +220,11 @@ public class Employee implements Serializable{
 			if (other.rCode != null)
 				return false;
 		} else if (!rCode.equals(other.rCode))
+			return false;
+		if (rName == null) {
+			if (other.rName != null)
+				return false;
+		} else if (!rName.equals(other.rName))
 			return false;
 		return true;
 	}

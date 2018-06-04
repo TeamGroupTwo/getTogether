@@ -53,6 +53,12 @@
 	</div>
 	
 	<script>
+	
+	history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+	};
+	
 	function login(){
 		if($("#eId").val() == "" || $("#ePwd").val() == "")	
 			alert("아이디와 비밀번호를 모두 입력해주세요.");
@@ -72,8 +78,10 @@
 						sessionStorage.setItem('loginName', data.eName);
 						sessionStorage.setItem('loginId', data.eId);
 						sessionStorage.setItem('loginPwd', data.ePassword); 
-						sessionStorage.setItem('loginRank', data.rCode);
-						sessionStorage.setItem('loginDept', data.dCode); 
+						sessionStorage.setItem('loginRcode', data.rCode);
+						sessionStorage.setItem('loginDcode', data.dCode);
+						sessionStorage.setItem('loginRank', data.rName);
+						sessionStorage.setItem('loginDept', data.dName);
 						
 						if(data.eId == 'admin1' || data.eId == 'admin2')							
 							location.href = "<%=request.getContextPath()%>/views/admin/adminAuthority.jsp";
