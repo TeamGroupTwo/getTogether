@@ -21,6 +21,10 @@ public class ProjectInsertServlet extends HttpServlet {
 		String pTitle = request.getParameter("pTitle");
 		String dCode = request.getParameter("dCode");
 		
+		switch(dCode){
+			
+		}
+		
 		Project pj = new Project();
 		
 		pj.setpTitle(pTitle);

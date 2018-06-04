@@ -20,7 +20,9 @@ public class ProjectSelectListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		ArrayList<Project> pjList = new ProjectService().selectProjectList();
+		String loginDcode = request.getParameter("loginDcode");
+		
+		ArrayList<Project> pjList = new ProjectService().selectProjectList(loginDcode);
 		
 		String page = "";
 		if(pjList != null) {

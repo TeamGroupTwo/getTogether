@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"
     import="java.util.*, com.gt.gettogether.department.work.model.vo.*"%>
 <%
-	
+	ArrayList<Work> workList = (ArrayList<Work>) request.getAttribute("workList");
+	String pTitle = (String) request.getAttribute("pTitle");
+	int loginNo = (int) request.getAttribute("eNo");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -157,9 +159,11 @@
         }
         .article {
             border: 1px solid #5F4D8C;
-            height: 230px;
+            height: 210px;
             width: 95%;
             margin: 0 auto;
+            padding: 10px;
+            font-weight: 550;
         }
         .inputFile {
             float: left;
@@ -304,7 +308,7 @@
     <div id="container">
         <div id="top">
             <img src="/gt/resources/images/work/board/project_icon.png" width="50px" height="50px">
-            <h2>A프로젝트</h2>
+            <h2><%=pTitle%></h2>
 
             <div class="right" id="insertBtn">생성</div>
             <div class="right" id="searchBtn"><img src="/gt/resources/images/work/board/search_icon.png"></div>
@@ -312,47 +316,53 @@
         </div>
 
         <div id="content">
-            <div class="oneArticle">
-                <div class="content_left">
-                    <h3>제목 : 테스트</h3>
-                    <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
-                    <h3 class="empName">오홍근</h3>
-                    <h3 class="date">날짜 : 2018.05.31</h3>
-                    <h3 class="naeyong">내용</h3>
-                    <div class="article"></div>
-                    <h3 class="inputFile">첨부파일 : <input type="file"></h3>
-                    <div class="content-left-buttons defaultBtn deleteBtn">삭제</div>
-                    <div class="content-left-buttons defaultBtn updateBtn">수정</div>
-                </div>
+        
+        	<% for(Work w : workList) { %>
+	            <div class="oneArticle">
+	                <div class="content_left">
+	                    <h3>제목 : <%=w.getwTitle()%></h3>
+	                    <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
+	                    <h3 class="empName"><%=w.getwWriter()%></h3>
+	                    <h3 class="date">날짜 : <%=w.getwDate()%></h3>
+	                    <h3 class="naeyong">내용</h3>
+	                    <div class="article"><%=w.getwContent()%></div>
+	                    <h3 class="inputFile">첨부파일 : <input type="file"></h3>
+	                    
+	                    <% if(w.geteNo() == loginNo) { %>
+	                    <div class="content-left-buttons defaultBtn deleteBtn">삭제</div>
+	                    <div class="content-left-buttons defaultBtn updateBtn">수정</div>
+	                    <% } %>
+	                </div>
+	
+	                <div class="content_right">
+	                    <div class="comment_header"><h3>댓글</h3></div>
+	                    <div class="comment_content">
+	                        <div class="oneComment">
+	                            <div class="oneComment_left">
+	                                <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
+	                                <h3>오홍근</h3>
+	                            </div>
+	                            <div class="oneComment_right">
+	                                <p>가즈가즈아아아아아아가즈가즈아아아
+	                                </p>
+	                            </div>
+	                        </div>
+	                        <div class="oneComment"></div>
+	                        <div class="oneComment"></div>
+	                        <div class="oneComment"></div>
+	                        <div class="oneComment"></div>
+	                    </div>
+	                    <div class="comment_bottom">
+	                        <textarea cols="45" rows="7"></textarea>
+	                        <div class="commentInsertBtn">
+	                            <p>작성</p>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        <% } %>
 
-                <div class="content_right">
-                    <div class="comment_header"><h3>댓글</h3></div>
-                    <div class="comment_content">
-                        <div class="oneComment">
-                            <div class="oneComment_left">
-                                <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
-                                <h3>오홍근</h3>
-                            </div>
-                            <div class="oneComment_right">
-                                <p>가즈가즈아아아아아아가즈가즈아아아
-                                </p>
-                            </div>
-                        </div>
-                        <div class="oneComment"></div>
-                        <div class="oneComment"></div>
-                        <div class="oneComment"></div>
-                        <div class="oneComment"></div>
-                    </div>
-                    <div class="comment_bottom">
-                        <textarea cols="45" rows="7"></textarea>
-                        <div class="commentInsertBtn">
-                            <p>작성</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="oneArticle">
+<!--             	<div class="oneArticle">
                     <div class="content_left">
                         <h3>제목 : 테스트</h3>
                         <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
@@ -372,7 +382,7 @@
                         </div>
                         <div class="comment_bottom"></div>
                     </div>
-                </div>
+                </div> -->
         </div>
     </div>
 

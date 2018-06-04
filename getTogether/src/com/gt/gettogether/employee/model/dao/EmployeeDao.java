@@ -46,8 +46,10 @@ public class EmployeeDao {
 				eResult.setPhone(rset.getString("PHONE"));
 				eResult.setEmail(rset.getString("EMAIL"));
 				eResult.setProfile(rset.getString("PROFILE"));
-				eResult.setrCode(rset.getString("R_NAME"));
-				eResult.setdCode(rset.getString("D_NAME"));
+				eResult.setrCode(rset.getString("R_CODE"));
+				eResult.setdCode(rset.getString("D_CODE"));
+				eResult.setrName(rset.getString("R_NAME"));
+				eResult.setdName(rset.getString("D_NAME"));
 			}
 			
 		} catch (SQLException e) {
@@ -65,9 +67,29 @@ public class EmployeeDao {
 		return 0;
 	}
 
-	public String checkEmail(Connection con, String email) {
-	
-		return null;
+	public int checkEmail(Connection con, String email) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = -1;
+		
+		try {
+			pstmt = con.prepareStatement(prop.getProperty("checkEmail"));
+			pstmt.setString(1, email);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next())
+				result = rset.getInt("RESULT");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			close(rset);
+			close(pstmt);			
+		}
+		
+		return result;
 	}
 
 	public int findId(Connection con, Employee emp) {

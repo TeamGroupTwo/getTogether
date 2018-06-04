@@ -72,9 +72,11 @@
 						sessionStorage.setItem('loginName', data.eName);
 						sessionStorage.setItem('loginId', data.eId);
 						sessionStorage.setItem('loginPwd', data.ePassword); 
-						sessionStorage.setItem('loginRank', data.rCode);
-						sessionStorage.setItem('loginDept', data.dCode); 
-						
+						sessionStorage.setItem('loginRcode', data.rCode);
+						sessionStorage.setItem('loginDcode', data.dCode);
+						sessionStorage.setItem('loginRank', data.rName);
+						sessionStorage.setItem('loginDept', data.dName);
+
 						if(data.eId == 'admin1' || data.eId == 'admin2')							
 							location.href = "<%=request.getContextPath()%>/views/admin/adminAuthority.jsp";
 						else if(data.email == null)

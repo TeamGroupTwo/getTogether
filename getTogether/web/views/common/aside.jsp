@@ -61,7 +61,8 @@
 	<script>
 		
 		function selectPjList() {
-			location.href = '/gt/selectList.pj';
+			console.log(sessionStorage.getItem('loginDcode'));
+			location.href = '/gt/selectList.pj?loginDcode='+sessionStorage.getItem('loginDcode');
 		}
 	
 	</script>

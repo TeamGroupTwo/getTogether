@@ -33,19 +33,21 @@ public class ProjectDao {
 		
 	}
 
-	public ArrayList<Project> selectProjectList(Connection con) {
+	public ArrayList<Project> selectProjectList(Connection con, String loginDcode) {
 		
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Project> pjList = null;
 		
-		String sql = prop.getProperty("selectList");
+		String sql = prop.getProperty("selectProjectList");
 		
 		try {
 			
-			stmt = con.createStatement();
+			pstmt = con.prepareStatement(sql);
 			
-			rset = stmt.executeQuery(sql);
+			pstmt.setString(1, loginDcode);
+			
+			rset = pstmt.executeQuery();
 			
 			pjList = new ArrayList<Project>();
 			
@@ -67,7 +69,7 @@ public class ProjectDao {
 		} finally {
 			
 			close(rset);
-			close(stmt);
+			close(pstmt);
 			
 		}
 		
@@ -141,7 +143,7 @@ public class ProjectDao {
 		
 	}
 	
-	public int updateProject(Connection con, String pTitle, String upTitle) {
+	public int updateProject(Connection con, int pNo, String upTitle) {
 
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -153,7 +155,7 @@ public class ProjectDao {
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, upTitle);
-			pstmt.setString(2, pTitle);
+			pstmt.setInt(2, pNo);
 			
 			result = pstmt.executeUpdate();
 			
@@ -196,8 +198,4 @@ public class ProjectDao {
 		
 	}
 	
-	public Project selectOneProject() {
-		return null;
-	}
-
 }

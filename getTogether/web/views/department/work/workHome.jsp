@@ -267,7 +267,7 @@
         
         	<% for(Project p : pjList) { %>
             <div class="project">
-            	<input type="hidden" name="pNo" value="<%=p.getpNo()%>" />
+            	<input type="hidden" name="pNo" value="<%=p.getpNo()%>" id="pNo" />
             	<img src="/gt/resources/images/work/board/project_icon.png" />
             	<h3><%=p.getpTitle()%></h3>
             </div>
@@ -462,7 +462,7 @@
 				
 				if($(this).prop('checked')) {
 					$pjDiv = $(this).parent();
-					pTitle = $(this).siblings('h3').text();
+					pNo = $(this).siblings('#pNo').val();
 				}
 				
 			});
@@ -498,11 +498,10 @@
             		
             		url : "/gt/update.pj",
             		data : {
-            			"pTitle" : pTitle,
-            			"upTitle" : upTitle,
-            			"dCode" : "D1"
+            			"pNo" : pNo,
+            			"upTitle" : upTitle
             			},
-            		type : "get",
+            		type : "post",
             		success : function(data) {
             				
         				$pjDiv.children('h3').text(upTitle);
@@ -522,6 +521,10 @@
 		$('#deleteBtn').on('click', function() {
 			
 			delBtnChk = true;
+			
+			$('.project').each(function() {
+				$(this).css('cursor', 'pointer');
+			});
 			
 			$('.defaultBtn').css('display', 'none');
 			$('.deleteBtn').css('display', 'block');
@@ -566,8 +569,7 @@
 					
             		url : "/gt/delete.pj",
             		data : {
-            			"chkList" : chkList,
-            			"dCode" : "D1"
+            			"chkList" : chkList
             			},
             		type : "get",
             		success : function(data) {
@@ -603,14 +605,22 @@
 				
 			});
 			
+			$('.project').each(function() {
+				$(this).css('cursor', 'default');
+			});
+			
 			delBtnChk = false;
 			
 		});
 		
 		$('.project').on('dblclick', function pjDbl() {
 			
+			var pNo = $(this).children('#pNo').val();
+			var pTitle = $(this).children('h3').text();
+			var eNo = sessionStorage.getItem("loginNo");
+			
 			if(!upBtnChk && !delBtnChk) {
-				location.href = '<%=request.getContextPath()%>/views/department/work/workList.jsp';
+				location.href = '<%=request.getContextPath()%>/selectList.wo?pNo='+pNo+'&pTitle='+pTitle+'&eNo='+eNo;
 			}
 			
 		})

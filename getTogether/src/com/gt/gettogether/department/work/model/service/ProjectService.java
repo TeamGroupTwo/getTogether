@@ -10,11 +10,11 @@ import static com.gt.gettogether.common.jdbc.JDBCTemplate.*;
 
 public class ProjectService {
 
-	public ArrayList<Project> selectProjectList() {
+	public ArrayList<Project> selectProjectList(String loginDcode) {
 		
 		Connection con = getConnection();
 		
-		ArrayList<Project> pjList = new ProjectDao().selectProjectList(con);
+		ArrayList<Project> pjList = new ProjectDao().selectProjectList(con, loginDcode);
 		
 		close(con);
 		
@@ -44,11 +44,11 @@ public class ProjectService {
 		return resultPj;
 	}
 	
-	public int updateProject(String pTitle, String upTitle) {
+	public int updateProject(int pNo, String upTitle) {
 		
 		Connection con = getConnection();
 		
-		int result = new ProjectDao().updateProject(con, pTitle, upTitle);
+		int result = new ProjectDao().updateProject(con, pNo, upTitle);
 		
 		if(result > 0) commit(con);
 		else rollback(con);
@@ -71,10 +71,6 @@ public class ProjectService {
 		
 		return result;
 		
-	}
-	
-	public Project selectOneProject() {
-		return null;
 	}
 	
 }

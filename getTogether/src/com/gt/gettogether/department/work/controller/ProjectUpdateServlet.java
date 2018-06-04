@@ -17,10 +17,10 @@ public class ProjectUpdateServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String pTitle = request.getParameter("pTitle");
+		int pNo = Integer.parseInt(request.getParameter("pNo"));
 		String upTitle = request.getParameter("upTitle");
 		
-		int result = new ProjectService().updateProject(pTitle, upTitle);
+		int result = new ProjectService().updateProject(pNo, upTitle);
 		
 		if(result < 1) {
 			request.getRequestDispatcher("views/department/error.jsp");
