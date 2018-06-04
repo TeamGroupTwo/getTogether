@@ -14,14 +14,14 @@ import com.gt.gettogether.employee.model.service.EmployeeService;
 import com.gt.gettogether.employee.model.vo.Employee;
 
 
-@WebServlet("/roomView.do")
-public class ChattingViewServlet extends HttpServlet {
+@WebServlet("/deptroomView.do")
+public class DeptChatViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	// 현재 열려있는 채팅방의 명칭()
 	public static ArrayList<String> roomList;
 
-    public ChattingViewServlet() {super();}
+    public DeptChatViewServlet() {super();}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,7 +37,6 @@ public class ChattingViewServlet extends HttpServlet {
 		// 기존에 있던 방의 리스트를 받아옴
 		roomList = (ArrayList<String>)application.getAttribute("roomList");
 		
-//		System.out.println(roomList);
 		if(roomList==null || roomList.isEmpty()){
 			roomList = new ArrayList<String>();
 			
@@ -54,7 +53,7 @@ public class ChattingViewServlet extends HttpServlet {
 //			System.out.println(roomList);
 		}
 		
-		if(!roomList.isEmpty()) request.getRequestDispatcher("views/common/header.jsp").forward(request, response);
+		if(!roomList.isEmpty()) request.getRequestDispatcher("views/chat/chatting.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

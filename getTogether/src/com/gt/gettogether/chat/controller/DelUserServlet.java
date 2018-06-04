@@ -1,11 +1,17 @@
 package com.gt.gettogether.chat.controller;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
 
 /**
  * Servlet implementation class DelUserServlet
@@ -26,8 +32,18 @@ public class DelUserServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String user = request.getParameter("name");
+		
+		ServletContext application = request.getServletContext();
+		
+		Set<String> userList = (HashSet<String>)application.getAttribute("userList");
+		
+		userList.remove(user);
+		
+		application.setAttribute("userList", userList);
+		response.setContentType("application/json; charset=UTF-8");
+		
+		new Gson().toJson(userList, response.getWriter());
 	}
 
 	/**

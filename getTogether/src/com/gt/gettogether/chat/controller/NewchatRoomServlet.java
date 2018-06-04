@@ -1,8 +1,7 @@
 package com.gt.gettogether.chat.controller;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,40 +10,34 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-
 /**
- * Servlet implementation class UserListServlet
+ * Servlet implementation class NewchatRoomServlet
  */
-@WebServlet("/getUserList.do")
-public class UserListServlet extends HttpServlet {
+@WebServlet("/addRoom.do")
+public class NewchatRoomServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UserListServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	public static ArrayList<String> roomList;
+	
+    public NewchatRoomServlet() {
+        super();}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String user = request.getParameter("name");
+		String room = request.getParameter("chatRoom");
 		
 		ServletContext application = request.getServletContext();
+		roomList = (ArrayList<String>)application.getAttribute("roomList");
 		
-		Set<String> userList = (HashSet<String>)application.getAttribute("userList");
-		if(userList==null || userList.isEmpty())userList = new HashSet<String>();
-		
-		userList.add(user);
-		
-		application.setAttribute("userList", userList);
-		response.setContentType("application/json; charset=UTF-8");
-		
-		new Gson().toJson(userList, response.getWriter());
+		if(room.equals("newRoom")){
+			roomList = new ArrayList<String>();
+			
+			roomList.add(request.getParameter("createRoom"));
+			application.setAttribute("roomList", roomList);
+			}
+			if(!roomList.isEmpty()){
+			request.setAttribute("room", room);
+			request.getRequestDispatcher("views/common/header.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -54,5 +47,4 @@ public class UserListServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

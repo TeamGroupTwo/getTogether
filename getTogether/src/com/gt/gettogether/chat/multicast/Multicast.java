@@ -11,7 +11,6 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.gt.gettogether.chat.controller.ChattingViewServlet;
 
 /*
  *	value : 서버의 접속하기 위한 URL 경로
@@ -106,10 +105,7 @@ public class Multicast {
        String room = (String)session.getUserProperties().get("room");
        Set<Session> userList = getUserList(room);
        userList.remove(session);
-       
-       // 사용자가 1명도 없으면 방을 부숨(room1,2,3 제외 유저들이 신규로 만든 채팅방)
-       // 만약 방 안에 사용자가 1명도 존재하지 않으면 채팅방을 파괴함
-       if(userList.size() == 0)  ChattingViewServlet.roomList.remove(room);
+      
     }
     
     @OnError

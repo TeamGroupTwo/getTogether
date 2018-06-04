@@ -25,7 +25,6 @@ public class ChatRoomServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		
 		// 참여할 방 이름
 		String room = request.getParameter("chatRoom");
 		
@@ -37,20 +36,11 @@ public class ChatRoomServlet extends HttpServlet {
 		ServletContext application = request.getServletContext();
 		ArrayList<String> roomList = (ArrayList<String>)application.getAttribute("roomList");
 		
-		// 만약 새로운 채팅방을 개설했다면 해당하는 채팅방으로 현재 방을 설정하고, 기존의 채팅방 리스트에 현재 방의 제목을 등록하는 작업
-		if(room.equals("newRoom")){
-			room = request.getParameter("roomName");
-			
-			roomList.add(room);
-			application.setAttribute("roomList", roomList);
-		}
-		
 		// 정상적으로 등록하여 방 리스트가 갱신되었다면 채팅방으로 jsp 전달하기
 		if(!roomList.isEmpty()){
 			request.setAttribute("room", room);
 			request.getRequestDispatcher("views/common/header.jsp").forward(request, response);
-		}
-		
+		}		
 	}
 
 	/**
