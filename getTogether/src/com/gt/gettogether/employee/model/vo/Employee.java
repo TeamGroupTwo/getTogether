@@ -21,21 +21,7 @@ public class Employee implements Serializable{
 	public Employee() {
 		super();
 	}
-
-	public Employee(int eNo, String eId, String ePassword, String eName, String phone, String email, String profile,
-			String rCode, String dCode) {
-		super();
-		this.eNo = eNo;
-		this.eId = eId;
-		this.ePassword = ePassword;
-		this.eName = eName;
-		this.phone = phone;
-		this.email = email;
-		this.profile = profile;
-		this.rCode = rCode;
-		this.dCode = dCode;
-	}
-
+	
 	public Employee(int eNo, String eId, String ePassword, String eName, String phone, String email, String profile,
 			String rCode, String dCode, String rName, String dName) {
 		super();

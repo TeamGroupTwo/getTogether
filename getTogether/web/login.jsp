@@ -10,46 +10,34 @@
 		background : #5f4d8c;
 		margin : auto;
 	}
-	.wrap{
-		display : flex;
-		width : 74vw;
-		height : 70vh;
-		margin-top : 15vh;
-		margin-left : 13vw;
-	}
 	#login{
+		position : absolute;
+		top : 50%;
+		left : 50%;
+		margin-left : -250px;
+		margin-top : -250px;
+		width : 500px;
+		height : 500px;
 		background : white;
-		width : 35vw;
-		min-width:400px;
-		height : inherit;
 	}
 	#loginBtn{
 		width : 50px;
 		height : 50px;
 		background: pink;
+		border-radius: .25em;
 	}
 	#loginBtn:hover{
 		cursor : pointer;
-	}
-	#d2 {
-		background : pink;
-		width : 35vw;
-		height : auto;
 	}
 </style>
 <title>로그인 화면</title>
 </head>
 <body>
-	<div class="wrap">
-		<div id="login">
-			<p align="center">GETTOGETHER</p>
-			아이디 : <input type="text" name="eId" id="eId" /><br />
-			비밀번호 : <input type="password" name="ePwd" id="ePwd"/>
-			<div id="loginBtn"  onclick="login();">확인</div>
-		</div>
-		<div id="d2">
-		
-		</div>
+	<div id="login">
+		<p id="title">GETTOGETHER</p>
+		아이디 : <input type="text" name="eId" id="eId" /><br />
+		비밀번호 : <input type="password" name="ePwd" id="ePwd"/>
+		<div id="loginBtn"  onclick="login();">확인</div>
 	</div>
 	
 	<script>
