@@ -21,9 +21,26 @@ public class WorkSelectListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		int pNo = Integer.parseInt(request.getParameter("pNo"));
-		String pTitle = request.getParameter("pTitle");
-		int eNo = Integer.parseInt(request.getParameter("eNo"));
+		int pNo;
+		if(request.getParameter("pNo") == null) {
+			pNo = (int) request.getAttribute("pNo");
+		} else {
+			pNo = Integer.parseInt(request.getParameter("pNo"));
+		}
+
+		String pTitle;
+		if(request.getParameter("pTitle") == null) {
+			pTitle = (String)request.getAttribute("pTitle");
+		} else {
+			pTitle = request.getParameter("pTitle");
+		}
+		
+		int eNo;
+		if(request.getParameter("eNo") == null) {
+			eNo = (int) request.getAttribute("eNo");
+		} else {
+			eNo = Integer.parseInt(request.getParameter("eNo"));
+		}
 		
 		ArrayList<Work> workList = new WorkService().selectWorkList(pNo);
 		
@@ -32,6 +49,7 @@ public class WorkSelectListServlet extends HttpServlet {
 			
 			page = "views/department/work/workList.jsp";
 			request.setAttribute("workList", workList);
+			request.setAttribute("pNo", pNo);
 			request.setAttribute("pTitle", pTitle);
 			request.setAttribute("eNo", eNo);
 			

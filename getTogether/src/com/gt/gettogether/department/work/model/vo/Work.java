@@ -13,11 +13,14 @@ public class Work {
 	private int eNo;
 	private int fNo;
 	
+	private String fName;
+	
 	public Work() {
 		super();
 	}
 
-	public Work(int wNo, String wTitle, String wContent, String wWriter, int pNo, Date wDate, int eNo, int fNo) {
+	public Work(int wNo, String wTitle, String wContent, String wWriter, int pNo, Date wDate, int eNo, int fNo,
+			String fName) {
 		super();
 		this.wNo = wNo;
 		this.wTitle = wTitle;
@@ -27,6 +30,7 @@ public class Work {
 		this.wDate = wDate;
 		this.eNo = eNo;
 		this.fNo = fNo;
+		this.fName = fName;
 	}
 
 	public int getwNo() {
@@ -93,10 +97,18 @@ public class Work {
 		this.fNo = fNo;
 	}
 
+	public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+
 	@Override
 	public String toString() {
 		return "Work [wNo=" + wNo + ", wTitle=" + wTitle + ", wContent=" + wContent + ", wWriter=" + wWriter + ", pNo="
-				+ pNo + ", wDate=" + wDate + ", eNo=" + eNo + ", fNo=" + fNo + "]";
+				+ pNo + ", wDate=" + wDate + ", eNo=" + eNo + ", fNo=" + fNo + ", fName=" + fName + "]";
 	}
 
 	@Override
@@ -104,6 +116,7 @@ public class Work {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + eNo;
+		result = prime * result + ((fName == null) ? 0 : fName.hashCode());
 		result = prime * result + fNo;
 		result = prime * result + pNo;
 		result = prime * result + ((wContent == null) ? 0 : wContent.hashCode());
@@ -124,6 +137,11 @@ public class Work {
 			return false;
 		Work other = (Work) obj;
 		if (eNo != other.eNo)
+			return false;
+		if (fName == null) {
+			if (other.fName != null)
+				return false;
+		} else if (!fName.equals(other.fName))
 			return false;
 		if (fNo != other.fNo)
 			return false;
@@ -153,5 +171,5 @@ public class Work {
 			return false;
 		return true;
 	}
-	
+
 }

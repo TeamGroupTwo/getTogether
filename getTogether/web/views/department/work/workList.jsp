@@ -3,6 +3,7 @@
     import="java.util.*, com.gt.gettogether.department.work.model.vo.*"%>
 <%
 	ArrayList<Work> workList = (ArrayList<Work>) request.getAttribute("workList");
+	int pNo = (int) request.getAttribute("pNo");
 	String pTitle = (String) request.getAttribute("pTitle");
 	int loginNo = (int) request.getAttribute("eNo");
 %>
@@ -16,6 +17,16 @@
     <script src="/gt/resources/js/jquery-3.3.1.min.js"></script>
 
     <style>
+    
+	    ::-webkit-scrollbar {width: 8px; height: 8px; border: 3px solid #fff; }
+		::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {display: block; height: 10px; background: #efefef}
+		::-webkit-scrollbar-track {background: #efefef; -webkit-border-radius: 10px; border-radius:10px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.2)}
+		::-webkit-scrollbar-thumb {height: 50px; width: 50px; background: rgba(0,0,0,.2); -webkit-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1)}
+    
+    
+    
+    
+    
         /* 전체 초기화 */
         /* * {
             margin: 0;
@@ -116,9 +127,9 @@
             border: 2px solid #5F4D8C;
             min-width: 1200px;
         }
-        #content::-webkit-scrollbar {
+/*         #content::-webkit-scrollbar {
             display: none;
-        }
+        } */
 
         .oneArticle {
             height: 500px;
@@ -228,9 +239,9 @@
             border-bottom: 1px solid #5F4D8C;
             overflow-y: scroll;
         }
-        .comment_content::-webkit-scrollbar {
+         .comment_content::-webkit-scrollbar {
             display: none;
-        }
+        } 
 
         .oneComment {
             overflow: hidden;
@@ -307,11 +318,11 @@
 
     <div id="container">
         <div id="top">
-            <img src="/gt/resources/images/work/board/project_icon.png" width="50px" height="50px">
+            <img src="/gt/resources/images/department/work/project_icon.png" width="50px" height="50px">
             <h2><%=pTitle%></h2>
 
             <div class="right" id="insertBtn">생성</div>
-            <div class="right" id="searchBtn"><img src="/gt/resources/images/work/board/search_icon.png"></div>
+            <div class="right" id="searchBtn"><img src="/gt/resources/images/department/work/search_icon.png"></div>
             <div class="right"><input type="text" size="15" placeholder="search..."></div>
         </div>
 
@@ -319,6 +330,7 @@
         
         	<% for(Work w : workList) { %>
 	            <div class="oneArticle">
+	            	<input type="hidden" value="<%=w.getwNo()%>" class="wNo" />
 	                <div class="content_left">
 	                    <h3>제목 : <%=w.getwTitle()%></h3>
 	                    <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
@@ -326,7 +338,11 @@
 	                    <h3 class="date">날짜 : <%=w.getwDate()%></h3>
 	                    <h3 class="naeyong">내용</h3>
 	                    <div class="article"><%=w.getwContent()%></div>
-	                    <h3 class="inputFile">첨부파일 : <input type="file"></h3>
+	                    <h3 class="inputFile">첨부파일 : 
+	                    <% if(w.getfName() != null) { %>
+	                    	<a href="/gt/resources/files/workFiles/<%=w.getfName()%>" download><%=w.getfName()%></a>
+	                    <% } %>
+	                    </h3>
 	                    
 	                    <% if(w.geteNo() == loginNo) { %>
 	                    <div class="content-left-buttons defaultBtn deleteBtn">삭제</div>
@@ -362,29 +378,27 @@
 	            </div>
 	        <% } %>
 
-<!--             	<div class="oneArticle">
-                    <div class="content_left">
-                        <h3>제목 : 테스트</h3>
-                        <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
-                        <h3 class="empName">오홍근</h3>
-                        <h3 class="date">날짜 : 2018.05.31</h3>
-                        <h3 class="naeyong">내용</h3>
-                        <div class="article"></div>
-                        <h3 class="inputFile">첨부파일 : <input type="file"></h3>
-                        <div class="content-left-buttons defaultBtn deleteBtn">삭제</div>
-                        <div class="content-left-buttons defaultBtn updateBtn">수정</div>
-                    </div>
-    
-                    <div class="content_right">
-                        <div class="comment_header"><h3>댓글</h3></div>
-                        <div class="comment_content">
-                            <div class="oneComment"></div>
-                        </div>
-                        <div class="comment_bottom"></div>
-                    </div>
-                </div> -->
         </div>
     </div>
+
+	<script>
+	
+		$('#insertBtn').on('click', function() {
+			
+			location.href = '<%=request.getContextPath()%>/insertView.wo?loginNo=<%=loginNo%>'
+					+'&loginName='+sessionStorage.getItem("loginName")+'&pNo='+<%=pNo%>;
+					
+		});
+		
+		$('.updateBtn').on('click', function() {
+			
+			var wNo = $(this).parent().siblings('.wNo').val();
+			
+			location.href = '<%=request.getContextPath()%>/updateView.wo?wNo='+wNo;
+			
+		});
+	
+	</script>
 
 </body>
 </html>

@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.gt.gettogether.department.work.model.vo.*"%>
 <%
-	String loginName = (String) request.getAttribute("loginName");
-	int pNo = (int) request.getAttribute("pNo");
-	int loginNo = (int) request.getAttribute("loginNo");
 	String pTitle = (String) request.getAttribute("pTitle");
+
+	Work w = (Work) request.getAttribute("work");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -151,22 +150,23 @@
             <h2><%=pTitle%></h2>
         </div>
 
-        <form action="/gt/insert.wo" method="post" enctype="multipart/form-data">
+        <form action="/gt/update.wo" method="post" enctype="multipart/form-data">
         
+        	<input type="hidden" value="<%=w.getwNo()%>" name="wNo" />
         	<input type="hidden" value="<%=pTitle%>" name="pTitle" />
-			<input type="hidden" value="<%=loginName%>" name="wWriter" />
-			<input type="hidden" value="<%=pNo%>" name="pNo" />
-        	<input type="hidden" value="<%=loginNo%>" name="eNo" />
+			<input type="hidden" value="<%=w.getwWriter()%>" name="wWriter" />
+			<input type="hidden" value="<%=w.getpNo()%>" name="pNo" />
+        	<input type="hidden" value="<%=w.geteNo()%>" name="eNo" />
         
             <div id="content">
-                <h3>제목 : </h3><input type="text" size="30" id="wTitle" name="wTitle"><br><br>
+                <h3>제목 : </h3><input type="text" size="30" id="wTitle" name="wTitle" value="<%=w.getwTitle()%>"><br><br>
                 <h3>첨부파일 : </h3>
                 <label for="fileInput"><div id="fileInputBtn">첨부파일</div></label>
                 <input type="file" id="fileInput" name="fileInput">
-                <input type="text" readonly size="15" id="fileName" name="fileName">
+                <input type="text" readonly size="15" id="fileName" name="fileName" value="<%=w.getfName()%>">
                 <br><br>
                 <h3>내용</h3><br><br>
-                <textarea id="wContent" name="wContent"></textarea>
+                <textarea id="wContent" name="wContent"><%=w.getwContent()%></textarea>
             </div>
             <div id="buttonsBox">
                 <div class="buttons" id="confirmBtn" onclick="send();">확인</div>
@@ -223,8 +223,8 @@
 		
 		$('#cancelBtn').on('click', function() {
 			
-			location.href = '<%=request.getContextPath()%>/selectList.wo?pNo=<%=pNo%>'
-					+'&eNo=<%=loginNo%>&pTitle=<%=pTitle%>';
+			location.href = '<%=request.getContextPath()%>/selectList.wo?pNo=<%=w.getpNo()%>'
+					+'&eNo=<%=w.geteNo()%>&pTitle=<%=pTitle%>';
 			
 		});
         

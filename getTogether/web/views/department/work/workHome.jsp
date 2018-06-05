@@ -246,7 +246,7 @@
     <div id="container">
         <div id="top">
             <input type="text" size="15" placeholder="search...">
-            <div id="searchBtn"><img src="/gt/resources/images/work/board/search_icon.png"></div>
+            <div id="searchBtn"><img src="/gt/resources/images/department/work/search_icon.png"></div>
             <div class="right-buttons defaultBtn" id="deleteBtn">삭제</div>
             <div class="right-buttons defaultBtn" id="updateBtn">수정</div>
             <div class="right-buttons defaultBtn" id="insertBtn">
@@ -268,7 +268,7 @@
         	<% for(Project p : pjList) { %>
             <div class="project">
             	<input type="hidden" name="pNo" value="<%=p.getpNo()%>" id="pNo" />
-            	<img src="/gt/resources/images/work/board/project_icon.png" />
+            	<img src="/gt/resources/images/department/work/project_icon.png" />
             	<h3><%=p.getpTitle()%></h3>
             </div>
             <% } %>
@@ -335,7 +335,7 @@
                         	'name' : 'pNo',
                         	'value' : data
                         });
-                        $pjImage.attr('src', '/gt/resources/images/work/board/project_icon.png');
+                        $pjImage.attr('src', '/gt/resources/images/department/work/project_icon.png');
                         $pTitle.text(pTitle);
 
                         $newProject.append($pNo);
