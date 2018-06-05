@@ -125,7 +125,7 @@
 	</div>
 	
 	<div id="container">
-		<form action="firstUpdate.emp" method="POST" id="firstUpdateForm" encType="multipart/form-data">
+		<form action="<%=request.getContextPath()%>/firstUpdate.emp" method="POST" id="firstUpdateForm" encType="multipart/form-data">
 		  	<div class="hAll" id="profile" style="content:url('/gt/resources/images/common/profile.png');"></div>
 		  	<div id="fileBox">
 		  		<input type="text" id="file-text" disabled="disabled"/>
@@ -134,7 +134,7 @@
 		  	</div>
 		  	<table id="fu-table">
 		  		<tr>
-		  			<td style="text-align: right;">이름 : </td>
+		  			<td>이름 : </td>
 		  			<td colspan="2"><input type="text" id="empName" disabled="disabled"/></td>
 		  		</tr>
 		  		<tr>
@@ -143,7 +143,8 @@
 		  		</tr>
 		  		<tr>
 		  			<td>아이디 : </td>
-		  			<td colspan="2"><input type="text" name="empId" id="empId" disabled="disabled"/></td>
+		  			<td colspan="2"><input type="text" name="empId" id="empId" disabled="disabled"/>
+		  			<input type="text" name="rId" id="rId" hidden="hidden"/></td>
 		  		</tr>
 		  		<tr>
 		  			<td>비밀번호 : </td>
@@ -215,6 +216,8 @@
 			$('#empId').val(sessionStorage.getItem('loginId'));
 			$('#empDept').val(sessionStorage.getItem('loginDept'));
 			$('#empRank').val(sessionStorage.getItem('loginRank'));
+			
+			$('#rId').val(sessionStorage.getItem('loginId'));
 			
 			var file = null;
 			var filename = "";

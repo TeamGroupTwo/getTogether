@@ -31,7 +31,7 @@ public class EmployeeFirstUpdate extends HttpServlet {
 		MultipartRequest mrequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new DefaultFileRenamePolicy());
 		
 		String profile = mrequest.getFilesystemName("empProfile");
-		String id = mrequest.getParameter("empId");
+		String id = mrequest.getParameter("rId");
 		String password = mrequest.getParameter("empPwd");
 		String phone = mrequest.getParameter("phone");
 		String email = mrequest.getParameter("rEmail");	
@@ -42,8 +42,17 @@ public class EmployeeFirstUpdate extends HttpServlet {
 		e.setePassword(password);
 		e.setPhone(phone);
 		e.setEmail(email);
-		
+
 		int result = new EmployeeService().updateEmployee(e);
+		
+		if(result > 0) {
+			System.out.println("업데이트 성공");
+			response.sendRedirect("main.jsp");
+		}
+		else {
+			System.out.println("업데이트 실패");
+			response.sendRedirect("views/employee/employeeFirstUpdate.jsp");
+		}
 	
 	}
 
