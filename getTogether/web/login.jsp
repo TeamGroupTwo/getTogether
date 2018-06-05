@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css?family=Righteous|Nanum+Gothic|Do+Hyeon" rel="stylesheet">
 <script src="<%=request.getContextPath()%>/resources/js/jquery-3.3.1.min.js"></script>
 <style>
 	body{
@@ -12,6 +13,7 @@
 	}
 	#login{
 		position : absolute;
+		display : inline-block;
 		top : 50%;
 		left : 50%;
 		margin-left : -250px;
@@ -19,25 +21,167 @@
 		width : 500px;
 		height : 500px;
 		background : white;
+		text-align: center;
 	}
-	#loginBtn{
-		width : 50px;
-		height : 50px;
-		background: pink;
+	.login-title{
+		color : #5f4d8c;
+		text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	-moz-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	-webkit-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	vertical-align: middle;
+     	font-family:'Righteous', cursive;
+      	font-size : 3em;
+      	margin-left: -2px;
+      	margin-top: 100px;
+      	margin-bottom: 30px;
+	}
+	.loginArea{
+		display: inline-block;
+		text-align : left;
+		border : 1px solid #BFBFBF;
 		border-radius: .25em;
+		width: 320px;
+		height : 29px;
+		padding: 5px;
+		vertical-align: middle;
+		margin : 5px;
 	}
-	#loginBtn:hover{
+	.loginImg {
+		display : inline-block;
+		height: inherit;
+		padding-right : 5px; 
+		border-right: 1px solid #BFBFBF;
+	}
+	.loginText {
+		position : fixed;
+		width : 278px;
+		height : 24px;
+		margin-left : 5px;
+  		border: 1px solid white;
+		vertical-align: middle;
+		font-family: 'Nanum Gothic', sans-serif;
+		color : #404040;
+		font-size : 1em;
+      	font-weight : bolder;
+      	letter-spacing : -1px;
+      	white-space : nowrap;
+      	padding-top : 0px;
+	}
+	.loginText:focus{
+		outline: none;
+	}
+	.loginBtn{
+		display: inline-block;
+		width: 164px;
+		height : 35px;
+		padding-top : 5px;
+		text-align : center;
+		font-family: 'Nanum Gothic', sans-serif;
+		margin-top : 5px;
+		margin-bottom : 5px;
+		background: #404040;
+		border-radius: .25em;
+		color : white;
+		font-size : 1.2em;
+      	font-weight : bolder;
+      	letter-spacing : -1px;
+      	white-space : nowrap;
+	}
+	.loginBtn:hover{
 		cursor : pointer;
 	}
+	#loginOk{
+		background: #5f4d8c;
+		width: 331px;
+		margin-left : 5px;
+	}
+	
+	/* 팝업 영역 css*/
+   .popup-wrap{
+   	display: none;
+   	position: fixed;
+	_position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	}
+	.popup-bg{
+	position: absolute;
+  	top: 0;
+ 	left: 0;
+ 	width: 100%;
+ 	height: 100%;
+	background: #000;
+  	opacity: .5;
+ 	filter: alpha(opacity=50);
+ 	}
+ 	.popup-border{
+		position : absolute;
+		display : inline-block;
+		top : 50%;
+		left : 50%;
+		margin-left : -200px;
+		margin-top : -200px;
+		width : 400px;
+		height : 400px;
+		background : #5f4d8c;
+		text-align: center;
+		z-index: 50;
+   }
+   .popup-content{
+  		position : absolute;
+		display : inline-block;
+		top : 50%;
+		left : 50%;
+		margin-left : -190px;
+		margin-top : -190px;
+		width : 380px;
+		height : 380px;
+		background : white;
+		text-align: center;
+		z-index: 50;
+   }
+   .find-title{
+   		margin-top: 40px;
+   		font-family: 'Do Hyeon', sans-serif;
+   		font-size : 2.8em;
+      	font-weight : bolder;
+      	letter-spacing : -1px;
+      	white-space : nowrap;
+   }
+
 </style>
 <title>로그인 화면</title>
 </head>
 <body>
 	<div id="login">
-		<p id="title">GETTOGETHER</p>
-		아이디 : <input type="text" name="eId" id="eId" /><br />
-		비밀번호 : <input type="password" name="ePwd" id="ePwd"/>
-		<div id="loginBtn"  onclick="login();">확인</div>
+		<p class="login-title" id="title">GETTOGETHER</p>
+		<div class="loginArea">
+			<img class="loginImg" src="resources/images/common/loginId.png"/>
+			<input type="text" class="loginText" name="eId" id="eId" maxlength="6" placeholder="아이디"/>
+		</div>
+		<div class="loginArea">
+			<img class="loginImg" src="resources/images/common/loginPassword.png"/>
+			<input type="password" class="loginText" name="ePwd" id="ePwd" placeholder="비밀번호"/>
+		</div>
+		<div class="loginBtn" id="loginOk" onclick="login();">LOGIN</div>
+		<br />
+		<div class="loginBtn" id="findId" onclick="findId();">아이디 찾기</div>
+		<div class="loginBtn" id="findPwd" onclick="findPassword();">비밀번호 찾기</div>
+	</div>
+	
+	<!-- 팝업창 영역 -->	
+	<div class="popup-wrap" id="popup-find">
+		<div class="popup-bg"></div>
+		<div class="popup-border">
+			<div class="popup-content">
+				<p class="login-title find-title" id="findTitle"></p>
+				<div class="loginBtn" id="findSuccess" onclick="popupClose();">확인</div>
+				<div class="loginBtn" id="findClose" onclick="popupClose();">닫기</div>
+			</div>
+		</div>
 	</div>
 	
 	<script>
@@ -84,6 +228,20 @@
 				}
 			});
 		}
+	}
+	
+	function findId() {
+		$("#popup-find").fadeIn();
+		$("#findTitle").text("아이디 찾기");
+	}
+	
+	function findPassword(){
+		$("#popup-find").fadeIn();
+		$("#findTitle").text("비밀번호 찾기");
+	}
+	
+	function popupClose() {
+		$(".popup-wrap").fadeOut();
 	}
 	</script>
 </body>

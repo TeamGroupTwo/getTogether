@@ -373,6 +373,7 @@
  						url : "<%=request.getContextPath()%>/checkEmail.emp",
  						type : "POST",
  						data : {email : inEmail},
+ 						async: false,
  						success : function(data) {
  							if(data == 1)
  								alert("중복된 이메일입니다. 다시 입력해주세요.");
@@ -382,6 +383,7 @@
  									url:"<%=request.getContextPath()%>/sendEmail.emp",	
  									type : "POST",
  									data : {email : inEmail},
+ 									async: false,
  									success : function(data) {
 		 								$("#popup-wrap").fadeIn();
 		 								$("#popup-ok").on("click", function() {
