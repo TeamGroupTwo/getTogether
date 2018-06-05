@@ -13,20 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-/**
- * Servlet implementation class UserListServlet
- */
-@WebServlet("/getUserList.do")
-public class UserListServlet extends HttpServlet {
+@WebServlet("/userCount.do")
+public class UserCountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UserListServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+    public UserCountServlet() {
+        super();}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -40,13 +32,9 @@ public class UserListServlet extends HttpServlet {
 		if(userList==null || userList.isEmpty())userList = new HashSet<String>();
 		
 		userList.add(user);
+		int userCount = userList.size();
 		
-		application.setAttribute("userList", userList);
-		response.setContentType("application/json; charset=UTF-8");
-		
-		
-		new Gson().toJson(userList, response.getWriter());
-
+		new Gson().toJson(userCount, response.getWriter());
 	}
 
 	/**

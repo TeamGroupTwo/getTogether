@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.gt.gettogether.employee.model.vo.*, java.util.*" %>
+<%@ page import="java.util.*" %>
 <%  ArrayList<String> roomList = (ArrayList<String>)application.getAttribute("roomList");
 	String chat_id = request.getParameter("chat_id");
 	String room = (String)request.getAttribute("room");
@@ -201,7 +201,7 @@
 		<div class="roomListBox" onclick="inChatroom();">
 			<fieldset id="fieldBox">
 			<legend><%=r %><% room = r; %></legend>
-			<label style="float: right;">참여 인원 : <%-- <%=numberOfPerson %> --%>n명 </label>
+			<label style="float: right;">참여 인원 : n명 </label>
 			</fieldset>
 		</div>
 		<%}}%>
@@ -239,33 +239,41 @@
 		</div>
 	 <script>
 	 
+	 var webSocket = null;
+	 var chat_id = sessionStorage.getItem('loginName')+" "+sessionStorage.getItem('loginRank');	// 채팅ID(닉네임)
+	 var $chatArea = $('.messageBox');	
+	
+	 var n = 0;
 		/* 창 열리자마자 채팅목록 전달 */
 		window.onload = function(){
 			$.ajax({
 				url : "<%= request.getContextPath() %>/deptroomView.do",
 				type : "GET",
 				data : {dept : sessionStorage.getItem('loginDept')	},
-				success : function(data){	},
-				error : function(data){	console.log("전달 실패!");}
+				async : false,
+				success : function(){	}, error : function(){console.log("전달 실패!");}
+			});
+			
+			$.ajax({
+				url : "<%=request.getContextPath()%>/userCount.do",
+				data : {name : chat_id},
+				type : "post",
+				async : false,
+				success : function(data){
+					$('#fieldBox label').text("참여인원 : "+data+"명");
+				}, error : function(data){console.log("인원 수 실패");}
 			});
 		}
 	
-		var webSocket = null;
-		var chat_id = sessionStorage.getItem('loginName')+" "+sessionStorage.getItem('loginRank');	// 채팅ID(닉네임)
-		var $chatArea = $('.messageBox');	
-		
-		var n = 0;
-		
 		/* 채팅방 내부 */
 		function inChatroom(){
 			$(".roomListBox").css("display", 'none');
 			$('#addRoom').css('display', 'none');
 			$('#header p').css('display', 'none');
 			
-			
-			 if(n==0) {webSocket = new WebSocket('ws://localhost:8088<%=request.getContextPath()%>/multicast/<%=room %>');
-				n++;
-				}
+			 if(n==0) {
+				webSocket = new WebSocket('ws://localhost:8088<%=request.getContextPath()%>/multicast/<%=room %>');
+				n++;	}
 			
 			$.ajax({
 				url : "<%= request.getContextPath() %>/chatRoom.do",
@@ -275,6 +283,14 @@
 				success : function(data){
 					$(".roomListBox").css("display", "none");
 					$(".chatBox").css("display","block");
+					$.ajax({
+						url : "<%=request.getContextPath()%>/userCount.do",
+						data : {name : chat_id},
+						type : "post",
+						success : function(data){
+							$('#participants').text("<%=room %>  ▼ 참여자("+data+")");
+						}, error : function(data){console.log("인원 수 실패");}
+					});
 				},
 				error : function(data){	console.log("전달 실패!!");}
 			});
@@ -309,14 +325,12 @@
 			
 				webSocket.send(chat_id+"|"+$sendMsg.val());
 				$sendMsg.val("");
-
 			}
 			scrollDown();
 		}
-		$('#sendMsg').on('keyup', function(){
-			if(window.event.keyCode==13) send();});
-		$('input:submit').on('click', function(){
-			send();});
+		$('#sendMsg').on('keyup', function(){if(window.event.keyCode==13) send();});
+		$('input:submit').on('click', function(){send();});
+		
 		function onMessage(event){
 			var message = event.data.split("|");
 			var sender = message[0];		
@@ -329,7 +343,6 @@
 			}
 			scrollDown();
 		}
-
 		function scrollDown(){		/* 최신글로 이동 */
 			/* console.log("현재 길이 : "+$('.messageBox').prop('scrollHeight')); */
 			$('.messageBox').scrollTop($('.messageBox').prop('scrollHeight'));
@@ -341,6 +354,16 @@
 			$(".chatBox").css("display","none");
 			if($('#addRoom').css("display") == "none") $("#addRoom").css("display", "block");
 			n++;
+			
+			$.ajax({
+				url : "<%=request.getContextPath()%>/userCount.do",
+				data : {name : chat_id},
+				type : "post",
+				async : false,
+				success : function(data){
+					$('#fieldBox label').text("참여인원 : "+data+"명");
+				}, error : function(data){console.log("인원 수 실패");}
+			});
 		}
 		
 		$('#participants').on('click', function(){	/* 참여자 목록 가져오기 */
@@ -358,6 +381,7 @@
 				url : "<%=request.getContextPath()%>/getUserList.do",
 				data : {name : chat_id},
 				type : "post",
+				async : false,
 				success : function(data){
 					$userList = $('#talkerList');
 					$userList.empty();
