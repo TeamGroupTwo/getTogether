@@ -18,15 +18,6 @@
 
     <style>
     
-	    ::-webkit-scrollbar {width: 8px; height: 8px; border: 3px solid #fff; }
-		::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {display: block; height: 10px; background: #efefef}
-		::-webkit-scrollbar-track {background: #efefef; -webkit-border-radius: 10px; border-radius:10px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.2)}
-		::-webkit-scrollbar-thumb {height: 50px; width: 50px; background: rgba(0,0,0,.2); -webkit-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1)}
-    
-    
-    
-    
-    
         /* 전체 초기화 */
         /* * {
             margin: 0;
@@ -130,6 +121,11 @@
 /*         #content::-webkit-scrollbar {
             display: none;
         } */
+        
+   	    #content::-webkit-scrollbar {width: 8px; height: 8px; border: 3px solid #fff; }
+		#content::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {display: block; height: 10px; background: #efefef}
+		#content::-webkit-scrollbar-track {background: #efefef; -webkit-border-radius: 10px; border-radius:10px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.2)}
+		#content::-webkit-scrollbar-thumb {height: 50px; width: 50px; background: rgba(0,0,0,.2); -webkit-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1)}
 
         .oneArticle {
             height: 500px;
@@ -369,7 +365,7 @@
 	                        <div class="oneComment"></div>
 	                    </div>
 	                    <div class="comment_bottom">
-	                        <textarea cols="45" rows="7"></textarea>
+	                        <textarea cols="45" rows="7" id="wcContent"></textarea>
 	                        <div class="commentInsertBtn">
 	                            <p>작성</p>
 	                        </div>
@@ -395,6 +391,71 @@
 			var wNo = $(this).parent().siblings('.wNo').val();
 			
 			location.href = '<%=request.getContextPath()%>/updateView.wo?wNo='+wNo;
+			
+		});
+		
+		$('.deleteBtn').on('click', function() {
+			
+			var wNo = $(this).parent().siblings('.wNo').val();
+			
+			var $oneArticle = $(this).parent().parent();
+			
+			$.ajax({
+				
+				url : "/gt/delete.wo",
+				data : {
+					"wNo" : wNo
+				},
+				type : "POST",
+				success : function(data) {
+					
+					if(data > 0) {
+						$oneArticle.remove();
+						alert('정상적으로 삭제되었습니다.');
+					} else {
+						alert('글 삭제에 실패했습니다.');
+					}
+					
+				}, error : function(data) {
+					console.log(data);
+				}
+				
+			});
+			
+		});
+		
+		$('.commentInsertBtn').on('click', function() {
+			
+			var wcWriter = sessionStorage.getItem('loginName');
+			var wcContent = $('#wcContent').val();
+			var wNo = $(this).parent().parent().siblings('.wNo').val();
+			var eNo = sessionStorage.getItem('loginNo');
+			
+			if(wcContent == '') {
+				alert('댓글 내용을 작성해 주세요');
+			}else {
+				
+				$.ajax({
+					
+					url : "/gt/insert.wc",
+					data : {
+						"wcWriter" : wcWriter,
+						"wcContent" : wcContent,
+						"wNo" : wNo,
+						"eNo" : eNo
+					},
+					type : "POST",
+					success : function(data) {
+						
+						
+						
+					}, error : function(data) {
+						console.log(data);
+					}
+					
+				});
+				
+			}
 			
 		});
 	

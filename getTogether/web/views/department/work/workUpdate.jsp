@@ -163,7 +163,11 @@
                 <h3>첨부파일 : </h3>
                 <label for="fileInput"><div id="fileInputBtn">첨부파일</div></label>
                 <input type="file" id="fileInput" name="fileInput">
+                <% if(w.getfName() != null) { %>
                 <input type="text" readonly size="15" id="fileName" name="fileName" value="<%=w.getfName()%>">
+                <% } else { %>
+                <input type="text" readonly size="15" id="fileName" name="fileName">
+                <% } %>
                 <br><br>
                 <h3>내용</h3><br><br>
                 <textarea id="wContent" name="wContent"><%=w.getwContent()%></textarea>

@@ -85,16 +85,15 @@ public class WorkService {
 			
 			int wfResult = wDao.workFileSelect(con, w);
 			
-			int fResult = 0;
-			
+			// 기존 파일이 있으면
 			if(wfResult > 0) {
 				
 				f.setfNo(wfResult);
-				fResult = wDao.updateFiles(con, f);
+				int fResult = wDao.updateFiles(con, f);
 				
 				if(fResult > 0) {
 					// 여기부터 시작하면됨
-					int bResult = wDao.updateWork(con, w);
+					int bResult = wDao.updateWorkWithUpdateFiles(con, w);
 					
 					if(bResult > 0) {
 						commit(con);
@@ -104,13 +103,33 @@ public class WorkService {
 						result = bResult;
 					}
 					
+				} else {
+					
+					rollback(con);
+					result = fResult;
+					
 				}
 				
-			} else {
+			} else { // 기존파일이 없는데 파일을 업로드한 경우
 				
-				// 기존파일이 없으면 인서트
-				rollback(con);
-				result = fResult;
+				int fResult = wDao.insertFiles(con, f);
+				
+				if(fResult > 0) {
+					
+					int bResult = wDao.updateWorkWithInsertFiles(con, w);
+					
+					if(bResult > 0) {
+						commit(con);
+						result = bResult;
+					} else {
+						rollback(con);
+						result = bResult;
+					}
+					
+				} else {
+					rollback(con);
+					result = fResult;
+				}
 				
 			}
 			
@@ -122,8 +141,19 @@ public class WorkService {
 		
 	}
 	
-	public int deleteWork() {
-		return 0;
+	public int deleteWork(int wNo) {
+		
+		Connection con = getConnection();
+		
+		int result = new WorkDao().deleteWork(con, wNo);
+		
+		if(result > 0) commit(con);
+		else rollback(con);
+		
+		close(con);
+		
+		return result;
+		
 	}
 	
 	public Work selectOneWork(int wNo) {

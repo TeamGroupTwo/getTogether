@@ -139,12 +139,12 @@ public class WorkDao {
 		
 	}
 	
-	public int updateWork(Connection con, Work w) {
+	public int updateWorkWithInsertFiles(Connection con, Work w) {
 		
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String sql = prop.getProperty("updateWork");
+		String sql = prop.getProperty("updateWorkWithInsertFiles");
 		
 		try {
 			
@@ -152,9 +152,7 @@ public class WorkDao {
 			
 			pstmt.setString(1, w.getwTitle());
 			pstmt.setString(2, w.getwContent());
-			pstmt.setString(3, w.getwWriter());
-			pstmt.setInt(4, w.getpNo());
-			pstmt.setInt(5, w.geteNo());
+			pstmt.setInt(3, w.getwNo());
 			
 			result = pstmt.executeUpdate();
 			
@@ -165,10 +163,60 @@ public class WorkDao {
 		}
 		
 		return result;
+		
 	}
 	
-	public int deleteWork() {
-		return 0;
+	public int updateWorkWithUpdateFiles(Connection con, Work w) {
+		
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String sql = prop.getProperty("updateWorkWithUpdateFiles");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, w.getwTitle());
+			pstmt.setString(2, w.getwContent());
+			pstmt.setInt(3, w.getwNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
+	
+	public int deleteWork(Connection con, int wNo) {
+		
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String sql = prop.getProperty("deleteWork");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, wNo);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+				
+		
+		return result;
+		
 	}
 	
 	public Work selectOneWork(Connection con, int wNo) {
