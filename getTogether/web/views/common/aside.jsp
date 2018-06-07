@@ -48,7 +48,7 @@
 			<img class="aImage" src="<%= request.getContextPath() %>/resources/images/common/work.png"/>
 			<p class="aText" id="workTxt">부서게시판</p>
 		</div>
-		<div class="menu" onclick="">
+		<div class="menu" onclick="location.href='<%=request.getContextPath()%>/views/schedule/schedule_main.jsp'">
 			<img class="aImage" src="<%= request.getContextPath() %>/resources/images/common/schedule.png"/>
 			<p class="aText" id="scheduleTxt">일정관리</p>
 		</div>

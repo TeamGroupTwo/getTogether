@@ -7,7 +7,7 @@
 <title>일정관리</title>
 <script src="/gt/resources/js/jquery-3.3.1.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="../../resources/css/schedule.css" />
+<link rel="stylesheet" type="text/css" href="../../resources/css/schedule/schedule.css" />
 <style>
         body{
 			background : #dad5e6;
@@ -247,17 +247,19 @@
   		 				data : sNo,
   		 				type : "GET",
   		 				success : function(data){
-  		 					console.log("된다.");
   		 					$li.remove();
   		 				},error : function(data){
   		 					console.log("안댄다.");
   		 				}
   		 		});
-  		 		} else {
-					
   		 		}
   		 		});
   		 	});
+  		 	$('#checkBtn').on('click',function(){
+					$('#insertBtn').css('display','inline');
+					$('#checkBtn').css('display','none');
+					$('#memo_title').children().children().css("display","none");
+			});
 		</script>
 </body>
 </html>
