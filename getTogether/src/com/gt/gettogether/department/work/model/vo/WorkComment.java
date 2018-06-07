@@ -8,14 +8,14 @@ public class WorkComment {
 	private String wcWriter;
 	private String wcContent;
 	private Date wcDate;
-	private String wNo;
+	private int wNo;
 	private int eNo;
 	
 	public WorkComment() {
 		super();
 	}
 
-	public WorkComment(int wcNo, String wcWriter, String wcContent, Date wcDate, String wNo, int eNo) {
+	public WorkComment(int wcNo, String wcWriter, String wcContent, Date wcDate, int wNo, int eNo) {
 		super();
 		this.wcNo = wcNo;
 		this.wcWriter = wcWriter;
@@ -57,11 +57,11 @@ public class WorkComment {
 		this.wcDate = wcDate;
 	}
 
-	public String getwNo() {
+	public int getwNo() {
 		return wNo;
 	}
 
-	public void setwNo(String wNo) {
+	public void setwNo(int wNo) {
 		this.wNo = wNo;
 	}
 
@@ -75,7 +75,7 @@ public class WorkComment {
 
 	@Override
 	public String toString() {
-		return "BoardComment [wcNo=" + wcNo + ", wcWriter=" + wcWriter + ", wcContent=" + wcContent + ", wcDate="
+		return "WorkComment [wcNo=" + wcNo + ", wcWriter=" + wcWriter + ", wcContent=" + wcContent + ", wcDate="
 				+ wcDate + ", wNo=" + wNo + ", eNo=" + eNo + "]";
 	}
 
@@ -84,7 +84,7 @@ public class WorkComment {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + eNo;
-		result = prime * result + ((wNo == null) ? 0 : wNo.hashCode());
+		result = prime * result + wNo;
 		result = prime * result + ((wcContent == null) ? 0 : wcContent.hashCode());
 		result = prime * result + ((wcDate == null) ? 0 : wcDate.hashCode());
 		result = prime * result + wcNo;
@@ -103,10 +103,7 @@ public class WorkComment {
 		WorkComment other = (WorkComment) obj;
 		if (eNo != other.eNo)
 			return false;
-		if (wNo == null) {
-			if (other.wNo != null)
-				return false;
-		} else if (!wNo.equals(other.wNo))
+		if (wNo != other.wNo)
 			return false;
 		if (wcContent == null) {
 			if (other.wcContent != null)

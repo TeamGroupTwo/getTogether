@@ -7,34 +7,30 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class BoardDeleteServlet
- */
-@WebServlet("/WorkDeleteServlet")
+import com.gt.gettogether.department.work.model.service.WorkService;
+
+@WebServlet("/delete.wo")
 public class WorkDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public WorkDeleteServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    public WorkDeleteServlet() { }
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+
+		int wNo = Integer.parseInt(request.getParameter("wNo"));
+		
+		int result = new WorkService().deleteWork(wNo);
+		
+		if(result < 1) {
+			request.setAttribute("msg", "work삭제 에러");
+			request.getRequestDispatcher("views/department/deptError.jsp").forward(request, response);
+		} else {
+			response.getWriter().print(result);
+		}
+		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

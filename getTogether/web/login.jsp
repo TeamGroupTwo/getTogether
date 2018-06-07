@@ -150,7 +150,55 @@
       	font-weight : bolder;
       	letter-spacing : -1px;
       	white-space : nowrap;
+      	margin-bottom: 20px;  	
    }
+   .findBtn{
+		width: 60px;
+		height : 25px;
+		font-size: 12pt;
+		padding-bottom: 5px;
+		margin-top: 30px;
+   }
+   #findSuccess{
+   		background: #5f4d8c;
+   }
+   .findLbl{
+   		font-family: 'Nanum Gothic', sans-serif;
+		color : #606060;
+		font-weight : bolder;
+		font-size : 1.4em;
+		letter-spacing : -2px;
+      	white-space : nowrap; 
+      	margin-right: 5px;
+      	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	-moz-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	-webkit-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+   }
+   .findBox{
+   		text-align: right;
+   		margin-right: 60px;
+   		margin-bottom: 5px;
+   }
+   .findInput{
+   		width : 200px;
+   		border: 1px solid white;
+   		border-bottom: 3px solid #5f4d8c;
+   		border-bottom-left-radius: .2em;
+   		border-bottom-right-radius: .2em;
+   		font-family: 'Nanum Gothic', sans-serif;
+		color : #404040;
+		font-size : 1em;
+      	font-weight : bolder;
+      	letter-spacing : -1px;
+      	white-space : nowrap;
+      	padding-top : 0px;
+   }
+   .findInput:focus{
+		outline: none;
+	}
+	/* #onlyPwd{
+		display: none;
+	} */
 
 </style>
 <title>로그인 화면</title>
@@ -178,8 +226,12 @@
 		<div class="popup-border">
 			<div class="popup-content">
 				<p class="login-title find-title" id="findTitle"></p>
-				<div class="loginBtn" id="findSuccess" onclick="popupClose();">확인</div>
-				<div class="loginBtn" id="findClose" onclick="popupClose();">닫기</div>
+				<div class="findBox"><label class="findLbl">사번  </label><input type="text" class="findInput" /></div>
+				<div class="findBox"><label class="findLbl">이름  </label><input type="text" class="findInput" /></div>
+				<div class="findBox" id="onlyPwd"><label class="findLbl">아이디  </label><input type="text" class="findInput" /></div>
+				<div class="findBox"><label class="findLbl">이메일  </label><input type="text" class="findInput" /></div>
+				<div class="findBtn loginBtn" id="findSuccess" onclick="popupClose();">확인</div>
+				<div class="findBtn loginBtn" id="findClose" onclick="popupClose();">닫기</div>
 			</div>
 		</div>
 	</div>

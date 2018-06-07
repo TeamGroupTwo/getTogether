@@ -18,10 +18,33 @@ public class AddressService {
 		AddressDao aDao = new AddressDao();
 		ArrayList<Employee> list = aDao.selectList(con);
 		
-
 		close(con);
 		System.out.println("service 출력값확인 : "+list);
 		return list;
 }
+
+	public ArrayList<Employee> searchAddress(String condition, String keyword) {
+		Connection con = getConnection();
+		ArrayList<Employee> list = null;
+		AddressDao aDao = new AddressDao();
+		
+		if(condition.equals("ename")){
+			list = aDao.searchEname(con, keyword);
+		}	
+		close(con);
+		return list;
+	}
+
+	public ArrayList<Employee> searchAddress(String keyword) {
+		Connection con = getConnection();
+		ArrayList<Employee> list = null;
+		AddressDao aDao = new AddressDao();
+		
+		list = aDao.searchEname(con, keyword);
+		
+		close(con);
+		
+		return list;
+	}
 
 }

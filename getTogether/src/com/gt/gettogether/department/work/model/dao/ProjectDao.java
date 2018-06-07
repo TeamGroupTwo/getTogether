@@ -33,19 +33,21 @@ public class ProjectDao {
 		
 	}
 
-	public ArrayList<Project> selectProjectList(Connection con) {
+	public ArrayList<Project> selectProjectList(Connection con, String loginDcode) {
 		
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Project> pjList = null;
 		
-		String sql = prop.getProperty("selectList");
+		String sql = prop.getProperty("selectProjectList");
 		
 		try {
 			
-			stmt = con.createStatement();
+			pstmt = con.prepareStatement(sql);
 			
-			rset = stmt.executeQuery(sql);
+			pstmt.setString(1, loginDcode);
+			
+			rset = pstmt.executeQuery();
 			
 			pjList = new ArrayList<Project>();
 			
@@ -67,7 +69,7 @@ public class ProjectDao {
 		} finally {
 			
 			close(rset);
-			close(stmt);
+			close(pstmt);
 			
 		}
 		
@@ -100,7 +102,48 @@ public class ProjectDao {
 		return result;
 	}
 	
-	public int updateProject(Connection con, String pTitle, String upTitle) {
+	public Project selectInsertOne(Connection con, Project pj) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Project resultPj = null;
+		
+		String sql = prop.getProperty("selectInsertOne");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, pj.getpTitle());
+			pstmt.setString(2, pj.getdCode());
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				
+				resultPj = new Project();
+				
+				resultPj.setpNo(rset.getInt("P_NO"));
+				resultPj.setpTitle(rset.getString("P_TITLE"));
+				resultPj.setpDate(rset.getDate("P_DATE"));
+				resultPj.setdCode(rset.getString("D_CODE"));
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			close(rset);
+			close(pstmt);
+			
+		}
+		
+		return resultPj;
+		
+	}
+	
+	public int updateProject(Connection con, int pNo, String upTitle) {
 
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -112,7 +155,7 @@ public class ProjectDao {
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, upTitle);
-			pstmt.setString(2, pTitle);
+			pstmt.setInt(2, pNo);
 			
 			result = pstmt.executeUpdate();
 			
@@ -126,7 +169,7 @@ public class ProjectDao {
 		
 	}
 	
-	public int deleteProject(Connection con, String[] chkList) {
+	public int deleteProject(Connection con, int[] deleteList) {
 
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -137,9 +180,9 @@ public class ProjectDao {
 			
 			pstmt = con.prepareStatement(sql);
 			
-			for(String str : chkList) {
+			for(int i : deleteList) {
 				
-				pstmt.setString(1, str);
+				pstmt.setInt(1, i);
 				
 				result += pstmt.executeUpdate();
 				
@@ -153,10 +196,6 @@ public class ProjectDao {
 		
 		return result;
 		
-	}
-	
-	public Project selectOneProject() {
-		return null;
 	}
 	
 }
