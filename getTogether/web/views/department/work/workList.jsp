@@ -6,6 +6,8 @@
 	int pNo = (int) request.getAttribute("pNo");
 	String pTitle = (String) request.getAttribute("pTitle");
 	int loginNo = (int) request.getAttribute("eNo");
+	HashMap<Integer, ArrayList<WorkComment>> workCommentList
+		= (HashMap<Integer, ArrayList<WorkComment>>) request.getAttribute("workCommentList");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -242,6 +244,7 @@
         .oneComment {
             overflow: hidden;
             height: auto;
+            /* width: 452.95px; */
             min-height: 50px;
             border-bottom: 1px solid #5F4D8C;
             padding: 20px 20px;
@@ -267,6 +270,30 @@
         }
         .oneComment_right p {
             margin: 0;
+        }
+        .oneComment_right .defaultBtn {
+        	font-size: 0.8em;
+        	width: 40px;
+        	height: 20px;
+        	line-height: 20px;
+        	margin-right: 0;
+        	opacity: .9;
+        }
+        .oneComment_right .defaultBtn:hover {
+			opacity: 1;        
+        }
+        .oneComment_right .deletewcBtn, .oneComment_right .updatewcCancelBtn {
+            background-color: #404040;
+            border: 1px solid #404040;
+            /* margin-right: 15px; */
+        }
+        .oneComment_right .updatewcBtn, .oneComment_right .updatewcConfirmBtn {
+			background-color: #404040;
+            border: 1px solid #404040;
+            margin-right: 5px;       
+        }
+        .updatewcCancelBtn, .updatewcConfirmBtn {
+        	display: none;
         }
 
         .comment_bottom {
@@ -302,6 +329,16 @@
             font-weight: 600;
 
 
+        }
+        
+        .wcUpContent {
+        	word-break:break-all;
+        	resize: none;
+        	width: 100%;
+        	overflow: hidden;
+        }
+        .oneComment_right p {
+        	word-break:break-all;
         }
 
     </style>
@@ -349,23 +386,34 @@
 	                <div class="content_right">
 	                    <div class="comment_header"><h3>댓글</h3></div>
 	                    <div class="comment_content">
-	                        <div class="oneComment">
-	                            <div class="oneComment_left">
-	                                <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
-	                                <h3>오홍근</h3>
-	                            </div>
-	                            <div class="oneComment_right">
-	                                <p>가즈가즈아아아아아아가즈가즈아아아
-	                                </p>
-	                            </div>
-	                        </div>
-	                        <div class="oneComment"></div>
-	                        <div class="oneComment"></div>
-	                        <div class="oneComment"></div>
-	                        <div class="oneComment"></div>
+	                    <% if(workCommentList.get(w.getwNo()) != null) { %>
+	                    
+	                    	<% for(WorkComment wc : workCommentList.get(w.getwNo())) { %>
+	                    	
+   	                         	<div class="oneComment">
+   	                         		<input type="hidden" value="<%=wc.getWcNo()%>" class="wcNo" />
+	 	                            <div class="oneComment_left">
+		                                <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
+		                                <h3><%=wc.getWcWriter()%></h3>
+		                            </div>
+		                            <div class="oneComment_right">
+		                            	<p><%=wc.getWcContent()%></p>
+		                                <%-- <textarea class="wcUpContent" readonly="readonly"><%=wc.getWcContent()%></textarea> --%>
+                   	                    <% if(w.geteNo() == loginNo) { %>
+						                    <div class="content-left-buttons defaultBtn deletewcBtn">삭제</div>
+						                    <div class="content-left-buttons defaultBtn updatewcBtn">수정</div>
+						                    <div class="content-left-buttons defaultBtn updatewcCancelBtn">취소</div>
+						                    <div class="content-left-buttons defaultBtn updatewcConfirmBtn">확인</div>
+					                    <% } %> 
+		                            </div>
+	                        	</div>
+	                    	
+	                    	<% } %>
+	                    	
+	                    <% } %>
 	                    </div>
 	                    <div class="comment_bottom">
-	                        <textarea cols="45" rows="7" id="wcContent"></textarea>
+	                        <textarea cols="45" rows="7" class="wcContent"></textarea>
 	                        <div class="commentInsertBtn">
 	                            <p>작성</p>
 	                        </div>
@@ -427,9 +475,16 @@
 		$('.commentInsertBtn').on('click', function() {
 			
 			var wcWriter = sessionStorage.getItem('loginName');
-			var wcContent = $('#wcContent').val();
+			var wcContent = $(this).siblings('.wcContent').val();
 			var wNo = $(this).parent().parent().siblings('.wNo').val();
 			var eNo = sessionStorage.getItem('loginNo');
+			
+			console.log(wcWriter);
+			console.log(wcContent);
+			console.log(wNo);
+			console.log(eNo);
+			
+			var $comment_content = $(this).parent().siblings('.comment_content');
 			
 			if(wcContent == '') {
 				alert('댓글 내용을 작성해 주세요');
@@ -446,8 +501,45 @@
 					},
 					type : "POST",
 					success : function(data) {
+
+						// 코멘트를 넣을 노드들 생성
+						var $oneComment = $('<div>');
 						
+						var $wcNo = $('<input>');
+						var $oneComment_left = $('<div>');
+						var $oneComment_right = $('<div>');
 						
+						var $profile = $('<img>');
+						var $name = $('<h3>');
+						var $content = $('<p>');
+						
+						// 속성 추가
+						$oneComment.addClass('oneComment');
+						
+						$wcNo.attr('type', 'hidden');
+						$wcNo.val(data);
+						$oneComment_left.addClass('oneComment_left');
+						$oneComment_right.addClass('oneComment_right');
+						
+						$profile.attr({
+							"src" : "/gt/resources/images/common/adminProfile.png",
+							"width" : "40px",
+							"height" : "40px"
+						});
+						$name.text(wcWriter);
+						$content.text(wcContent);
+						
+						$oneComment_left.append($profile);
+						$oneComment_left.append($name);
+						$oneComment_right.append($content);
+						
+						$oneComment.append($wcNo);
+						$oneComment.append($oneComment_left);
+						$oneComment.append($oneComment_right);
+						
+						$comment_content.append($oneComment);
+						
+						$comment_content.scrollTop($comment_content.prop('scrollHeight'));
 						
 					}, error : function(data) {
 						console.log(data);
@@ -456,6 +548,111 @@
 				});
 				
 			}
+
+			$(this).siblings('.wcContent').val('');
+			
+		});
+		
+		$('.updatewcBtn').on('click', function() {
+		
+			var $textarea = $('<textarea>');
+			
+			$textarea.addClass('wcUpContent');
+			
+			$(this).parent('.oneComment_right').children('p').css('display', 'none');
+			
+			$(this).parent('.oneComment_right').prepend($textarea);
+
+			$('.oneComment_right').children('.defaultBtn').css('display', 'none');
+			
+			$(this).parent('.oneComment_right').children('.updatewcCancelBtn').css('display', 'block');
+			$(this).parent('.oneComment_right').children('.updatewcConfirmBtn').css('display', 'block');
+			
+		});
+		
+		$('.updatewcConfirmBtn').on('click', function() {
+			
+			var wcNo = $(this).parent().siblings('.wcNo').val();
+			var wcUpContent = $(this).siblings('.wcUpContent').val();
+			
+			var $wcContent = $(this).siblings('p'); 
+			var $wcUpContent = $(this).siblings('.wcUpContent');
+			
+			console.log(wcUpContent);
+			
+			if(wcUpContent == '') {
+				alert('글을 입력해 주세요');
+			} else {
+			
+				$.ajax({
+					
+					url : "/gt/update.wc",
+					data : {
+						"wcNo" : wcNo,
+						"wcUpContent" : wcUpContent
+					},
+					type : "post",
+					success : function(data) {
+						
+						$wcContent.text(data);
+						
+						$wcUpContent.css('display', 'none');
+						$wcContent.css('display', 'block');
+						
+						$('.oneComment_right').children('.defaultBtn').css('display', 'block');
+						
+						$('.updatewcCancelBtn').css('display', 'none');
+						$('.updatewcConfirmBtn').css('display', 'none');
+						
+					}, error : function(data) {
+						console.log(data);
+					}
+					
+				});
+			
+			}
+			
+		});
+		
+		$('.updatewcCancelBtn').on('click', function() {
+			
+			$(this).siblings('.wcUpContent').remove();
+			$(this).siblings('p').css('display', 'block');
+			
+			$('.oneComment_right').children('.defaultBtn').css('display', 'block');
+			
+			$('.updatewcCancelBtn').css('display', 'none');
+			$('.updatewcConfirmBtn').css('display', 'none');
+			
+		});
+		
+		$('.deletewcBtn').on('click', function() {
+			
+			var wcNo = $(this).parent().siblings('.wcNo').val();
+			var $oneComment = $(this).parent().parent();
+			
+			$.ajax({
+				
+				url : "/gt/delete.wc",
+				data : {
+					"wcNo" : wcNo
+				},
+				type : "post",
+				success : function(data) {
+					
+					if(data > 0) {
+						
+						$oneComment.remove();
+						
+					} else {
+						alert('댓글 삭제에 실패했습니다.');
+					}
+					
+				}, error : function(data) {
+					console.log(data);
+				}
+				
+			});
 			
 		});
 	

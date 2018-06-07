@@ -33,8 +33,49 @@ public class WorkCommentDao {
 		
 	}
 	
-	public ArrayList<WorkComment> selectWorkCommentList() {
-		return null;
+	public ArrayList<WorkComment> selectWorkCommentList(Connection con, int wNo) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<WorkComment> wcList = null;
+		
+		String sql = prop.getProperty("selectWorkCommentList");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, wNo);
+			
+			rset = pstmt.executeQuery();
+			
+			wcList = new ArrayList<WorkComment>();
+			
+			while(rset.next()) {
+				
+				WorkComment wc = new WorkComment();
+				
+				wc.setWcNo(rset.getInt("WC_NO"));
+				wc.setWcWriter(rset.getString("WC_WRITER"));
+				wc.setWcContent(rset.getString("WC_CONTENT"));
+				wc.setwNo(rset.getInt("W_NO"));
+				wc.seteNo(rset.getInt("E_NO"));
+				
+				wcList.add(wc);
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			close(rset);
+			close(pstmt);
+			
+		}
+		
+		return wcList;
+		
 	}
 	
 	public int insertWorkComment(Connection con, WorkComment wc) {
@@ -64,12 +105,55 @@ public class WorkCommentDao {
 		return result;
 	}
 	
-	public int updateWorkComment() {
-		return 0;
+	public int updateWorkComment(Connection con, WorkComment wc) {
+		
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String sql = prop.getProperty("updateWorkComment");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, wc.getWcContent());
+			pstmt.setInt(2, wc.getWcNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
 	}
 	
-	public int deleteWorkComment() {
-		return 0;
+	public int deleteWorkComment(Connection con, int wcNo) {
+		
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String sql = prop.getProperty("deleteWorkComment");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, wcNo);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
 	}
 
 	public int selectInsertOne(Connection con, int eNo) {
@@ -78,7 +162,7 @@ public class WorkCommentDao {
 		ResultSet rset = null;
 		int wcNo = 0;
 		
-		String sql = prop.getProperty("selectInsertOne");
+		String sql = prop.getProperty("selectInsertCommentOne");
 		
 		try {
 			

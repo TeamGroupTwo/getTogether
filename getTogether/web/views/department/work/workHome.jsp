@@ -290,6 +290,8 @@
             var pTitle = $('#pTitle').val();
 			var nameChk1 = true;
 			var nameChk2 = true;
+			
+			var dCode = sessionStorage.getItem('loginDcode');
             
             if(pTitle == '') {
             	$(this).children('a').prop('disabled', true);
@@ -319,7 +321,7 @@
             		url : "/gt/insert.pj",
             		data : {
             			"pTitle" : pTitle,
-            			"dCode" : "D1"
+            			"dCode" : dCode
             			},
             		type : "get",
             		success : function(data) {

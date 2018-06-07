@@ -2,6 +2,7 @@ package com.gt.gettogether.department.work.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,8 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.gt.gettogether.department.work.model.service.WorkCommentService;
 import com.gt.gettogether.department.work.model.service.WorkService;
 import com.gt.gettogether.department.work.model.vo.Work;
+import com.gt.gettogether.department.work.model.vo.WorkComment;
 
 
 @WebServlet("/selectList.wo")
@@ -47,14 +50,25 @@ public class WorkSelectListServlet extends HttpServlet {
 		String page = "";
 		if(workList != null) {
 			
+			HashMap<Integer, ArrayList<WorkComment>> workCommentList = new HashMap<Integer, ArrayList<WorkComment>>();
+			ArrayList<WorkComment> wcList = null;
+			for(Work w : workList) {
+
+				wcList = new WorkCommentService().selectWorkCommentList(w.getwNo());
+				
+				workCommentList.put(w.getwNo(), wcList);
+				
+			}
+			
 			page = "views/department/work/workList.jsp";
 			request.setAttribute("workList", workList);
 			request.setAttribute("pNo", pNo);
 			request.setAttribute("pTitle", pTitle);
 			request.setAttribute("eNo", eNo);
+			request.setAttribute("workCommentList", workCommentList);
 			
 		} else {
-			page = "views/department/error.jsp";
+			page = "views/department/deptError.jsp";
 		}
 		
 		request.getRequestDispatcher(page).forward(request, response);

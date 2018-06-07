@@ -44,8 +44,12 @@ public class WorkCommentInsertServlet extends HttpServlet {
 				response.getWriter().print(wcNo);
 			} else {
 				page = "views/department/deptError.jsp";
+				request.setAttribute("msg", "코멘트 넘버를 가져오지 못함");
 			}
 			
+		} else {
+			page = "views/department/deptError.jsp";
+			request.setAttribute("msg", "코멘트 인서트가 안됨");
 		}
 		
 	}
