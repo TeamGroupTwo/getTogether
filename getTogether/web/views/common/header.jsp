@@ -1,6 +1,10 @@
-<%@ page import="com.gt.gettogether.employee.model.vo.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.gt.gettogether.employee.model.vo.*, java.util.*" %>    
+<%  ArrayList<String> roomList = (ArrayList<String>)application.getAttribute("roomList");
+	String chat_id = request.getParameter("chat_id");
+	String room = (String)request.getAttribute("room");
+	%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -128,7 +132,7 @@
    <div id="header" class="hAll">
       <a href="<%=request.getContextPath()%>/main.jsp" class="hText" id="title">GETTOGETHER</a>
       <div class="hAll" id="right-side">
-         <div class="hAll" id="chat" onclick=""></div>
+         <div class="hAll" id="chat" onclick="chatWindow();"></div>
          <div class="hAll" id="empWrap" onclick="dropdownMenu();">
             <div class="hAll" id="profile" style="content:url('/gt/resources/images/common/profile.png');"></div>
             <div class="hText hAll" id="empName"></div>
@@ -184,6 +188,12 @@
 			sessionStorage.clear();
 			location.href = "<%=request.getContextPath()%>/login.jsp";
 		}
-  	 </script>	
+	 	
+	 	// 채팅 새창으로 띄우기
+	 	function chatWindow(){
+			window.open("<%=request.getContextPath() %>/views/chat/chatting.jsp", "popup",
+					'width=470, height=800, toolbar=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no, status=no, location=no, directories=no');	 		
+	 	}
+  	 </script>
 </body>
 </html>
