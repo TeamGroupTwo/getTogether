@@ -149,15 +149,13 @@
    		font-size : 2.8em;
       	font-weight : bolder;
       	letter-spacing : -1px;
-      	white-space : nowrap;
-      	margin-bottom: 20px;  	
+      	white-space : nowrap;	
    }
    .findBtn{
 		width: 60px;
 		height : 25px;
 		font-size: 12pt;
 		padding-bottom: 5px;
-		margin-top: 30px;
    }
    #findSuccess{
    		background: #5f4d8c;
@@ -176,7 +174,6 @@
    }
    .findBox{
    		text-align: right;
-   		margin-right: 60px;
    		margin-bottom: 5px;
    }
    .findInput{
@@ -196,9 +193,12 @@
    .findInput:focus{
 		outline: none;
 	}
-	/* #onlyPwd{
+	#onlyPwd{
 		display: none;
-	} */
+	}
+	#onlyVerify{
+		display: none;
+	}
 
 </style>
 <title>로그인 화면</title>
@@ -226,11 +226,12 @@
 		<div class="popup-border">
 			<div class="popup-content">
 				<p class="login-title find-title" id="findTitle"></p>
-				<div class="findBox"><label class="findLbl">사번  </label><input type="text" class="findInput" /></div>
-				<div class="findBox"><label class="findLbl">이름  </label><input type="text" class="findInput" /></div>
-				<div class="findBox" id="onlyPwd"><label class="findLbl">아이디  </label><input type="text" class="findInput" /></div>
-				<div class="findBox"><label class="findLbl">이메일  </label><input type="text" class="findInput" /></div>
-				<div class="findBtn loginBtn" id="findSuccess" onclick="popupClose();">확인</div>
+				<div class="findBox verifynone"><label class="findLbl">사번  </label><input type="text" class="findInput" id="empNo" /></div>
+				<div class="findBox verifynone"><label class="findLbl">이름  </label><input type="text" class="findInput" id="empName" /></div>
+				<div class="findBox verifynone" id="onlyPwd"><label class="findLbl">아이디  </label><input type="text" class="findInput" id="empId" /></div>
+				<div class="findBox verifynone"><label class="findLbl">이메일  </label><input type="text" class="findInput" id="email"/></div>
+				<div class="findBox" id="onlyVerify"><label class="findLbl">인증번호  </label><input type="text" class="findInput" id="verifyCode"/></div>
+				<div class="findBtn loginBtn" id="findSuccess" onclick="finds();">확인</div>
 				<div class="findBtn loginBtn" id="findClose" onclick="popupClose();">닫기</div>
 			</div>
 		</div>
@@ -282,19 +283,122 @@
 		}
 	}
 	
+	var find = "id"; 
+	
 	function findId() {
+		find = "id";
+
+		$(".findBox").css("margin-right", "60px");
+		$("#onlyVerify").css("display", "none");
+		$(".verifynone").css("display", "block");
 		$("#popup-find").fadeIn();
 		$("#findTitle").text("아이디 찾기");
+		$("#onlyPwd").css("display", "none");
+		$(".find-title").css("margin-bottom","35px");
+		$(".findBtn").css("margin-top","50px");
 	}
 	
 	function findPassword(){
+		find = "pwd";
+		$(".findBox").css("margin-right", "60px");
+		$("#onlyVerify").css("display", "none");
+		$(".verifynone").css("display", "block");
 		$("#popup-find").fadeIn();
 		$("#findTitle").text("비밀번호 찾기");
+		$("#onlyPwd").css("display", "block");
+		$(".find-title").css("margin-bottom","20px");
+		$(".findBtn").css("margin-top","30px");
 	}
 	
 	function popupClose() {
 		$(".popup-wrap").fadeOut();
+		$("#empNo").val("");
+		$("#empName").val("");
+		$("#empId").val("");
+		$("#email").val("");
 	}
+
+	function finds() {
+		
+		var empNo = $("#empNo").val();
+		var empName = $("#empName").val();
+		var empId = $("#empId").val();
+		var email = $("#email").val();
+		
+		if(find == "id"){
+			// 아이디 영역
+			if(empNo == "" || empName == "" || email == "")
+				alert("내용을 모두 입력해주세요.");
+			else{
+				$.ajax({
+					url : "<%=request.getContextPath()%>/findId.emp",
+					type : "POST",
+					async: false,
+					data : {
+						empNo : empNo,
+						empName : empName,
+						email : email
+					},
+					success : function(data) {
+						if(data == 0)
+							alert("일치하는 정보가 없습니다. 다시 입력해주세요.");
+						else{
+							$("#findTitle").text("인증번호");
+							$(".verifynone").css("display", "none");
+							$("#onlyVerify").css("display", "block");
+							$(".find-title").css("margin-bottom","70px");
+							$(".findBtn").css("margin-top","80px");
+							$(".findInput").css("width", "150px");
+							$(".findBox").css("margin-right", "75px");
+							
+							// 이메일 발신 ajax
+							$.ajax({
+								url:"<%=request.getContextPath()%>/sendEmail.emp",	
+								type : "POST",
+								data : {email : email},
+								async: false,
+								success : function(data) {
+									
+								},
+								error : function() {
+									console.log("이메일 발신 오류발생");
+								}
+							});
+ 						}			
+					},
+					error: function() {
+						console.log("아이디 찾기 오류발생");
+					}
+				});
+			}
+		}			
+		else{
+			// 비밀번호 영역
+			if(empNo == "" || empName == "" || email == "" || empId == "")
+				alert("내용을 모두 입력해주세요.");
+			else{
+				$.ajax({
+					url : "<%=request.getContextPath()%>/findPwd.emp",
+					type : "POST",
+					async: false,
+					data : {
+						empNo : empNo,
+						empName : empName,
+						email : email,
+						empId : empId
+					},
+					success : function(data) {
+ 							
+ 								
+					},
+					error: function() {
+						console.log("아이디 찾기 오류발생");
+					}
+				});
+			}
+		}
+	}
+
 	</script>
 </body>
 </html>

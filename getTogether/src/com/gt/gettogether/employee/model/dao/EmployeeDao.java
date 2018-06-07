@@ -115,13 +115,59 @@ public class EmployeeDao {
 	}
 
 	public int findId(Connection con, Employee emp) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = -1;
+		
+		try {
+			pstmt = con.prepareStatement(prop.getProperty("findId"));
+			pstmt.setInt(1, emp.geteNo());
+			pstmt.setString(2, emp.geteName());
+			pstmt.setString(3, emp.getEmail());
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next())
+				result = rset.getInt("RESULT");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			close(rset);
+			close(pstmt);			
+		}
+		
+		return result;
 	}
 
 	public int findPassword(Connection con, Employee emp) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = -1;
+		
+		try {
+			pstmt = con.prepareStatement(prop.getProperty("findId"));
+			pstmt.setInt(1, emp.geteNo());
+			pstmt.setString(2, emp.geteName());
+			pstmt.setString(3, emp.getEmail());
+			pstmt.setString(4, emp.geteId());
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next())
+				result = rset.getInt("RESULT");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			close(rset);
+			close(pstmt);			
+		}
+		
+		return result;
 	}
 
 }
