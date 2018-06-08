@@ -340,6 +340,14 @@
         .oneComment_right p {
         	word-break:break-all;
         }
+        
+        select {
+        	width: 70px;
+        	height: 35px;
+        	margin-right: 10px;
+        	border: 2px solid #5F4D8C;
+        	outline: none;
+        }
 
     </style>
 </head>
@@ -356,7 +364,11 @@
 
             <div class="right" id="insertBtn">생성</div>
             <div class="right" id="searchBtn"><img src="/gt/resources/images/department/work/search_icon.png"></div>
-            <div class="right"><input type="text" size="15" placeholder="search..."></div>
+            <div class="right"><input type="text" size="15" placeholder="search..." id="search"></div>
+            <select class="right" id="">
+            	<option value="제목">제목</option>
+            	<option value="내용">내용</option>
+            </select>
         </div>
 
         <div id="content">
@@ -365,7 +377,7 @@
 	            <div class="oneArticle">
 	            	<input type="hidden" value="<%=w.getwNo()%>" class="wNo" />
 	                <div class="content_left">
-	                    <h3>제목 : <%=w.getwTitle()%></h3>
+	                    <h3 class="title">제목 : <%=w.getwTitle()%></h3>
 	                    <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
 	                    <h3 class="empName"><%=w.getwWriter()%></h3>
 	                    <h3 class="date">날짜 : <%=w.getwDate()%></h3>
@@ -444,31 +456,37 @@
 		
 		$('.deleteBtn').on('click', function() {
 			
-			var wNo = $(this).parent().siblings('.wNo').val();
+			if(confirm('정말 삭제하시겠습니까?')) {
 			
-			var $oneArticle = $(this).parent().parent();
-			
-			$.ajax({
+				var wNo = $(this).parent().siblings('.wNo').val();
 				
-				url : "/gt/delete.wo",
-				data : {
-					"wNo" : wNo
-				},
-				type : "POST",
-				success : function(data) {
+				var $oneArticle = $(this).parent().parent();
+				
+				$.ajax({
 					
-					if(data > 0) {
-						$oneArticle.remove();
-						alert('정상적으로 삭제되었습니다.');
-					} else {
-						alert('글 삭제에 실패했습니다.');
+					url : "/gt/delete.wo",
+					data : {
+						"wNo" : wNo
+					},
+					type : "POST",
+					success : function(data) {
+						
+						if(data > 0) {
+							$oneArticle.remove();
+							alert('정상적으로 삭제되었습니다.');
+						} else {
+							alert('글 삭제에 실패했습니다.');
+						}
+						
+					}, error : function(data) {
+						console.log(data);
 					}
 					
-				}, error : function(data) {
-					console.log(data);
-				}
-				
-			});
+				});
+			
+			} else {
+				return
+			}
 			
 		});
 		
@@ -478,11 +496,30 @@
 			var wcContent = $(this).siblings('.wcContent').val();
 			var wNo = $(this).parent().parent().siblings('.wNo').val();
 			var eNo = sessionStorage.getItem('loginNo');
+						
+			$deletewcBtn = $('<div>');
+			$deletewcBtn.addClass('content-left-buttons');
+			$deletewcBtn.addClass('defaultBtn');
+			$deletewcBtn.addClass('deletewcBtn');
+			$deletewcBtn.text('삭제');
 			
-			console.log(wcWriter);
-			console.log(wcContent);
-			console.log(wNo);
-			console.log(eNo);
+			$updatewcBtn = $('<div>');
+			$updatewcBtn.addClass('content-left-buttons');
+			$updatewcBtn.addClass('defaultBtn');
+			$updatewcBtn.addClass('updatewcBtn');
+			$updatewcBtn.text('수정');
+			
+			$updatewcCancelBtn = $('<div>');
+			$updatewcCancelBtn.addClass('content-left-buttons');
+			$updatewcCancelBtn.addClass('defaultBtn');
+			$updatewcCancelBtn.addClass('updatewcCancelBtn');
+			$updatewcCancelBtn.text('취소');
+			
+			$updatewcConfirmBtn = $('<div>');
+			$updatewcConfirmBtn.addClass('content-left-buttons');
+			$updatewcConfirmBtn.addClass('defaultBtn');
+			$updatewcConfirmBtn.addClass('updatewcConfirmBtn');
+			$updatewcConfirmBtn.text('확인');
 			
 			var $comment_content = $(this).parent().siblings('.comment_content');
 			
@@ -532,6 +569,10 @@
 						$oneComment_left.append($profile);
 						$oneComment_left.append($name);
 						$oneComment_right.append($content);
+						$oneComment_right.append($deletewcBtn);
+						$oneComment_right.append($updatewcBtn);
+						$oneComment_right.append($updatewcCancelBtn);
+						$oneComment_right.append($updatewcConfirmBtn);
 						
 						$oneComment.append($wcNo);
 						$oneComment.append($oneComment_left);
@@ -628,31 +669,58 @@
 		
 		$('.deletewcBtn').on('click', function() {
 			
-			var wcNo = $(this).parent().siblings('.wcNo').val();
-			var $oneComment = $(this).parent().parent();
+			if(confirm('정말 삭제하시겠습니까?')) {
 			
-			$.ajax({
+				var wcNo = $(this).parent().siblings('.wcNo').val();
+				var $oneComment = $(this).parent().parent();
 				
-				url : "/gt/delete.wc",
-				data : {
-					"wcNo" : wcNo
-				},
-				type : "post",
-				success : function(data) {
+				$.ajax({
 					
-					if(data > 0) {
+					url : "/gt/delete.wc",
+					data : {
+						"wcNo" : wcNo
+					},
+					type : "post",
+					success : function(data) {
 						
-						$oneComment.remove();
+						if(data > 0) {
+							
+							$oneComment.remove();
+							
+						} else {
+							alert('댓글 삭제에 실패했습니다.');
+						}
 						
-					} else {
-						alert('댓글 삭제에 실패했습니다.');
+					}, error : function(data) {
+						console.log(data);
 					}
 					
-				}, error : function(data) {
-					console.log(data);
-				}
-				
-			});
+				});
+			
+			} else {
+				return
+			}
+			
+		});
+		
+		$('#searchBtn').on('click', function () {
+
+			var search = $('#search').val();
+			var selected = $("select option:selected").val();
+			console.log(selected);
+			$('.oneArticle').hide();
+			
+			if(selected == '제목') {
+				$(".title:contains(" + search + ")").parent().parent().show();
+			} else {
+				$(".article:contains(" + search + ")").parent().parent().show();
+			}
+			
+		});
+		
+		$('.deleteBtn').on('click', function() {
+			
+
 			
 		});
 	

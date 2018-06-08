@@ -245,7 +245,7 @@
     
     <div id="container">
         <div id="top">
-            <input type="text" size="15" placeholder="search...">
+            <input type="text" size="15" placeholder="search..." id="search">
             <div id="searchBtn"><img src="/gt/resources/images/department/work/search_icon.png"></div>
             <div class="right-buttons defaultBtn" id="deleteBtn">삭제</div>
             <div class="right-buttons defaultBtn" id="updateBtn">수정</div>
@@ -285,7 +285,7 @@
             $('#pTitle').val('');
         });
 
-        $('#confirmBtn').on('click', function() {
+        $('#confirmBtn a').on('click', function() {
 
             var pTitle = $('#pTitle').val();
 			var nameChk1 = true;
@@ -294,9 +294,10 @@
 			var dCode = sessionStorage.getItem('loginDcode');
             
             if(pTitle == '') {
-            	$(this).children('a').prop('disabled', true);
+            	//$(this).children('a').prop('disabled', true);
                 alert('이름을 입력하세요');
                 nameChk1 = false;
+                return false;
             }
             
             $('.project').each(function() {
@@ -308,13 +309,14 @@
 			});
             
             if(!nameChk2) {
-            	$(this).children('a').prop('disabled', true);
+            	//$(this).children('a').prop('disabled', true);
             	alert('이미 존재하는 프로젝트명 입니다.');
+            	return false;
             }
             	
             if(nameChk1 && nameChk2) {
             	
-            	$(this).children('a').prop('disabled', false);
+            	//$(this).children('a').prop('disabled', false);
             	
             	$.ajax({
             		
@@ -388,7 +390,7 @@
 		
 		$('.project').on('click', function() {
 			
-			console.log($(this).children('h3').text());
+			//console.log($(this).children('h3').text());
 			
 			if($(this).children('.updateChkbox').prop('checked')) {
 				
@@ -415,7 +417,9 @@
 			
 		});
 		
-		$('#updateConfirmBtn').on('click', function() {
+		$('#updateConfirmBtn a').on('click', function() {
+			
+			$('#upTitle').val('');
 			
 			var pjCheck = false;
 			
@@ -428,10 +432,11 @@
 			});
 			
 			if(pjCheck) {
-				$(this).children('a').prop('disabled', false);
+				//$(this).children('a').prop('disabled', false);
 			} else {
-				$(this).children('a').prop('disabled', true);
+				//$(this).children('a').prop('disabled', true);
 				alert('수정할 프로젝트를 선택해 주세요');
+				return false;
 			}
 			
 		});
@@ -455,7 +460,7 @@
 			
 		});
 		
-        $('#upModalConfirmBtn').on('click', function() {
+        $('#upModalConfirmBtn a').on('click', function() {
 
         	var $pjDiv;
         	var pTitle;
@@ -465,6 +470,7 @@
 				if($(this).prop('checked')) {
 					$pjDiv = $(this).parent();
 					pNo = $(this).siblings('#pNo').val();
+					pTitle = $(this).siblings('h3').text();
 				}
 				
 			});
@@ -474,9 +480,10 @@
 			var nameChk2 = true;
             
             if(upTitle == '') {
-            	$(this).children('a').prop('disabled', true);
+            	//$(this).children('a').prop('disabled', true);
                 alert('이름을 입력하세요');
                 nameChk1 = false;
+                return false;
             }
             
             $('.project').each(function() {
@@ -488,13 +495,14 @@
 			});
             
             if(!nameChk2) {
-            	$(this).children('a').prop('disabled', true);
+            	//$(this).children('a').prop('disabled', true);
             	alert('이미 존재하는 프로젝트명 입니다.');
+            	return false;
             }
             	
             if(nameChk1 && nameChk2) {
             	
-            	$(this).children('a').prop('disabled', false);
+            	//$(this).children('a').prop('disabled', false);
             	
             	$.ajax({
             		
@@ -548,6 +556,8 @@
 		
 		$('#deleteConfirmBtn').on('click', function() {
 			
+
+			
 			var pjCheck = false;
 			var jsonArr = new Array();
 			var index = 0;
@@ -566,6 +576,8 @@
 			chkList = JSON.stringify(jsonArr);
 			
 			if(pjCheck) {
+				
+				if(confirm('정말 삭제하시겠습니까?')) {
 				
 				$.ajax({
 					
@@ -589,6 +601,10 @@
 					}
 					
 				});
+				
+				} else {
+					return
+				}
 				
 			} else {
 				alert('수정할 프로젝트를 선택해 주세요');
@@ -626,6 +642,16 @@
 			}
 			
 		})
+		
+		$('#search').keyup(function() {
+			
+			var search = $(this).val();
+
+			$('.project').hide();
+			
+			$(".project h3:contains(" + search + ")").parent().show();
+			
+		});
 
     </script>
 

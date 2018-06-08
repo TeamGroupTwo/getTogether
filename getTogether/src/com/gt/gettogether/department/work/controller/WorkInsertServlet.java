@@ -93,7 +93,7 @@ public class WorkInsertServlet extends HttpServlet {
 		String page = "";
 		if(result > 0) {
 			
-			page = "/selectList.wo";
+			page = "selectList.wo";
 			request.setAttribute("pNo", pNo);
 			request.setAttribute("pTitle", pTitle);
 			request.setAttribute("eNo", eNo);
