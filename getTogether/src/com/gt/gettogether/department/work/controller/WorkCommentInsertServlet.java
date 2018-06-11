@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.gt.gettogether.department.work.model.service.WorkCommentService;
 import com.gt.gettogether.department.work.model.service.WorkService;
 import com.gt.gettogether.department.work.model.vo.WorkComment;
@@ -38,10 +40,15 @@ public class WorkCommentInsertServlet extends HttpServlet {
 		String page = "";
 		if(result > 0) {
 			
-			int wcNo = wcService.selectInsertOne(eNo);
+			WorkComment resultWc = wcService.selectInsertOne(eNo);
 			
-			if(wcNo > 0) {
-				response.getWriter().print(wcNo);
+			if(resultWc != null) {
+				JSONObject jsonwc = new JSONObject();
+				jsonwc.put("wcNo", resultWc.getWcNo());
+				jsonwc.put("profile", resultWc.getProfile());
+				
+				response.setContentType("application/json; charset=UTF-8");
+				response.getWriter().print(jsonwc.toJSONString());
 			} else {
 				page = "views/department/deptError.jsp";
 				request.setAttribute("msg", "코멘트 넘버를 가져오지 못함");

@@ -66,15 +66,15 @@ public class WorkCommentService {
 		
 	}
 
-	public int selectInsertOne(int eNo) {
+	public WorkComment selectInsertOne(int eNo) {
 		
 		Connection con = getConnection();
 		
-		int wcNo = new WorkCommentDao().selectInsertOne(con, eNo);
+		WorkComment wc = new WorkCommentDao().selectInsertOne(con, eNo);
 		
 		close(con);
 		
-		return wcNo;
+		return wc;
 	}
 	
 }

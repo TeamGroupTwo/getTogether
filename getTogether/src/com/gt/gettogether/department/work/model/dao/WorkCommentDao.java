@@ -60,6 +60,7 @@ public class WorkCommentDao {
 				wc.setWcContent(rset.getString("WC_CONTENT"));
 				wc.setwNo(rset.getInt("W_NO"));
 				wc.seteNo(rset.getInt("E_NO"));
+				wc.setProfile(rset.getString("PROFILE"));
 				
 				wcList.add(wc);
 				
@@ -156,11 +157,11 @@ public class WorkCommentDao {
 		
 	}
 
-	public int selectInsertOne(Connection con, int eNo) {
+	public WorkComment selectInsertOne(Connection con, int eNo) {
 
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		int wcNo = 0;
+		WorkComment wc = null;
 		
 		String sql = prop.getProperty("selectInsertCommentOne");
 		
@@ -172,8 +173,11 @@ public class WorkCommentDao {
 			
 			rset = pstmt.executeQuery();
 			
+			wc = new WorkComment();
+			
 			if(rset.next()) {
-				wcNo = rset.getInt("WC_NO");
+				wc.setWcNo(rset.getInt("WC_NO"));
+				wc.setProfile(rset.getString("PROFILE"));
 			}
 			
 		} catch (SQLException e) {
@@ -185,7 +189,7 @@ public class WorkCommentDao {
 			
 		}
 		
-		return wcNo;
+		return wc;
 		
 	}
 	

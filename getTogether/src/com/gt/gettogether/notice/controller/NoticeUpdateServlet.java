@@ -7,34 +7,54 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class NoticeUpdateServlet
- */
-@WebServlet("/NoticeUpdateServlet")
+import com.gt.gettogether.notice.model.service.NoticeService;
+import com.gt.gettogether.notice.model.vo.NoticeNFiles;;
+
+
+@WebServlet("/update.no")
 public class NoticeUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+  
     public NoticeUpdateServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+		
+		int nno = Integer.parseInt(request.getParameter("nno"));
+		
+		System.out.println("nno 값을 알고싶습니다. :" +nno);
+		
+		NoticeNFiles n = new NoticeNFiles();
+		n.setnTitle(title);
+		n.setnContent(content);
+		n.setnNo(nno);
+		
+		int result = new NoticeService().updateNotice(n);
+		
+		String page="";
+		if(result > 0){
+			page = "views/notice/noticeDetail.jsp";
+			request.setAttribute("n", new NoticeService().selectOne(String.valueOf(nno)));
+		}
+		request.getRequestDispatcher(page).forward(request, response);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		doGet(request, response);
 	}
 

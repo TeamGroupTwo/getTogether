@@ -1,40 +1,48 @@
 package com.gt.gettogether.notice.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class NoticeSelectOneServlet
- */
-@WebServlet("/NoticeSelectOneServlet")
+import com.gt.gettogether.notice.model.service.NoticeService;
+import com.gt.gettogether.notice.model.vo.NoticeNFiles;
+
+
+@WebServlet("/selectOne.no")
 public class NoticeSelectOneServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    
     public NoticeSelectOneServlet() {
         super();
-        // TODO Auto-generated constructor stub
+       
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	
+		String num = request.getParameter("num");
+		
+		System.out.println("내가 클릭한 num의 값 : " + num);
+		
+		
+		NoticeNFiles n = new NoticeService().selectOne(num);
+		
+		String page = "";
+		
+		if(n != null){
+			page ="views/notice/noticeDetail.jsp";
+			request.setAttribute("n", n);
+		}
+		request.getRequestDispatcher(page).forward(request, response);
+		
+		
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		doGet(request, response);
 	}
 

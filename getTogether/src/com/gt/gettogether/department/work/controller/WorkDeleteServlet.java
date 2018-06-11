@@ -17,9 +17,13 @@ public class WorkDeleteServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		int wNo = Integer.parseInt(request.getParameter("wNo"));
+		String fName = request.getParameter("fName");
 		
-		int result = new WorkService().deleteWork(wNo);
+    	String root = request.getServletContext().getRealPath("/");
+
+    	String fPath = root+"resources/files/workFiles";
+		
+		int result = new WorkService().deleteWork(fName, fPath);
 		
 		if(result < 1) {
 			request.setAttribute("msg", "work삭제 에러");

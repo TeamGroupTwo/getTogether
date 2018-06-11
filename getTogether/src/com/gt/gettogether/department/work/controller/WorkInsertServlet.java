@@ -92,7 +92,6 @@ public class WorkInsertServlet extends HttpServlet {
 		
 		String page = "";
 		if(result > 0) {
-			
 			page = "selectList.wo?pNo="+pNo+"&pTitle="+pTitle+"&eNo="+eNo;
 //			request.setAttribute("pNo", pNo);
 //			request.setAttribute("pTitle", pTitle);

@@ -1,0 +1,152 @@
+@CHARSET "UTF-8";
+            .myButton {
+	        -moz-box-shadow:inset 0px 1px 27px 0px #efdcfb;
+	        -webkit-box-shadow:inset 0px 1px 27px 0px #efdcfb;
+	        box-shadow:inset 0px 1px 27px 0px #efdcfb;
+	        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dfbdfa), color-stop(1, #bc80ea));
+	        background:-moz-linear-gradient(top, #dfbdfa 5%, #bc80ea 100%);
+	        background:-webkit-linear-gradient(top, #dfbdfa 5%, #bc80ea 100%);
+	        background:-o-linear-gradient(top, #dfbdfa 5%, #bc80ea 100%);
+	        background:-ms-linear-gradient(top, #dfbdfa 5%, #bc80ea 100%);
+	        background:linear-gradient(to bottom, #dfbdfa 5%, #bc80ea 100%);
+	        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfbdfa', endColorstr='#bc80ea',GradientType=0);
+	        background-color:#dfbdfa;
+	        -moz-border-radius:20px;
+	        -webkit-border-radius:20px;
+	        border-radius:20px;
+	        display:inline-block;
+	        cursor:pointer;
+	        color:#ffffff;
+	        font-family:Arial;
+	        font-size:5px;
+	        font-weight:bold;
+	        padding:5px 20px;
+	        text-decoration:none;
+	        text-shadow:-1px 0px 0px #9752cc;
+        }
+        .myButton:hover {
+        	cursor : pointer;
+	        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #bc80ea), color-stop(1, #dfbdfa));
+	        background:-moz-linear-gradient(top, #bc80ea 5%, #dfbdfa 100%);
+	        background:-webkit-linear-gradient(top, #bc80ea 5%, #dfbdfa 100%);
+	        background:-o-linear-gradient(top, #bc80ea 5%, #dfbdfa 100%);
+	        background:-ms-linear-gradient(top, #bc80ea 5%, #dfbdfa 100%);
+	        background:linear-gradient(to bottom, #bc80ea 5%, #dfbdfa 100%);
+	        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bc80ea', endColorstr='#dfbdfa',GradientType=0);
+	        background-color:#bc80ea;
+        }
+        .myButton:active {
+	        position:relative;
+	        top:1px;
+        }
+        .memo_list{
+        	text-align : left;
+            font-size : 20px;
+        }
+        #insertBtn {
+        	color : #ffffff;
+        	font-size : 18px;
+        	width : 60px;
+        	-moz-border-radius:10px;
+	        -webkit-border-radius:10px;
+	        border-radius:10px;
+            background-color: #5F4D8C;
+            border: 1px solid #5F4D8C;
+            transition-duration: 0.4s;
+            -webkit-transition-duration: 0.4s;
+			position: relative;
+			top : 450px;
+			left : 185px;
+        }
+        #deleteBtn {
+        	color : #ffffff;
+        	font-size : 18px;
+        	width : 60px;
+        	-moz-border-radius:10px;
+	        -webkit-border-radius:10px;
+	        border-radius:10px;
+            background-color: #5F4D8C;
+            border: 1px solid #5F4D8C;
+            transition-duration: 0.4s;
+            -webkit-transition-duration: 0.4s;
+			position: relative;
+			top : 450px;
+            left : 185px;
+        }
+        #deleteBtn:hover {
+       		cursor : pointer;
+            background-color: white;
+            color: black;
+        }
+        #checkBtn {
+        	color : #ffffff;
+        	font-size : 18px;
+        	width : 60px;
+        	-moz-border-radius:10px;
+	        -webkit-border-radius:10px;
+	        border-radius:10px;
+            background-color: #5F4D8C;
+            border: 1px solid #5F4D8C;
+            transition-duration: 0.4s;
+            -webkit-transition-duration: 0.4s;
+			position: relative;
+			top : 450px;
+            left : 185px;
+        }
+        #checkBtn:hover {
+       		cursor : pointer;
+            background-color: white;
+            color: black;
+        }
+        
+        
+        #insertBtn:hover {
+         	cursor : pointer;
+            background-color: white;
+            color: black;
+        }
+        #okBtn {
+		 	text-align : center;
+        	color : #ffffff;
+        	font-size : 18px;
+        	width : 60px;
+        	-moz-border-radius:10px;
+	        -webkit-border-radius:10px;
+	        border-radius:10px;
+            background-color: #5F4D8C;
+            border: 1px solid #5F4D8C;
+            transition-duration: 0.4s;
+            -webkit-transition-duration: 0.4s;
+            position: relative;
+			top : 450px;
+			left : 185px;
+        }
+        #okBtn:hover {
+        	cursor : pointer;
+            background-color: white;
+            color: black;
+        }
+        #resetBtn {
+		 	text-align : center;
+        	color : #ffffff;
+        	font-size : 18px;
+        	width : 60px;
+        	-moz-border-radius:10px;
+	        -webkit-border-radius:10px;
+	        border-radius:10px;
+            background-color: #5F4D8C;
+            border: 1px solid #5F4D8C;
+            transition-duration: 0.4s;
+            -webkit-transition-duration: 0.4s;
+            position: relative;
+			top : 450px;
+			left : 185px;
+        }
+        #resetBtn:hover {
+        	cursor : pointer;
+            background-color: white;
+            color: black;
+        }
+        .memoBtn{
+        	text-align: center;
+        }

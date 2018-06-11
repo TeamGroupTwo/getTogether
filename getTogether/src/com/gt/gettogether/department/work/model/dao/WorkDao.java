@@ -64,6 +64,7 @@ public class WorkDao {
 				w.seteNo(rset.getInt("E_NO"));
 				w.setfNo(rset.getInt("F_NO"));
 				w.setfName(rset.getString("F_NAME"));
+				w.setProfile(rset.getString("PROFILE"));
 				
 				workList.add(w);
 				
@@ -193,7 +194,7 @@ public class WorkDao {
 		
 	}
 	
-	public int deleteWork(Connection con, int wNo) {
+	public int deleteWork(Connection con, String fName) {
 		
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -204,7 +205,7 @@ public class WorkDao {
 			
 			pstmt = con.prepareStatement(sql);
 			
-			pstmt.setInt(1, wNo);
+			pstmt.setString(1, fName);
 			
 			result = pstmt.executeUpdate();
 			

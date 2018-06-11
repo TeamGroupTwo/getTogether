@@ -51,6 +51,7 @@ public class WorkSelectListServlet extends HttpServlet {
 		if(workList != null) {
 			
 			HashMap<Integer, ArrayList<WorkComment>> workCommentList = new HashMap<Integer, ArrayList<WorkComment>>();
+			
 			ArrayList<WorkComment> wcList = null;
 			for(Work w : workList) {
 

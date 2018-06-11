@@ -253,7 +253,7 @@
             width: 33%;
             float: left;
         }
-        .oneComment_left img {
+        .oneComment_left div {
             float: left;
         }
         .oneComment_left h3 {
@@ -378,7 +378,7 @@
 	            	<input type="hidden" value="<%=w.getwNo()%>" class="wNo" />
 	                <div class="content_left">
 	                    <h3 class="title">제목 : <%=w.getwTitle()%></h3>
-	                    <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
+	                    <div class="hAll" id="profile" style="content:url(<%=w.getProfile()%>);"></div>
 	                    <h3 class="empName"><%=w.getwWriter()%></h3>
 	                    <h3 class="date">날짜 : <%=w.getwDate()%></h3>
 	                    <h3 class="naeyong">내용</h3>
@@ -405,13 +405,13 @@
    	                         	<div class="oneComment">
    	                         		<input type="hidden" value="<%=wc.getWcNo()%>" class="wcNo" />
 	 	                            <div class="oneComment_left">
-		                                <img src="/gt/resources/images/common/adminProfile.png" width="40px" height="40px">
+		                                <div class="hAll" id="profile" style="content:url(<%=wc.getProfile()%>);"></div>
 		                                <h3><%=wc.getWcWriter()%></h3>
 		                            </div>
 		                            <div class="oneComment_right">
 		                            	<p><%=wc.getWcContent()%></p>
 		                                <%-- <textarea class="wcUpContent" readonly="readonly"><%=wc.getWcContent()%></textarea> --%>
-                   	                    <% if(w.geteNo() == loginNo) { %>
+                   	                    <% if(wc.geteNo() == loginNo) { %>
 						                    <div class="content-left-buttons defaultBtn deletewcBtn">삭제</div>
 						                    <div class="content-left-buttons defaultBtn updatewcBtn">수정</div>
 						                    <div class="content-left-buttons defaultBtn updatewcCancelBtn">취소</div>
@@ -469,13 +469,16 @@
 			
 				var wNo = $(this).parent().siblings('.wNo').val();
 				
+				var fName = $(this).siblings('.inputFile').children('a').text();
+				console.log(fName);
+				
 				var $oneArticle = $(this).parent().parent();
 				
 				$.ajax({
 					
 					url : "/gt/delete.wo",
 					data : {
-						"wNo" : wNo
+						"fName" : fName
 					},
 					type : "POST",
 					success : function(data) {
@@ -555,23 +558,23 @@
 						var $oneComment_left = $('<div>');
 						var $oneComment_right = $('<div>');
 						
-						var $profile = $('<img>');
+						var $profile = $('<div>');
 						var $name = $('<h3>');
 						var $content = $('<p>');
-						
+						<%-- <div class="hAll" id="profile" style="content:url(<%=wc.getProfile()%>);"></div> --%>
 						// 속성 추가
 						$oneComment.addClass('oneComment');
 						
 						$wcNo.attr('type', 'hidden');
-						$wcNo.val(data);
+						$wcNo.val(data.wcNo);
 						$wcNo.addClass('wcNo');
 						$oneComment_left.addClass('oneComment_left');
 						$oneComment_right.addClass('oneComment_right');
 						
 						$profile.attr({
-							"src" : "/gt/resources/images/common/adminProfile.png",
-							"width" : "40px",
-							"height" : "40px"
+							"class" : "hAll",
+							"id" : "profile",
+							"style" : "content:url(" +data.profile+ ")"
 						});
 						$name.text(wcWriter);
 						$content.text(wcContent);
@@ -751,7 +754,6 @@
 		
 		$('.deleteBtn').on('click', function() {
 			
-
 			
 		});
 	

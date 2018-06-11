@@ -64,7 +64,29 @@ public class EmployeeDao {
 	}
 
 	public int updateEmployee(Connection con, Employee emp) {
-		return 0;
+		
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateEmployee");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, emp.getePassword());
+			pstmt.setString(2, emp.getPhone());
+			pstmt.setString(3, emp.getEmail());
+			pstmt.setString(4, emp.getProfile());
+			pstmt.setString(5, emp.geteId());
+			
+			result = pstmt.executeUpdate();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			close(pstmt);
+		}
+		
+		return result;
 	}
 
 	public int checkEmail(Connection con, String email) {
@@ -93,13 +115,59 @@ public class EmployeeDao {
 	}
 
 	public int findId(Connection con, Employee emp) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = -1;
+		
+		try {
+			pstmt = con.prepareStatement(prop.getProperty("findId"));
+			pstmt.setInt(1, emp.geteNo());
+			pstmt.setString(2, emp.geteName());
+			pstmt.setString(3, emp.getEmail());
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next())
+				result = rset.getInt("RESULT");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			close(rset);
+			close(pstmt);			
+		}
+		
+		return result;
 	}
 
 	public int findPassword(Connection con, Employee emp) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = -1;
+		
+		try {
+			pstmt = con.prepareStatement(prop.getProperty("findId"));
+			pstmt.setInt(1, emp.geteNo());
+			pstmt.setString(2, emp.geteName());
+			pstmt.setString(3, emp.getEmail());
+			pstmt.setString(4, emp.geteId());
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next())
+				result = rset.getInt("RESULT");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally{
+			close(rset);
+			close(pstmt);			
+		}
+		
+		return result;
 	}
 
 }
