@@ -439,6 +439,15 @@
 
 	<script>
 	
+		$(function() {
+			
+			addEventUpdatewcBtn();
+			addEventUpdatewcConfirmBtn();
+			addEventUpdatewcCancelBtn();
+			addEventdeletewcBtn();
+			
+		});
+	
 		$('#insertBtn').on('click', function() {
 			
 			location.href = '<%=request.getContextPath()%>/insertView.wo?loginNo=<%=loginNo%>'
@@ -555,6 +564,7 @@
 						
 						$wcNo.attr('type', 'hidden');
 						$wcNo.val(data);
+						$wcNo.addClass('wcNo');
 						$oneComment_left.addClass('oneComment_left');
 						$oneComment_right.addClass('oneComment_right');
 						
@@ -582,6 +592,11 @@
 						
 						$comment_content.scrollTop($comment_content.prop('scrollHeight'));
 						
+						addEventUpdatewcBtn();
+						addEventUpdatewcConfirmBtn();
+						addEventUpdatewcCancelBtn();
+						addEventdeletewcBtn();
+						
 					}, error : function(data) {
 						console.log(data);
 					}
@@ -594,114 +609,130 @@
 			
 		});
 		
-		$('.updatewcBtn').on('click', function() {
-		
-			var $textarea = $('<textarea>');
+		function addEventUpdatewcBtn(){
 			
-			$textarea.addClass('wcUpContent');
-			
-			$(this).parent('.oneComment_right').children('p').css('display', 'none');
-			
-			$(this).parent('.oneComment_right').prepend($textarea);
-
-			$('.oneComment_right').children('.defaultBtn').css('display', 'none');
-			
-			$(this).parent('.oneComment_right').children('.updatewcCancelBtn').css('display', 'block');
-			$(this).parent('.oneComment_right').children('.updatewcConfirmBtn').css('display', 'block');
-			
-		});
-		
-		$('.updatewcConfirmBtn').on('click', function() {
-			
-			var wcNo = $(this).parent().siblings('.wcNo').val();
-			var wcUpContent = $(this).siblings('.wcUpContent').val();
-			
-			var $wcContent = $(this).siblings('p'); 
-			var $wcUpContent = $(this).siblings('.wcUpContent');
-			
-			console.log(wcUpContent);
-			
-			if(wcUpContent == '') {
-				alert('글을 입력해 주세요');
-			} else {
-			
-				$.ajax({
-					
-					url : "/gt/update.wc",
-					data : {
-						"wcNo" : wcNo,
-						"wcUpContent" : wcUpContent
-					},
-					type : "post",
-					success : function(data) {
-						
-						$wcContent.text(data);
-						
-						$wcUpContent.css('display', 'none');
-						$wcContent.css('display', 'block');
-						
-						$('.oneComment_right').children('.defaultBtn').css('display', 'block');
-						
-						$('.updatewcCancelBtn').css('display', 'none');
-						$('.updatewcConfirmBtn').css('display', 'none');
-						
-					}, error : function(data) {
-						console.log(data);
-					}
-					
-				});
-			
-			}
-			
-		});
-		
-		$('.updatewcCancelBtn').on('click', function() {
-			
-			$(this).siblings('.wcUpContent').remove();
-			$(this).siblings('p').css('display', 'block');
-			
-			$('.oneComment_right').children('.defaultBtn').css('display', 'block');
-			
-			$('.updatewcCancelBtn').css('display', 'none');
-			$('.updatewcConfirmBtn').css('display', 'none');
-			
-		});
-		
-		$('.deletewcBtn').on('click', function() {
-			
-			if(confirm('정말 삭제하시겠습니까?')) {
-			
-				var wcNo = $(this).parent().siblings('.wcNo').val();
-				var $oneComment = $(this).parent().parent();
+			$('.updatewcBtn').on('click', function() {
 				
-				$.ajax({
-					
-					url : "/gt/delete.wc",
-					data : {
-						"wcNo" : wcNo
-					},
-					type : "post",
-					success : function(data) {
+				var $textarea = $('<textarea>');
+				
+				$textarea.addClass('wcUpContent');
+				
+				$(this).parent('.oneComment_right').children('p').css('display', 'none');
+				
+				$(this).parent('.oneComment_right').prepend($textarea);
+
+				$('.oneComment_right').children('.defaultBtn').css('display', 'none');
+				
+				$(this).parent('.oneComment_right').children('.updatewcCancelBtn').css('display', 'block');
+				$(this).parent('.oneComment_right').children('.updatewcConfirmBtn').css('display', 'block');
+				
+			});
+			
+		};
+		
+		function addEventUpdatewcConfirmBtn() {
+			
+			$('.updatewcConfirmBtn').on('click', function() {
+				
+				var wcNo = $(this).parent().siblings('.wcNo').val();
+				var wcUpContent = $(this).siblings('.wcUpContent').val();
+				
+				var $wcContent = $(this).siblings('p'); 
+				var $wcUpContent = $(this).siblings('.wcUpContent');
+				
+				console.log(wcUpContent);
+				
+				if(wcUpContent == '') {
+					alert('글을 입력해 주세요');
+				} else {
+				
+					$.ajax({
 						
-						if(data > 0) {
+						url : "/gt/update.wc",
+						data : {
+							"wcNo" : wcNo,
+							"wcUpContent" : wcUpContent
+						},
+						type : "post",
+						success : function(data) {
 							
-							$oneComment.remove();
+							$wcContent.text(data);
 							
-						} else {
-							alert('댓글 삭제에 실패했습니다.');
+							$wcUpContent.css('display', 'none');
+							$wcContent.css('display', 'block');
+							
+							$('.oneComment_right').children('.defaultBtn').css('display', 'block');
+							
+							$('.updatewcCancelBtn').css('display', 'none');
+							$('.updatewcConfirmBtn').css('display', 'none');
+							
+						}, error : function(data) {
+							console.log(data);
 						}
 						
-					}, error : function(data) {
-						console.log(data);
-					}
+					});
+				
+				}
+				
+			});
+			
+		};
+		
+		function addEventUpdatewcCancelBtn() {
+			
+			$('.updatewcCancelBtn').on('click', function() {
+				
+				$(this).siblings('.wcUpContent').remove();
+				$(this).siblings('p').css('display', 'block');
+				
+				$('.oneComment_right').children('.defaultBtn').css('display', 'block');
+				
+				$('.updatewcCancelBtn').css('display', 'none');
+				$('.updatewcConfirmBtn').css('display', 'none');
+				
+			});
+			
+		};
+		
+		function addEventdeletewcBtn() {
+			
+			$('.deletewcBtn').on('click', function() {
+				
+				if(confirm('정말 삭제하시겠습니까?')) {
+				
+					var wcNo = $(this).parent().siblings('.wcNo').val();
+					var $oneComment = $(this).parent().parent();
 					
-				});
+					$.ajax({
+						
+						url : "/gt/delete.wc",
+						data : {
+							"wcNo" : wcNo
+						},
+						type : "post",
+						success : function(data) {
+							
+							if(data > 0) {
+								
+								$oneComment.remove();
+								
+							} else {
+								alert('댓글 삭제에 실패했습니다.');
+							}
+							
+						}, error : function(data) {
+							console.log(data);
+						}
+						
+					});
+				
+				} else {
+					return
+				}
+				
+			});
 			
-			} else {
-				return
-			}
-			
-		});
+		};
 		
 		$('#searchBtn').on('click', function () {
 

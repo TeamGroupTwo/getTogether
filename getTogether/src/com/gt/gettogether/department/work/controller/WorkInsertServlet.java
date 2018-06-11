@@ -93,17 +93,17 @@ public class WorkInsertServlet extends HttpServlet {
 		String page = "";
 		if(result > 0) {
 			
-			page = "selectList.wo";
-			request.setAttribute("pNo", pNo);
-			request.setAttribute("pTitle", pTitle);
-			request.setAttribute("eNo", eNo);
+			page = "selectList.wo?pNo="+pNo+"&pTitle="+pTitle+"&eNo="+eNo;
+//			request.setAttribute("pNo", pNo);
+//			request.setAttribute("pTitle", pTitle);
+//			request.setAttribute("eNo", eNo);
+			response.sendRedirect(page);
 			
 		} else {
 			page = "views/department/deptError.jsp";
+			request.getRequestDispatcher(page).forward(request, response);
 		}
 		
-		request.getRequestDispatcher(page).forward(request, response);
-    	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

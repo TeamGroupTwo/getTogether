@@ -96,17 +96,16 @@ public class WorkUpdateServlet extends HttpServlet {
 		String page = "";
 		if(result > 0) {
 			
-			page = "/selectList.wo";
-			request.setAttribute("pNo", pNo);
-			request.setAttribute("pTitle", pTitle);
-			request.setAttribute("eNo", eNo);
+			page = "selectList.wo?pNo="+pNo+"&pTitle="+pTitle+"&eNo="+eNo;
+//			request.setAttribute("pNo", pNo);
+//			request.setAttribute("pTitle", pTitle);
+//			request.setAttribute("eNo", eNo);
+			response.sendRedirect(page);
 			
 		} else {
 			page = "views/department/deptError.jsp";
-			request.setAttribute("msg", "업뎃서블릿");
+			request.getRequestDispatcher(page).forward(request, response);
 		}
-		
-		request.getRequestDispatcher(page).forward(request, response);
 		
 	}
 

@@ -267,7 +267,7 @@
         
         	<% for(Project p : pjList) { %>
             <div class="project">
-            	<input type="hidden" name="pNo" value="<%=p.getpNo()%>" id="pNo" />
+            	<input type="hidden" name="pNo" value="<%=p.getpNo()%>" class="pNo" />
             	<img src="/gt/resources/images/department/work/project_icon.png" />
             	<h3><%=p.getpTitle()%></h3>
             </div>
@@ -280,6 +280,14 @@
     
     	upBtnChk = false;
     	delBtnChk = false;
+    	
+    	$(function() {
+			
+    		selectOneProject();
+    		selectUpdateChkbox();
+    		selectDeleteChkbox();
+    		
+		});
 
         $('#insertBtn').on('click', function() {
             $('#pTitle').val('');
@@ -339,6 +347,7 @@
                         	'name' : 'pNo',
                         	'value' : data
                         });
+                        $pNo.addClass('pNo');
                         $pjImage.attr('src', '/gt/resources/images/department/work/project_icon.png');
                         $pTitle.text(pTitle);
 
@@ -350,6 +359,7 @@
         				
         				alert(pTitle+" 프로젝트를 생성했습니다.");
         				
+        				selectOneProject();
         				location.reload();
 
 					}, error : function(data) {
@@ -386,36 +396,49 @@
 				
 			});
 			
+			//selectUpdateChkbox();
+			
 		});
 		
-		$('.project').on('click', function() {
+		function selectUpdateChkbox() {
 			
-			//console.log($(this).children('h3').text());
+			$('.project').on('click', function() {
+				
+				//console.log($(this).children('h3').text());
+				
+				if($(this).children('.updateChkbox').prop('checked')) {
+					
+					$(this).children('.updateChkbox').prop('checked', false);
+					
+				} else {
+					
+					$('.project').children('.updateChkbox').each(function() {
+						$(this).prop('checked', false);
+					});
+					
+					$(this).children('.updateChkbox').prop('checked', true);
+					
+				}
+				
+			});
 			
-			if($(this).children('.updateChkbox').prop('checked')) {
-				
-				$(this).children('.updateChkbox').prop('checked', false);
-				
-			} else {
-				
-				$('.project').children('.updateChkbox').each(function() {
-					$(this).prop('checked', false);
-				});
-				
-				$(this).children('.updateChkbox').prop('checked', true);
-				
-			}
+		}
+		
+		function selectDeleteChkbox() {
 			
-			
-			if($(this).children('.deleteChkbox').prop('checked')) {
+			$('.project').on('click', function() {
 				
-				$(this).children('.deleteChkbox').prop('checked', false);
+				if($(this).children('.deleteChkbox').prop('checked')) {
+					
+					$(this).children('.deleteChkbox').prop('checked', false);
+					
+				} else {
+					$(this).children('.deleteChkbox').prop('checked', true);
+				}
 				
-			} else {
-				$(this).children('.deleteChkbox').prop('checked', true);
-			}
+			});
 			
-		});
+		}
 		
 		$('#updateConfirmBtn a').on('click', function() {
 			
@@ -631,17 +654,22 @@
 			
 		});
 		
-		$('.project').on('dblclick', function pjDbl() {
+		function selectOneProject() {
 			
-			var pNo = $(this).children('#pNo').val();
-			var pTitle = $(this).children('h3').text();
-			var eNo = sessionStorage.getItem("loginNo");
+			$('.project').on('dblclick', function pjDbl() {
+				
+				var pNo = $(this).children('.pNo').val();
+				var pTitle = $(this).children('h3').text();
+				var eNo = sessionStorage.getItem("loginNo");
+				
+				if(!upBtnChk && !delBtnChk) {
+					location.href = '<%=request.getContextPath()%>/selectList.wo?pNo='+pNo+'&pTitle='+pTitle+'&eNo='+eNo;
+				}
+				
+			});
 			
-			if(!upBtnChk && !delBtnChk) {
-				location.href = '<%=request.getContextPath()%>/selectList.wo?pNo='+pNo+'&pTitle='+pTitle+'&eNo='+eNo;
-			}
-			
-		})
+		}
+
 		
 		$('#search').keyup(function() {
 			
