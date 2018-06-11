@@ -32,10 +32,10 @@ public class EmployeeFindPassword extends HttpServlet {
 		emp.setEmail(email);
 		emp.seteId(empId);
 		
-		int findPwd = new EmployeeService().findPassword(emp);
+		emp = new EmployeeService().findPassword(emp);
 		
 		response.setContentType("application/json; charset=UTF-8");
-		new Gson().toJson(findPwd, response.getWriter());
+		new Gson().toJson(emp, response.getWriter());
 		
 	}
 	

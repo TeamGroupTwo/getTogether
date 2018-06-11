@@ -15,5 +15,9 @@
 	<%@ include file="views/common/aside.jsp" %>
 	<%@ include file="views/common/header.jsp" %>
 	
+	<script>
+	
+	</script>
+	
 </body>
 </html>

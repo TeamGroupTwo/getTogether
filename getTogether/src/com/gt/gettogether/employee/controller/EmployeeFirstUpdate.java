@@ -46,7 +46,6 @@ public class EmployeeFirstUpdate extends HttpServlet {
 		int result = new EmployeeService().updateEmployee(e);
 		
 		if(result > 0) {
-			System.out.println("업데이트 성공");
 			response.sendRedirect("main.jsp");
 		}
 		else {

@@ -30,10 +30,10 @@ public class EmployeeFindId extends HttpServlet {
 		emp.seteName(empName);
 		emp.setEmail(email);
 		
-		int findId = new EmployeeService().findId(emp);
+		emp = new EmployeeService().findId(emp);
 		
 		response.setContentType("application/json; charset=UTF-8");
-		new Gson().toJson(findId, response.getWriter());
+		new Gson().toJson(emp, response.getWriter());
 	
 	}
 

@@ -189,6 +189,8 @@
       	letter-spacing : -1px;
       	white-space : nowrap;
       	padding-top : 0px;
+      	-webkit-box-shadow: 0 0 0 30px #fff inset ; 
+      	-webkit-text-fill-color: #000;
    }
    .findInput:focus{
 		outline: none;
@@ -199,6 +201,20 @@
 	#onlyVerify{
 		display: none;
 	}
+	.verifySuccess{
+		display : none;
+		background: #5f4d8c;
+   }
+   #findResult{
+   	display : none;
+   	vertical-align: middle;
+	font-family: 'Nanum Gothic', sans-serif;
+	color : #404040;
+	font-size : 1.4em;
+    font-weight : bolder;
+    letter-spacing : -1px;
+    white-space : nowrap;
+   }
 
 </style>
 <title>로그인 화면</title>
@@ -212,7 +228,7 @@
 		</div>
 		<div class="loginArea">
 			<img class="loginImg" src="resources/images/common/loginPassword.png"/>
-			<input type="password" class="loginText" name="ePwd" id="ePwd" placeholder="비밀번호"/>
+			<input type="password" class="loginText" name="ePwd" id="ePwd" placeholder="비밀번호" onkeyup="enterkey();"/>
 		</div>
 		<div class="loginBtn" id="loginOk" onclick="login();">LOGIN</div>
 		<br />
@@ -231,7 +247,10 @@
 				<div class="findBox verifynone" id="onlyPwd"><label class="findLbl">아이디  </label><input type="text" class="findInput" id="empId" /></div>
 				<div class="findBox verifynone"><label class="findLbl">이메일  </label><input type="text" class="findInput" id="email"/></div>
 				<div class="findBox" id="onlyVerify"><label class="findLbl">인증번호  </label><input type="text" class="findInput" id="verifyCode"/></div>
+				<label id="findResult"></label>
 				<div class="findBtn loginBtn" id="findSuccess" onclick="finds();">확인</div>
+				<div class="findBtn loginBtn verifySuccess" id="idSuccess">확인</div>
+				<div class="findBtn loginBtn verifySuccess" id="pwdSuccess">확인</div>
 				<div class="findBtn loginBtn" id="findClose" onclick="popupClose();">닫기</div>
 			</div>
 		</div>
@@ -244,6 +263,11 @@
         history.go(1);
 	};
 	
+	function enterkey() {
+		 if (window.event.keyCode == 13)
+             login();
+	}
+	
 	function login(){
 		if($("#eId").val() == "" || $("#ePwd").val() == "")	
 			alert("아이디와 비밀번호를 모두 입력해주세요.");
@@ -253,7 +277,7 @@
 				type : "POST",
 				data : {
 					eId : $("#eId").val(),
-					ePwd : $("#ePwd").val()
+					empPwd : $("#ePwd").val()
 				},
 				success : function(data) {
 					if(data == null)
@@ -263,6 +287,9 @@
 						sessionStorage.setItem('loginName', data.eName);
 						sessionStorage.setItem('loginId', data.eId);
 						sessionStorage.setItem('loginPwd', data.ePassword); 
+						sessionStorage.setItem('loginProfile', data.profile);
+						sessionStorage.setItem('loginEmail', data.email);
+						sessionStorage.setItem('loginPhone', data.phone);
 						sessionStorage.setItem('loginRcode', data.rCode);
 						sessionStorage.setItem('loginDcode', data.dCode);
 						sessionStorage.setItem('loginRank', data.rName);
@@ -296,6 +323,11 @@
 		$("#onlyPwd").css("display", "none");
 		$(".find-title").css("margin-bottom","35px");
 		$(".findBtn").css("margin-top","50px");
+		$("#findSuccess").css("display", "inline-block");
+		$("#idSuccess").css("display", "none");
+		$("#pwdSuccess").css("display", "none");
+		$(".findInput").css("width", "200px");
+		$("#findResult").css("display", "none");
 	}
 	
 	function findPassword(){
@@ -308,6 +340,11 @@
 		$("#onlyPwd").css("display", "block");
 		$(".find-title").css("margin-bottom","20px");
 		$(".findBtn").css("margin-top","30px");
+		$("#findSuccess").css("display", "inline-block");
+		$("#idSuccess").css("display", "none");
+		$("#pwdSuccess").css("display", "none");
+		$(".findInput").css("width", "200px");
+		$("#findResult").css("display", "none");
 	}
 	
 	function popupClose() {
@@ -316,6 +353,7 @@
 		$("#empName").val("");
 		$("#empId").val("");
 		$("#email").val("");
+		$("#verifyCode").val("");
 	}
 
 	function finds() {
@@ -340,7 +378,7 @@
 						email : email
 					},
 					success : function(data) {
-						if(data == 0)
+						if(data == null)
 							alert("일치하는 정보가 없습니다. 다시 입력해주세요.");
 						else{
 							$("#findTitle").text("인증번호");
@@ -351,6 +389,8 @@
 							$(".findInput").css("width", "150px");
 							$(".findBox").css("margin-right", "75px");
 							
+							var resultId = data.eId;
+							
 							// 이메일 발신 ajax
 							$.ajax({
 								url:"<%=request.getContextPath()%>/sendEmail.emp",	
@@ -358,7 +398,20 @@
 								data : {email : email},
 								async: false,
 								success : function(data) {
-									
+									$("#findSuccess").css("display", "none");
+									$("#idSuccess").css("display", "inline-block");
+									$("#idSuccess").on("click", function() {
+										if(data == $("#verifyCode").val()){
+											 $("#onlyVerify").css("display", "none");
+											 $("#idSuccess").css("display", "none");
+											 $("#findTitle").text("아이디 확인");
+											 $("#findResult").css("display", "block");
+											 $("#findResult").text("아이디 : " + resultId);
+										}
+										else{
+											alert("인증번호와 일치하지 않습니다. 다시 입력해주세요.");
+										}
+									});
 								},
 								error : function() {
 									console.log("이메일 발신 오류발생");
@@ -388,11 +441,49 @@
 						empId : empId
 					},
 					success : function(data) {
- 							
- 								
+						if(data == null)
+							alert("일치하는 정보가 없습니다. 다시 입력해주세요.");
+						else{
+							$("#findTitle").text("인증번호");
+							$(".verifynone").css("display", "none");
+							$("#onlyVerify").css("display", "block");
+							$(".find-title").css("margin-bottom","70px");
+							$(".findBtn").css("margin-top","80px");
+							$(".findInput").css("width", "150px");
+							$(".findBox").css("margin-right", "75px");
+							
+							var resultPwd = data.ePassword;
+							
+							// 이메일 발신 ajax
+							$.ajax({
+								url:"<%=request.getContextPath()%>/sendEmail.emp",	
+								type : "POST",
+								data : {email : email},
+								async: false,
+								success : function(data) {
+									$("#findSuccess").css("display", "none");
+									$("#pwdSuccess").css("display", "inline-block");
+									$("#pwdSuccess").on("click", function() {
+										if(data == $("#verifyCode").val()){
+											 $("#onlyVerify").css("display", "none");
+											 $("#pwdSuccess").css("display", "none");
+											 $("#findTitle").text("비밀번호 확인");
+											 $("#findResult").css("display", "block");
+											 $("#findResult").text("비밀번호 : " + resultPwd);
+										}
+										else{
+											alert("인증번호와 일치하지 않습니다. 다시 입력해주세요.");
+										}
+									});
+								},
+								error : function() {
+									console.log("이메일 발신 오류발생");
+								}
+							});
+ 						}			
 					},
 					error: function() {
-						console.log("아이디 찾기 오류발생");
+						console.log("비밀번호 찾기 오류발생");
 					}
 				});
 			}

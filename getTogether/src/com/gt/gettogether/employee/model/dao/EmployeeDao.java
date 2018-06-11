@@ -114,10 +114,10 @@ public class EmployeeDao {
 		return result;
 	}
 
-	public int findId(Connection con, Employee emp) {
+	public Employee findId(Connection con, Employee emp) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		int result = -1;
+		Employee eResult = null;
 		
 		try {
 			pstmt = con.prepareStatement(prop.getProperty("findId"));
@@ -127,8 +127,10 @@ public class EmployeeDao {
 			
 			rset = pstmt.executeQuery();
 			
-			if(rset.next())
-				result = rset.getInt("RESULT");
+			if(rset.next()){
+				eResult = new Employee();
+				eResult.seteId(rset.getString("E_ID"));
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -138,17 +140,17 @@ public class EmployeeDao {
 			close(pstmt);			
 		}
 		
-		return result;
+		return eResult;
 	}
 
-	public int findPassword(Connection con, Employee emp) {
+	public Employee findPassword(Connection con, Employee emp) {
 		
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		int result = -1;
+		Employee eResult = null;
 		
 		try {
-			pstmt = con.prepareStatement(prop.getProperty("findId"));
+			pstmt = con.prepareStatement(prop.getProperty("findPassword"));
 			pstmt.setInt(1, emp.geteNo());
 			pstmt.setString(2, emp.geteName());
 			pstmt.setString(3, emp.getEmail());
@@ -156,8 +158,10 @@ public class EmployeeDao {
 			
 			rset = pstmt.executeQuery();
 			
-			if(rset.next())
-				result = rset.getInt("RESULT");
+			if(rset.next()){
+				eResult = new Employee();
+				eResult.setePassword(rset.getString("E_PASSWORD"));
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -167,7 +171,7 @@ public class EmployeeDao {
 			close(pstmt);			
 		}
 		
-		return result;
+		return eResult;
 	}
 
 }

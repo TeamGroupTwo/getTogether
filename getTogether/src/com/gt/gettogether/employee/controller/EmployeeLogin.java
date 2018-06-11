@@ -24,7 +24,7 @@ public class EmployeeLogin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String eId = request.getParameter("eId");
-		String ePwd = request.getParameter("ePwd");
+		String ePwd = request.getParameter("empPwd");
 		
 		Employee emp = new Employee();
 		emp.seteId(eId);

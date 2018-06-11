@@ -4,7 +4,7 @@
 <%  ArrayList<String> roomList = (ArrayList<String>)application.getAttribute("roomList");
 	String chat_id = request.getParameter("chat_id");
 	String room = (String)request.getAttribute("room");
-	%>
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,6 +58,7 @@
       border :1px solid #404040;
       margin : auto;
       width : 34px;
+      height : 34px;
    }
    #empName {
       clear : none;
@@ -134,7 +135,7 @@
       <div class="hAll" id="right-side">
          <div class="hAll" id="chat" onclick="chatWindow();"></div>
          <div class="hAll" id="empWrap" onclick="dropdownMenu();">
-            <div class="hAll" id="profile" style="content:url('/gt/resources/images/common/profile.png');"></div>
+            <div class="hAll" id="profile"></div>
             <div class="hText hAll" id="empName"></div>
          </div>
       </div>
@@ -154,6 +155,14 @@
    		
 	    // 로그인 한 사원의 이름을 가져오는 메소드
 	 	$(function() { 
+	 		
+	 		var myProfile = sessionStorage.getItem('loginProfile');
+	 		
+	 		if(myProfile == "undefined")
+	 			$("#profile").css("content", "url('/gt/resources/images/common/profile.png')");
+	 		else
+	 			$("#profile").css("content", "url(/gt/resources/images/profiles/" + myProfile + ")");
+	 		
 	 		var loginName = sessionStorage.getItem('loginName');
    			$('#empName').text(loginName);
    			if(loginName == "관리자1" || loginName == "관리자2"){

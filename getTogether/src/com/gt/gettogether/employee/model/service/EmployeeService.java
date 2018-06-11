@@ -50,26 +50,26 @@ public class EmployeeService {
 		return result;
 	}
 	
-	public int findId(Employee emp){
+	public Employee findId(Employee emp){
 		
 		Connection con = getConnection();
 		
-		int result = eDao.findId(con, emp);
+		Employee eResult = eDao.findId(con, emp);
 		
 		close(con);
 		
-		return result;
+		return eResult;
 	}	
 	
-	public int findPassword(Employee emp){
+	public Employee findPassword(Employee emp){
 		
 		Connection con = getConnection();
 		
-		int result = eDao.findPassword(con, emp);
+		Employee eResult = eDao.findPassword(con, emp);
 		
 		close(con);
 		
-		return result;
+		return eResult;
 	}	
 
 }
