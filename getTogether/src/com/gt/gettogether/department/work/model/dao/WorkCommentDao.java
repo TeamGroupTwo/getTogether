@@ -3,6 +3,7 @@ package com.gt.gettogether.department.work.model.dao;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -190,6 +191,53 @@ public class WorkCommentDao {
 		}
 		
 		return wc;
+		
+	}
+
+	public ArrayList<WorkComment> selectWorkCommentListAll(Connection con, int pNo) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<WorkComment> wcList = null;
+		
+		String sql = prop.getProperty("selectWorkCommentListAll");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+
+			pstmt.setInt(1, pNo);
+			
+			rset = pstmt.executeQuery();
+			
+			wcList = new ArrayList<WorkComment>();
+			
+			while(rset.next()) {
+				
+				WorkComment wc = new WorkComment();
+				
+				wc.setWcNo(rset.getInt("WC_NO"));
+				wc.setWcWriter(rset.getString("WC_WRITER"));
+				wc.setWcContent(rset.getString("WC_CONTENT"));
+				wc.setWcDate(rset.getDate("WC_DATE"));
+				wc.setwNo(rset.getInt("W_NO"));
+				wc.seteNo(rset.getInt("E_NO"));
+				wc.setProfile(rset.getString("PROFILE"));
+				
+				wcList.add(wc);
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			close(rset);
+			close(pstmt);
+			
+		}
+		
+		return wcList;
 		
 	}
 	

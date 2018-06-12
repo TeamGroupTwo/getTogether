@@ -76,6 +76,18 @@ public class WorkCommentService {
 		
 		return wc;
 	}
+
+	public ArrayList<WorkComment> selectWorkCommentListAll(int pNo) {
+
+		Connection con = getConnection();
+		
+		ArrayList<WorkComment> wcList = new WorkCommentDao().selectWorkCommentListAll(con, pNo);
+		
+		close(con);
+		
+		return wcList;
+		
+	}
 	
 }
 
