@@ -473,42 +473,28 @@
 						
 						for(var idx in data) {
 							
+				        	$oneComment = $('<div>');
+				        	$wcNo = $('<input>');
+				        	$oneComment_left = $('<div>');
+				        	$profile = $('<div>');
+				        	$writer = $('<h3>');
+				        	$oneComment_right = $('<div>');
+				        	$content = $('<p>');
+							
 							if(data[idx].wNo == $(this).parent().siblings('.wNo').val()) {
-								
-					        	var $oneComment = $('<div>');
-					        	var $wcNo = $('<input>');
-					        	var $oneComment_left = $('<div>');
-					        	var $profile = $('<div>');
-					        	var $writer = $('<h3>');
-					        	var $oneComment_right = $('<div>');
-					        	var $content = $('<p>');
-					        	var $deletewcBtn = $('<div>');
-					        	var $updatewcBtn = $('<div>');
-					        	var $updatewcCancelBtn = $('<div>');
-					        	var $updatewcConfirmBtn = $('<div>');
-					        	
+
 					        	$oneComment.addClass('oneComment');
 					        	$wcNo.addClass('wcNo');
 					        	$wcNo.attr('type', 'hidden');
 					        	$oneComment_left.addClass('oneComment_left');
 					        	$profile.addClass('hAll profile');
 					        	$oneComment_right.addClass('oneComment_right');
-					        	$deletewcBtn.addClass('content-left-buttons defaultBtn deletewcBtn');
-					        	$deletewcBtn.text('삭제');
-					        	$updatewcBtn.addClass('content-left-buttons defaultBtn updatewcBtn');
-					        	$updatewcBtn.text('수정');
-					        	$updatewcCancelBtn.addClass('content-left-buttons defaultBtn updatewcCancelBtn');
-					        	$updatewcCancelBtn.text('취소');
-					        	$updatewcConfirmBtn.addClass('content-left-buttons defaultBtn updatewcConfirmBtn');
-					        	$updatewcConfirmBtn.text('확인');
+
 					        	
 					        	$oneComment_left.append($profile);
 					        	$oneComment_left.append($writer);
 					        	$oneComment_right.append($content);
-					        	$oneComment_right.append($deletewcBtn);
-					        	$oneComment_right.append($updatewcBtn);
-					        	$oneComment_right.append($updatewcCancelBtn);
-					        	$oneComment_right.append($updatewcConfirmBtn);
+
 					        	
 					        	$oneComment.append($wcNo);
 					        	$oneComment.append($oneComment_left);
@@ -519,12 +505,35 @@
 								if(data[idx].profile == null) {
 									$profile.attr("style", "content:url('/gt/resources/images/common/profile.png')");
 								} else {
-									$profile.attr("style", "content:url('')")
+									$profile.attr("style", "content:url("+data[idx].profile+")")
 								}
 								
 								$wcNo.val(data[idx].wcNo);
 								$writer.text(data[idx].wcWriter);
 								$content.text(data[idx].wcContent);
+								
+							}
+							
+ 							if(data[idx].eNo == sessionStorage.getItem('loginNo')) {
+								
+					        	var $deletewcBtn = $('<div>');
+					        	var $updatewcBtn = $('<div>');
+					        	var $updatewcCancelBtn = $('<div>');
+					        	var $updatewcConfirmBtn = $('<div>');
+					        	
+					        	$deletewcBtn.addClass('content-left-buttons defaultBtn deletewcBtn');
+					        	$deletewcBtn.text('삭제');
+					        	$updatewcBtn.addClass('content-left-buttons defaultBtn updatewcBtn');
+					        	$updatewcBtn.text('수정');
+					        	$updatewcCancelBtn.addClass('content-left-buttons defaultBtn updatewcCancelBtn');
+					        	$updatewcCancelBtn.text('취소');
+					        	$updatewcConfirmBtn.addClass('content-left-buttons defaultBtn updatewcConfirmBtn');
+					        	$updatewcConfirmBtn.text('확인');
+					        	
+					        	$oneComment_right.append($deletewcBtn);
+					        	$oneComment_right.append($updatewcBtn);
+					        	$oneComment_right.append($updatewcCancelBtn);
+					        	$oneComment_right.append($updatewcConfirmBtn);
 								
 							}
 							
