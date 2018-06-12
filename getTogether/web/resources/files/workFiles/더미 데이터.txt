@@ -1,0 +1,16 @@
+
+
+--오홍근 더미 데이터
+
+INSERT INTO EMPLOYEE VALUES('20185001', 'gt0041', '0000', '유지애','01055313135', 'jiae@test.com', null,'R6', 'D5');
+INSERT INTO EMPLOYEE VALUES('20185002', 'gt0042', '0000', '류수정','01013548754', 'sj@test.com', null,'R5', 'D5');
+INSERT INTO EMPLOYEE VALUES('20185003', 'gt0043', '0000', '김태연','01046838438', 'taeng9@test.com', null,'R4', 'D5');
+INSERT INTO EMPLOYEE VALUES('20185004', 'gt0044', '0000', '이지은','01084984353', 'iu@test.com', null,'R3', 'D5');
+INSERT INTO EMPLOYEE VALUES('20185005', 'gt0045', '0000', '최예원','01084891353', 'arin@test.com', null,'R3', 'D5');
+INSERT INTO EMPLOYEE VALUES('20185006', 'gt0046', '0000', '오홍근','01091954216', 'robert@test.com', null,'R2', 'D5');
+INSERT INTO EMPLOYEE VALUES('20185007', 'gt0047', '0000', '김경민','01091954216', 'kimkimkim@test.com', null,'R2', 'D5');
+INSERT INTO EMPLOYEE VALUES('20185008', 'gt0048', '0000', '장신용','01091954216', 'credit@test.com', null,'R1', 'D5');
+INSERT INTO EMPLOYEE VALUES('20185009', 'gt0049', '0000', '윤제준','01091954216', 'yjj@test.com', null,'R1', 'D5');
+INSERT INTO EMPLOYEE VALUES('20185010', 'gt0050', '0000', '조규형','01091954216', 'pilot@test.com', null,'R1', 'D5');
+
+192.168.20.46

@@ -7,34 +7,29 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class BoardCommentDeleteServlet
- */
-@WebServlet("/WorkCommentDeleteServlet")
+import com.gt.gettogether.department.work.model.service.WorkCommentService;
+
+@WebServlet("/delete.wc")
 public class WorkCommentDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public WorkCommentDeleteServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    public WorkCommentDeleteServlet() { }
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+
+		int wcNo = Integer.parseInt(request.getParameter("wcNo"));
+		
+		int result = new WorkCommentService().deleteWorkComment(wcNo);
+		
+		if(result > 0) {
+			response.getWriter().print(result);
+		} else {
+			
+		}
+		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

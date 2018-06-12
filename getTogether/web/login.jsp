@@ -294,7 +294,7 @@
 						sessionStorage.setItem('loginDcode', data.dCode);
 						sessionStorage.setItem('loginRank', data.rName);
 						sessionStorage.setItem('loginDept', data.dName);
-						
+
 						if(data.eId == 'admin1' || data.eId == 'admin2')							
 							location.href = "<%=request.getContextPath()%>/views/admin/adminAuthority.jsp";
 						else if(data.email == null)

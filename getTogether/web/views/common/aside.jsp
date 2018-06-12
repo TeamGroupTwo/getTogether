@@ -40,7 +40,7 @@
 </head>
 <body>
 	<div id="aside">
-		<div class="menu" onclick="">
+		<div class="menu" onclick="gotoNotice();">
 			<img class="aImage" src="<%= request.getContextPath() %>/resources/images/common/notice.png"/>
 			<p class="aText" id="noticeTxt">공지사항</p>
 		</div>
@@ -57,6 +57,7 @@
 			<p class="aText" id="addressTxt">주소록</p>
 		</div>
 	</div>
+
 	<script>
 		function selectPjList() {
 			console.log(sessionStorage.getItem('loginDcode'));
@@ -65,7 +66,10 @@
 		function gotoAddress(){
 			location.href = "/gt/alist.do";
 		}
-		
+		function gotoNotice(){
+			location.href = "/gt/selectList.no";
+		}
+
 	</script>
 	
 </body>

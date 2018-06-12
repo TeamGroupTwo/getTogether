@@ -11,11 +11,13 @@ public class WorkComment {
 	private int wNo;
 	private int eNo;
 	
+	private String profile;
+	
 	public WorkComment() {
 		super();
 	}
 
-	public WorkComment(int wcNo, String wcWriter, String wcContent, Date wcDate, int wNo, int eNo) {
+	public WorkComment(int wcNo, String wcWriter, String wcContent, Date wcDate, int wNo, int eNo, String profile) {
 		super();
 		this.wcNo = wcNo;
 		this.wcWriter = wcWriter;
@@ -23,6 +25,7 @@ public class WorkComment {
 		this.wcDate = wcDate;
 		this.wNo = wNo;
 		this.eNo = eNo;
+		this.profile = profile;
 	}
 
 	public int getWcNo() {
@@ -73,10 +76,18 @@ public class WorkComment {
 		this.eNo = eNo;
 	}
 
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
+
 	@Override
 	public String toString() {
 		return "WorkComment [wcNo=" + wcNo + ", wcWriter=" + wcWriter + ", wcContent=" + wcContent + ", wcDate="
-				+ wcDate + ", wNo=" + wNo + ", eNo=" + eNo + "]";
+				+ wcDate + ", wNo=" + wNo + ", eNo=" + eNo + ", profile=" + profile + "]";
 	}
 
 	@Override
@@ -84,6 +95,7 @@ public class WorkComment {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + eNo;
+		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		result = prime * result + wNo;
 		result = prime * result + ((wcContent == null) ? 0 : wcContent.hashCode());
 		result = prime * result + ((wcDate == null) ? 0 : wcDate.hashCode());
@@ -102,6 +114,11 @@ public class WorkComment {
 			return false;
 		WorkComment other = (WorkComment) obj;
 		if (eNo != other.eNo)
+			return false;
+		if (profile == null) {
+			if (other.profile != null)
+				return false;
+		} else if (!profile.equals(other.profile))
 			return false;
 		if (wNo != other.wNo)
 			return false;
@@ -124,5 +141,5 @@ public class WorkComment {
 			return false;
 		return true;
 	}
-	
+
 }

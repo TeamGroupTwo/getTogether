@@ -14,13 +14,14 @@ public class Work {
 	private int fNo;
 	
 	private String fName;
+	private String profile;
 	
 	public Work() {
 		super();
 	}
 
 	public Work(int wNo, String wTitle, String wContent, String wWriter, int pNo, Date wDate, int eNo, int fNo,
-			String fName) {
+			String fName, String profile) {
 		super();
 		this.wNo = wNo;
 		this.wTitle = wTitle;
@@ -31,6 +32,7 @@ public class Work {
 		this.eNo = eNo;
 		this.fNo = fNo;
 		this.fName = fName;
+		this.profile = profile;
 	}
 
 	public int getwNo() {
@@ -105,10 +107,19 @@ public class Work {
 		this.fName = fName;
 	}
 
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
+
 	@Override
 	public String toString() {
 		return "Work [wNo=" + wNo + ", wTitle=" + wTitle + ", wContent=" + wContent + ", wWriter=" + wWriter + ", pNo="
-				+ pNo + ", wDate=" + wDate + ", eNo=" + eNo + ", fNo=" + fNo + ", fName=" + fName + "]";
+				+ pNo + ", wDate=" + wDate + ", eNo=" + eNo + ", fNo=" + fNo + ", fName=" + fName + ", profile="
+				+ profile + "]";
 	}
 
 	@Override
@@ -119,6 +130,7 @@ public class Work {
 		result = prime * result + ((fName == null) ? 0 : fName.hashCode());
 		result = prime * result + fNo;
 		result = prime * result + pNo;
+		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		result = prime * result + ((wContent == null) ? 0 : wContent.hashCode());
 		result = prime * result + ((wDate == null) ? 0 : wDate.hashCode());
 		result = prime * result + wNo;
@@ -146,6 +158,11 @@ public class Work {
 		if (fNo != other.fNo)
 			return false;
 		if (pNo != other.pNo)
+			return false;
+		if (profile == null) {
+			if (other.profile != null)
+				return false;
+		} else if (!profile.equals(other.profile))
 			return false;
 		if (wContent == null) {
 			if (other.wContent != null)
