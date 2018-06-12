@@ -88,12 +88,26 @@ public class WorkService {
 			
 			// 기존 파일이 있으면
 			if(wfResult > 0) {
+
+				String fNameForDelete = wDao.fileNameSelect(con, wfResult);
 				
 				f.setfNo(wfResult);
 				int fResult = wDao.updateFiles(con, f);
 				
 				if(fResult > 0) {
-					// 여기부터 시작하면됨
+					
+					File file = new File(f.getfPath()+"/"+fNameForDelete);
+					
+			        if( file.exists() ){
+			            if(file.delete()){
+			                System.out.println("파일삭제 성공");
+			            }else{
+			                System.out.println("파일삭제 실패");
+			            }
+			        }else{
+			            System.out.println("파일이 존재하지 않습니다.");
+			        }
+					
 					int bResult = wDao.updateWorkWithUpdateFiles(con, w);
 					
 					if(bResult > 0) {
@@ -142,29 +156,48 @@ public class WorkService {
 		
 	}
 	
-	public int deleteWork(String fName, String fPath) {
+	public int deleteWork(int wNo, String fName, String fPath) {
 		
 		Connection con = getConnection();
+		WorkDao wDao = new WorkDao();
+		int result = 0;
 		
-		int result = new WorkDao().deleteWork(con, fName);
-		
-		if(result > 0) {
+		if(fName == "") {
 			
-			commit(con);
-			System.out.println(fPath+"/"+fName);
-			File file = new File(fPath+"/"+fName);
+			result = wDao.deleteWork(con, wNo);
 			
-	        if( file.exists() ){
-	            if(file.delete()){
-	                System.out.println("파일삭제 성공");
-	            }else{
-	                System.out.println("파일삭제 실패");
-	            }
-	        }else{
-	            System.out.println("파일이 존재하지 않습니다.");
-	        }
+		} else {
+			
+			int wResult = wDao.deleteWork(con, wNo);
+			
+			if(wResult > 0) {
+				
+				int fResult = wDao.deleteFiles(con, fName);
+				
+				if(fResult > 0) {
+					
+					File file = new File(fPath+"/"+fName);
+					
+			        if( file.exists() ){
+			            if(file.delete()){
+			                System.out.println("파일삭제 성공");
+			            }else{
+			                System.out.println("파일삭제 실패");
+			            }
+			        }else{
+			            System.out.println("파일이 존재하지 않습니다.");
+			        }
+					
+				}
+				result = fResult;
+				
+			} else {
+				result = wResult;
+			}
 			
 		}
+		
+		if(result > 0) commit(con);
 		else rollback(con);
 		
 		close(con);

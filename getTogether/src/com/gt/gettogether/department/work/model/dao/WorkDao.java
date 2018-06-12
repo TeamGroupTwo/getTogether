@@ -194,7 +194,7 @@ public class WorkDao {
 		
 	}
 	
-	public int deleteWork(Connection con, String fName) {
+	public int deleteWork(Connection con, int wNo) {
 		
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -205,7 +205,7 @@ public class WorkDao {
 			
 			pstmt = con.prepareStatement(sql);
 			
-			pstmt.setString(1, fName);
+			pstmt.setInt(1, wNo);
 			
 			result = pstmt.executeUpdate();
 			
@@ -214,7 +214,6 @@ public class WorkDao {
 		} finally {
 			close(pstmt);
 		}
-				
 		
 		return result;
 		
@@ -396,6 +395,64 @@ public class WorkDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		
+		return result;
+		
+	}
+
+	public int deleteFiles(Connection con, String fName) {
+
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String sql = prop.getProperty("deleteFiles");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+
+			pstmt.setString(1, fName);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
+
+	public String fileNameSelect(Connection con, int wfResult) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String result = null;
+		
+		String sql = prop.getProperty("fileNameSelect");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+
+			pstmt.setInt(1, wfResult);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = rset.getString("F_NAME");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			close(rset);
+			close(pstmt);
+			
 		}
 		
 		return result;

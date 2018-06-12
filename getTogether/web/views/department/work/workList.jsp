@@ -478,6 +478,7 @@
 					
 					url : "/gt/delete.wo",
 					data : {
+						"wNo" : wNo,
 						"fName" : fName
 					},
 					type : "POST",
