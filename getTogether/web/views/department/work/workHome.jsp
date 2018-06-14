@@ -400,11 +400,27 @@
 			
 		});
 		
+		// 프로젝트를 선택했을때 하위 속성인 input의 class이름이 updateChkbox가 클릭됐을 경우 해당 함수를 실행
+		// unbind는 해당 이벤트가 발생했을때 실행을 취소하라는 메소드
+		// stopPropagation();은 해당 태그의 상위 태그에 걸린 이벤트까지 같이 발생하는 버블업 현상을 제어해주는 메소드
+		// unbind와 stopPropagation()이 둘 다 있어야 각각 적용이 되기 때문에 둘 다 제거하면 안됨
+		$('.project').delegate("input[class=updateChkbox]" ,"click", function(e) {
+			$(this).unbind("click");
+			e.stopPropagation();
+ 			console.log("check");
+ 			
+ 			selectUpdateChkboxOne();
+ 		});
+		
+		$('.project').delegate("input[class=deleteChkbox]" ,"click", function(e) {
+			$(this).unbind("click");
+			e.stopPropagation();
+ 			console.log("check");
+ 		});
+		
 		function selectUpdateChkbox() {
 			
 			$('.project').on('click', function() {
-				
-				//console.log($(this).children('h3').text());
 				
 				if($(this).children('.updateChkbox').prop('checked')) {
 					
@@ -412,11 +428,25 @@
 					
 				} else {
 					
-					$('.project').children('.updateChkbox').each(function() {
-						$(this).prop('checked', false);
-					});
+					$('.project').children('.updateChkbox').prop('checked', false);
 					
 					$(this).children('.updateChkbox').prop('checked', true);
+					
+				}
+				
+			});
+			
+		}
+		
+		function selectUpdateChkboxOne() {
+			
+			$('.updateChkbox').on('click', function() {
+				
+				if($(this).prop('checked')) {
+					
+					$('.updateChkbox').prop('checked', false);
+					
+					$(this).prop('checked', true);
 					
 				}
 				
@@ -433,7 +463,9 @@
 					$(this).children('.deleteChkbox').prop('checked', false);
 					
 				} else {
+					
 					$(this).children('.deleteChkbox').prop('checked', true);
+					
 				}
 				
 			});
