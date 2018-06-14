@@ -524,7 +524,7 @@
 				
 				if($(this).prop('checked')) {
 					$pjDiv = $(this).parent();
-					pNo = $(this).siblings('#pNo').val();
+					pNo = $(this).siblings('.pNo').val();
 					pTitle = $(this).siblings('h3').text();
 				}
 				
