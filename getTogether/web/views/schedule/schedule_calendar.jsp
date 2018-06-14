@@ -1,18 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<html>
 <head>
         <meta http-equiv="Content-Language" content="ko">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Calendar</title>
-        <link rel="stylesheet" type="text/css" href="../../resources/css/schedule.css" />
+        <script src="/gt/resources/js/jquery-3.3.1.min.js"></script>
         <script type="text/javascript">
             var rege_0_type = "calendar";
             var rege_0_1 = "";
             var rege_0_2 = "";
         </script>
         <style>
+        	.dayimage{
+        	width : 40px;
+        	height : 40px;
+        	position : absolute;
+        	}
 			td{
                 font-size: 15px;
             }
@@ -23,7 +28,7 @@
         </head>
         <body>
         
-        <script type=text/javascript>
+        <script type="text/javascript">
         var yearSelect;
         var monthSelect;
         var oYearSelect;
@@ -906,7 +911,6 @@
            
           setCalendar(date.getFullYear(), date.getMonth() + 1);
          }
-        
         }
         
         function nextMonth()
@@ -928,6 +932,7 @@
         
         function setCalendar(year, month)
         {
+        	
          var i;
          var oYearSelect = document.getElementById('yearSelect');
          var oMonthSelect = document.getElementById('monthSelect');
@@ -1009,8 +1014,16 @@
            yearmemorialDay = true;
         
           /* day print */
+          var months = month;
+          var days = i + 1;
+          if(days < 10){
+				days = "0"+days;
+			}
+			if(months < 10){
+				months = "0"+months;
+			}
           dayHTML = "<p onclick = 'days("+ (i + 1) +");' align=left><font id=ln"+ (i + 1) +" color='COLOR'>HIGHLIGHT_START" +
-              ( i + 1 ) + "HIGHLIGHT_END</font>" + "<br><small></P>";
+              ( i + 1 ) + "HIGHLIGHT_END</font>" +"<input type=hidden value="+year + months + days +">"+"<br><small></P>";
 
           /* decoration */
           if (solarDate.year < 1991 && solarDate.month == 10 && solarDate.day == 9)
@@ -1050,6 +1063,7 @@
           document.getElementById('dayCell' + index).innerHTML = dayHTML;
           
          }
+         dayselect();
         }
         
         function lunarMonthCheck()
@@ -1083,18 +1097,18 @@
         
         <input VALUE="◀" onClick="javascript:prevMonth();" class="myButton">
             
-         <select id=yearSelect style='font-family:Arial;font-size:20px;color:black;' onChange='setCalendar()'>
+         <select class = scheduleselect id=yearSelect style='font-family:Arial;font-size:20px;color:black;' onChange='setCalendar()'>
         
-        <script type=text/javascript>
+        <script type="text/javascript">
          for (var i = 1800, selectStr = ""; i <= 2101; i++)
           selectStr += "<option value='" + i + "'>" + i + " 년</option>";
          selectStr += "</select>";
          document.write(selectStr);
         </script>
         
-        </select><select id=monthSelect style='font-family:Arial;font-size:20px;color:black' id=monthSelect onChange='setCalendar()'>
+        </select><select class = scheduleselect id=monthSelect style='font-family:Arial;font-size:20px;color:black' id=monthSelect onChange='setCalendar()'>
         
-        <script type=text/javascript>
+        <script type="text/javascript">
          for (var i = 1, selectStr = ""; i <= 12; i++)
           selectStr += "<option value='" + i + "'>" + i + " 월</option>";
          selectStr += "</select>";
@@ -1134,13 +1148,13 @@
            </tr>
            <tr><td colspan=7 height=7 nowrap></td></tr>
         
-        <script type=text/javascript>
+        <script type="text/javascript">
          for (i = 0; i < 6; i++)
          {
           document.write("<tr height='65'>");
         
           for (j = 0; j < 7; j++)
-           document.write("<td vAlign='top' cellSpacing='1' id='dayCell" + ( i * 7 + j )+ "'></td>");
+           document.write("<td style='height : 75px;' vAlign='top' cellSpacing='1' id='dayCell" + ( i * 7 + j )+ "'></td>");
           document.write("</tr>");
          }
         
@@ -1149,7 +1163,7 @@
           ayear = rege_0_1;
           amonth = 1;
          }
-        
+         
          if (typeof(rege_0_2) != "undefined" && 1 <= rege_0_2 && rege_0_2 <= 12)
           amonth = rege_0_2;
         
@@ -1158,7 +1172,43 @@
         setCalendar(ayear, amonth);
         getToDate();
         </script>
-        
+        <input type = "hidden" id = "empNo">
+		<script>
+		var empNo = sessionStorage.getItem("loginNo");
+		$('#empNo').html(empNo);
+		$(function(){
+			dayselect();
+		});
+		function dayselect(){
+			$('p').children('input').each(function(){
+				var $font = $(this).siblings('font'); 
+				$font.children('div').remove();
+				var ckli = this.value;
+					$.ajax({
+						url : "<%= request.getContextPath()%>/schedule_ckli.do?ckli="+ckli,
+						data : {
+							empNo : empNo,
+							ckli : ckli
+						},
+						type : "GET",
+						success : function (data){
+							var $label = $('<label>');
+							var $div = $('<div>');
+							$div.css("background","rgba(109,91,151,0.7)");
+							$div.css("color",'white');
+							$div.css('font-size','15px');
+							$div.css('text-align' , 'right');
+							$div.text(data);
+							if(data > 0){
+								$font.append($div);
+							}
+						}, error : function(data){
+							console.log("실패당");
+						}
+					});
+				});
+		}
+		</script>
         </body>
         
         </html>

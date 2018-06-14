@@ -52,15 +52,15 @@ public class ScheduleInsert extends HttpServlet {
 		
 		System.out.println("d : " + d);
 		
-		System.out.println("ã…‡ã…‡  : " + bFormat);
-			System.out.println("------------------------------");
-			System.out.println("ì‚¬ ì› ì€ ? : " + eNo);
-			System.out.println("ì œ ëª© ì€ ? : " + title);
-			System.out.println("ë‚´ ìš© ì€ ? : " + content);
-			System.out.println("ì‹œ ê°„ ì€ ? : " + time);
-			System.out.println("ìƒ‰ ê¹” ì€ ? : " + color);
-			System.out.println("ë‚  ì§œ ëŠ” ? : " + sDate);
-			System.out.println("------------------------------");
+		System.out.println("¤·¤·  : " + bFormat);
+		System.out.println("------------------------------");
+		System.out.println("»ç ¿ø Àº ? : " + eNo);
+		System.out.println("Á¦ ¸ñ Àº ? : " + title);
+		System.out.println("³» ¿ë Àº ? : " + content);
+		System.out.println("½Ã °£ Àº ? : " + time);
+		System.out.println("»ö ±ò Àº ? : " + color);
+		System.out.println("³¯ Â¥ ´Â ? : " + sDate);
+		System.out.println("------------------------------");
 
 		
 		Schedule s = new Schedule();
@@ -75,7 +75,7 @@ public class ScheduleInsert extends HttpServlet {
 
 		int result = new ScheduleService().insertSchedule(s);
 		
-		System.out.println("ì„œë¸”ë ›ìœ¼ë¡œ ëŒì™€ì™“ë‹¤ result : " + result);
+		System.out.println("¼­ºí·¿À¸·Î µ¹¿Í¿Ó´Ù result : " + result);
 		
 		System.out.println(s.geteNo());
 		System.out.println(s.getsTitle());

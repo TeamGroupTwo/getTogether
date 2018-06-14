@@ -51,7 +51,7 @@ public class ScheduleList extends HttpServlet {
 			userlist.put("sNo", user.getsNo());
 			result.add(userlist);
 		}
-		System.out.println("ìœ ì € ë¦¬ìŠ¤íŠ¸"+userlist);
+		System.out.println("À¯Àú ¸®½ºÆ®"+userlist);
 		response.setContentType("application/json; charset=UTF-8");
 		response.getWriter().print(result.toJSONString());
 		

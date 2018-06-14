@@ -1,13 +1,11 @@
 package com.gt.gettogether.schedule.model.dao;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -26,16 +24,16 @@ public class ScheduleDao {
 		}
 	}
 
-	public int insertMember(Connection con, Schedule s) {
+	public int insertSchdeule(Connection con, Schedule s) {
 		
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		System.out.println("Ïó¨Í∏¥ Îã§Ïò§ :  " + s);
+		System.out.println("ø©±‰ ¥Ÿø¿ :  " + s);
 		
 		String sql = prop.getProperty("insertSchedule");
 		
-		System.out.println("Ïó¨Í∏∞ÎèÑ Îã§Ïò§ : " + sql);
+		System.out.println("ø©±‚µµ ¥Ÿø¿ : " + sql);
 		try {
 			
 			pstmt = con.prepareStatement(sql);
@@ -49,7 +47,7 @@ public class ScheduleDao {
 			
 			result = pstmt.executeUpdate();
 			
-			System.out.println("Ïó¨Í∏¥ Îã§Ïò§ ÎÇòÍ∞ÑÎã§ : " + result);
+			System.out.println("ø©±‰ ¥Ÿø¿ ≥™∞£¥Ÿ : " + result);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -60,12 +58,35 @@ public class ScheduleDao {
 		return result;
 	}
 
-	public int updateMember(Connection con, Schedule s) {
+	public int updateSchdeule(Connection con, Schedule s) {
+		PreparedStatement pstmt = null;
+		int result = 0;
 		
-		return 0;
+		String sql = prop.getProperty("updateSchedule");
+		
+		try {
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1,s.getsTitle());
+			pstmt.setString(2, s.getsContent());
+			pstmt.setString(3, s.getsColor());
+			pstmt.setDate(4, s.getsDate());
+			pstmt.setString(5, s.getsTime());
+			pstmt.setInt(6, s.getsNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 
-	public int deleteMember(Connection con, int sNo) {
+	public int deleteSchdeule(Connection con, int sNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
@@ -164,19 +185,19 @@ public class ScheduleDao {
 		return list;
 	}
 
-	public ArrayList<Schedule> selectDayOkList(Connection con, int eNo, String sDate) {
+	public ArrayList<Schedule> scheduleDayList(Connection con, int eNo, String date) {
+		
 		ArrayList<Schedule> list = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String sql = prop.getProperty("selectDayOkList");
+		String sql = prop.getProperty("scheduleDayList");
 		
 		try {
-			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, eNo);
-			pstmt.setString(2, sDate);
-			
+			pstmt.setString(2, date);
+		
 			rset = pstmt.executeQuery();
 			
 			list = new ArrayList<Schedule>();
@@ -193,15 +214,53 @@ public class ScheduleDao {
 				list.add(sc);
 			}
 			
-		} catch (Exception e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			close(rset);
 			close(pstmt);
 		}
+		
 		return list;
 	}
 
-
-
+	public ArrayList<Schedule> updateview(Connection con, int sNo, String sTitle) {
+		ArrayList<Schedule> upview = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("updateview");
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1 , sNo);
+			pstmt.setString(2, sTitle);
+			
+			rset = pstmt.executeQuery();
+			
+			upview = new ArrayList<Schedule>();
+			
+			while(rset.next()){
+				Schedule sc = new Schedule();
+				
+				sc.setsNo(rset.getInt("S_NO"));
+				sc.setsTitle(rset.getString("S_TITLE"));
+				sc.setsColor(rset.getString("S_COLOR"));
+				sc.setsTime(rset.getString("S_TIME"));
+				sc.setsDate(rset.getDate("S_DATE"));
+				sc.setsContent(rset.getString("S_CONTENT"));
+				sc.seteNo(rset.getInt("E_NO"));
+				
+				upview.add(sc);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return upview;
+	}
 }

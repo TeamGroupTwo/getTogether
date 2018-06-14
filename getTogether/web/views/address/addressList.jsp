@@ -18,10 +18,12 @@
 ::-webkit-scrollbar-track {background: #efefef; -webkit-border-radius: 10px; border-radius:10px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.2)}
 ::-webkit-scrollbar-thumb {height: 50px; width: 50px; background: rgba(0,0,0,.2); -webkit-border-radius: 8px; border-radius: 8px; -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1)}
 
-	table1{
-	border-collapse: collapse;
+/* #5f4d8c */
+
+	.table1{
+	/* border-collapse: collapse; */
     text-align: center;
-    line-height: 1.5;
+   /*  line-height: 1.5; */
 	}
 	
 	body{
@@ -29,29 +31,25 @@
 	}
 	.department{
 		width : 200px;
-		height: 500px;
+		height: 750px;
 		background-color: #5f4d8c;
 		margin-left: auto;
 		margin-right: auto;
 		border: 1px solid black;
 		text-align: center;
 		font-size: 8pt;
+		
+		
 	}
 	.adrlist{
-		width : 880px;
-		height: 450px;
+		width : 1450px;
+		height: 670px;
 		background-color: white;
 		margin-left: auto;
 		margin-right: auto;
 		border: 1px solid black;
 		text-align: center;
 	}    
-/*  	th{
-	width: 170px;
-	height: 40px;
-	border:1px solid gray;
-	background-color: lightpink;
-	} */
 
 	td{
 	width: 350px;
@@ -72,18 +70,29 @@
 	#pfile{
 		background: #f3f6f7;
 	}
+	
+	.profile_sh {
+      border-radius : 50%;
+      border :1px solid #404040;
+      margin : auto;
+      width : 36px;
+      height : 36px;
+      background-color: #f3f6f7;
+   }
+	
 	h1{
 	margin: 0;
 	margin-top: -15px;
 	margin-bottom: 15px;
-	padding-top: -20px;
-	padding-bottom: -10px;
-	height: 13.5%;
-	line-height: 60px;
+	padding-top: -10px;
+	padding-bottom: 23px;
+	height: 100px;
+	line-height: 100px;
 	color: white;
 	border: 1px solid white;
 	text-shadow: 0 1px 20px #fff;
-	transition-duration: 0.5s;
+	transition-duration: 0.3s;
+	text-align: center;
 	
 	}
 	h1:hover {
@@ -116,16 +125,15 @@
 	<%@ include file="../common/header.jsp" %>
 	
 	
-	<div class="department" id="department" style="position: absolute; top: 120px; left: 230px;">
+	<div class="department" id="department" style="position: absolute; top: 150px; left: 230px;">
 	<br />
 
-	
 	   
-		<h1 onclick="test(1)">회계부</h1><br/>
-		<h1 onclick="test(2)">인사부</h1><br/>
-		<h1 onclick="test(3)">법무부</h1><br/>
-		<h1 onclick="test(4)">개발부</h1><br/>
-		<h1 onclick="test(5)">영업부</h1><br/>
+		<h1 onclick="test(1)">회계부</h1>
+		<h1 onclick="test(2)">인사부</h1>
+		<h1 onclick="test(3)">법무부</h1>
+		<h1 onclick="test(4)">개발부</h1>
+		<h1 onclick="test(5)">영업부</h1>
 		<h1 onclick="test(6)">전략기획부</h1>
 	  
 		
@@ -134,9 +142,9 @@
 	
 <% String[] partList = {"회계부", "인사부", "법무부", "개발부", "영업부", "전략기획부"}; 
 	for(int i = 0 ; i < partList.length ; i++){ %>
-	 <div id="div<%=(i+1) %>" class="adrlist" style="background:white; position: absolute; top: 170px; left: 450px; overflow: auto;">
-		
-		<table class="table1" align="center" id="listArea" >
+	
+	 <div id="div<%=(i+1) %>" class="adrlist" style="background:white; position: absolute; top: 230px; left: 450px; overflow: auto;">	
+		<table class="table1"  id="listArea" >
 		<thead>
 			<tr>
 				<th>   </th>
@@ -145,23 +153,29 @@
 				<th>E-MAIL</th>
 				<th>H.P</th>
 			</tr>
-			</thead>
-			
-			
+			</thead>					
 			 <% for ( Employee a : list) { 
-			 if( a.getdCode().equals("D"+(i+1))) {%>
+			 if( a.getdCode().equals("D"+(i+1))) {
+			 
+				 String profile = a.getProfile();
+				 
+				 if(profile == null)
+					 profile = "/gt/resources/images/common/profile.png";
+				 else
+					 profile = "/gt/resources/images/profiles/" + a.getProfile();
+			 %>
 			<tr>
-			    <td id="pfile"><%=a.getProfile() %></td>
+			    <td id="pfile"><div class="hAll profile_sh"  id="pfile" style="content:url(<%= profile%>);"></div></td>
 				<td><%=a.geteName() %></td>
 				<td><%=a.getrCode() %></td>
 				<td><%=a.getEmail() %></td>
-				<td><%=a.getPhone() %></td>				
+				<td><%=a.getPhone() %></td>
 			</tr>
 			<% } } %> 
-		</table>		
+		</table>
 	</div>
 <% } %>
-	<div id="searchDiv" class="searchDiv adrlist" style="display:none; background:white; position: absolute; top: 170px; left: 450px; overflow: auto;">
+	<div id="searchDiv" class="searchDiv adrlist" style="display:none; background:white; position: absolute; top: 230px; left: 450px; overflow: auto;">
 		
 		<table class="table1" align="center" id="listArea" >
 		<thead>
@@ -173,13 +187,14 @@
 				<th>H.P</th>
 			</tr>
 			</thead>
-			<tbody>
+			<tbody class="table1">
+			
 			</tbody>
 		</table>		
 	</div>
 	</form>
 
-	<div class="searchArea" align="center" style="position: absolute; top: 120px; left: 1090px;">
+	<div class="searchArea" align="center" style="position: absolute; top: 160px; left: 1650px;">
 		<input type="search" id="keyword" placeholder="이름 검색" onkeyup="enterCheck();"/>
 		<button id="sBtn" type="button" onclick="search();">검색</button>
 	</div>
@@ -221,15 +236,24 @@ $(function(){
 					
 						for(var i in data){
 							
+							var profile = data[i].profile;
+							
+							if(profile == null)
+								profile = "/gt/resources/images/common/profile.png";
+							else
+								profile = "/gt/resources/images/profiles/" + profile;
+								
 							var $tr = $('<tr>');
 							//  한 요소(td) 별로 담는다.
-							var $tdProfile = $('<td>').text(data[i].profile); 
+							var $tdProfile = $('<td>');
+							var $divSearchpfile = $('<div id="pfile" class="hAll profile_sh" style="content:url('+ profile +'); padding:0px;">');
 							 $tdProfile.attr('id', 'pfile');
 							var $tdName = $('<td>').text(data[i].eName); 
-							var $tdDept = $('<td>').text(data[i].dCode); 
+							var $tdDept = $('<td>').text(data[i].rCode); 
 							var $tdEmail = $('<td>').text(data[i].email); 
 							var $tdHP = $('<td>').text(data[i].phone);
 							
+							$tdProfile.append($divSearchpfile);
 							$tr.append($tdProfile);
 							$tr.append($tdName);
 							$tr.append($tdDept);

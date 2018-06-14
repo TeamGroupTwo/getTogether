@@ -48,7 +48,7 @@
 			<img class="aImage" src="<%= request.getContextPath() %>/resources/images/common/work.png"/>
 			<p class="aText" id="workTxt">부서게시판</p>
 		</div>
-		<div class="menu" onclick="location.href='<%=request.getContextPath()%>/views/schedule/schedule_main.jsp'">
+		<div class="menu" onclick="goSchedule();">
 			<img class="aImage" src="<%= request.getContextPath() %>/resources/images/common/schedule.png"/>
 			<p class="aText" id="scheduleTxt">일정관리</p>
 		</div>
@@ -57,8 +57,12 @@
 			<p class="aText" id="addressTxt">주소록</p>
 		</div>
 	</div>
-
 	<script>
+
+		function gotoNotice(){
+			location.href="/gt/userNoticeList.no";
+		}
+	
 		function selectPjList() {
 			console.log(sessionStorage.getItem('loginDcode'));
 			location.href = '/gt/selectList.pj?loginDcode='+sessionStorage.getItem('loginDcode');
@@ -66,10 +70,10 @@
 		function gotoAddress(){
 			location.href = "/gt/alist.do";
 		}
-		function gotoNotice(){
-			location.href = "/gt/selectList.no";
+		function goSchedule(){
+			location.href = "<%= request.getContextPath() %>/views/schedule/schedule_memo.jsp";
 		}
-
+		
 	</script>
 	
 </body>

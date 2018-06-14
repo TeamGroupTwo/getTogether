@@ -26,16 +26,17 @@ public class ScheduleDayList extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int eNo = Integer.parseInt(request.getParameter("empNo"));
 		String sDate = request.getParameter("daydate");
-		System.out.println("day í´ë¦­ ì‹œ " + eNo + " : " + sDate);
+		System.out.println("day Å¬¸¯ ½Ã " + eNo + " : " + sDate);
 		
 		ArrayList<Schedule> list = new ScheduleService().selectDayList(eNo , sDate);
 				
-		System.out.println("ì„œë¸”ë ›ê¹Œì§€ì˜´" + list);
+		System.out.println("¼­ºí·¿±îÁö¿È" + list);
 		
 		JSONArray result = new JSONArray();
 		JSONObject userlist = null;
 		for(Schedule user : list){
 			userlist = new JSONObject();
+			userlist.put("sNo",user.getsNo());
 			userlist.put("sTitle",user.getsTitle());
 			userlist.put("sColor", user.getsColor());
 			result.add(userlist);

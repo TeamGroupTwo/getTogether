@@ -3,23 +3,19 @@ package com.gt.gettogether.chat.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.gt.gettogether.employee.model.service.EmployeeService;
-import com.gt.gettogether.employee.model.vo.Employee;
-
+import com.google.gson.Gson;
+import com.gt.gettogether.chat.model.vo.ChatRoom;
+import static com.gt.gettogether.chat.controller.EnterChatRoomServlet.roomList;
 
 @WebServlet("/deptroomView.do")
 public class DeptChatViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	// 현재 열려있는 채팅방의 명칭()
-	public static ArrayList<String> roomList;
 
     public DeptChatViewServlet() {super();}
 
@@ -30,30 +26,32 @@ public class DeptChatViewServlet extends HttpServlet {
 		
 		// 사용자 부서 받아옴
 		String dept = request.getParameter("dept");
+		ChatRoom room = null;
 		
-		//방의 리스트를 서버 내의 모두가 공유
-		ServletContext application = request.getServletContext();
-		
-		// 기존에 있던 방의 리스트를 받아옴
-		roomList = (ArrayList<String>)application.getAttribute("roomList");
-		
-		if(roomList==null || roomList.isEmpty()){
-			roomList = new ArrayList<String>();
+		if(roomList == null || roomList.isEmpty()){
+			roomList = new ArrayList<ChatRoom>();
 			
-			switch(dept){
-			case "회계부" : roomList.add("회계부"); break;
-			case "인사부" : roomList.add("인사부"); break;
-			case "전략기획부" : roomList.add("전략기획부"); break;
-			case "영업부" : roomList.add("영업부"); break;
-			case "개발부" : roomList.add("개발부"); break;
-			case "법무부" : roomList.add("법무부"); break;
+			room = new ChatRoom(dept, new ArrayList<String>(), new ArrayList<String>());
+			roomList.add(room);
+			
+			new Gson().toJson(room, response.getWriter());
+			
+		} else {
+			boolean chk = true;
+			for(ChatRoom c : roomList) {
+				if(c.getRoomName().equals(dept)) {
+					room = c;
+					chk = false;
+					break;
+				}
+			}
+			if(chk) {		// 부서 채팅방이 없으면 다시 추가하는 코드
+				room = new ChatRoom(dept, new ArrayList<String>(), new ArrayList<String>());
+				roomList.add(room);
 			}
 			
-			application.setAttribute("roomList", roomList);
-//			System.out.println(roomList);
+			new Gson().toJson(room, response.getWriter());
 		}
-		
-		if(!roomList.isEmpty()) request.getRequestDispatcher("views/chat/chatting.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

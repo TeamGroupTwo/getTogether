@@ -1,4 +1,4 @@
-package com.gt.gettogether.notice.model.dao;
+﻿package com.gt.gettogether.notice.model.dao;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import static com.gt.gettogether.common.jdbc.JDBCTemplate.*;
-
 
 import com.gt.gettogether.notice.model.vo.*;
 import com.gt.gettogether.notice.model.dao.NoticeDao;
@@ -34,9 +33,8 @@ public class NoticeDao {
 			e.printStackTrace();
 		}	
 	}
-
 	
-	public ArrayList<NoticeNFiles> selectList(Connection con){
+	public ArrayList<NoticeNFiles> selectList2(Connection con){
 		
 		ArrayList<NoticeNFiles> list = null;
 		Statement stmt = null;
@@ -71,6 +69,100 @@ public class NoticeDao {
 			}
 			
 		System.out.println("DAO 출력 확인용 : "+list);
+			return list;
+	}
+	
+	
+	
+	public ArrayList<NoticeNFiles> selectList(Connection con, int currentPage, int limit){
+		
+	/*	ArrayList<NoticeNFiles> list = null;
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectList");
+		
+		try{
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			list = new ArrayList<NoticeNFiles>();
+			
+			while(rset.next()){
+				NoticeNFiles n = new NoticeNFiles();
+				
+				n.setnNo(rset.getInt("N_NO"));
+				n.setnTitle(rset.getString("N_TITLE"));
+				n.setnWriter(rset.getString("N_WRITER"));
+				n.setnDate(rset.getDate("N_DATE"));
+				n.setnCount(rset.getInt("N_COUNT"));
+				n.setnFix(rset.getString("N_FIX"));
+				n.setfName(rset.getString("F_NAME"));
+				list.add(n);
+			}
+			
+			}catch(SQLException e){
+				e.printStackTrace();
+			}finally{
+				close(rset);
+				close(stmt);
+			}
+			
+		System.out.println("DAO 출력 확인용 : "+list);
+			return list;*/
+//-----------------------------------------------------------------------------------------------------------------------------			
+			// Statement stmt = null;
+			PreparedStatement pstmt = null;
+
+			ResultSet rset = null;
+			ArrayList<NoticeNFiles> list = null;
+
+			String query = prop.getProperty("selectList2");
+
+			System.out.println(query);
+
+			try {
+				// 페이징처리 전
+				// stmt = con.createStatement();
+				// rset = stmt.executeQuery(query);
+
+				// 페이징처리 후
+				
+				pstmt = con.prepareStatement(query);
+				
+				//조회 시작할 행 번호와 마지막 행 번호 계산 
+				int startRow = (currentPage - 1) * limit + 1;
+				int endRow = startRow + limit - 1;
+				
+				pstmt.setInt(1, startRow); 
+				pstmt.setInt(2, endRow);
+				
+				rset = pstmt.executeQuery();
+				 
+				
+				list = new ArrayList<NoticeNFiles>();
+
+				while (rset.next()) {
+					NoticeNFiles n = new NoticeNFiles();
+					n.setnNo(rset.getInt("N_NO"));
+					n.setnTitle(rset.getString("N_TITLE"));
+					n.setnWriter(rset.getString("N_WRITER"));
+					n.setnDate(rset.getDate("N_DATE"));
+					n.setnCount(rset.getInt("N_COUNT"));
+					n.setnFix(rset.getString("N_FIX"));
+					n.setfName(rset.getString("F_NAME"));
+					
+					list.add(n);
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(rset);
+				//close(stmt);
+				close(pstmt);
+			}
+
 			return list;
 	}
 	
@@ -219,7 +311,7 @@ public class NoticeDao {
 
 	
 	
-	public ArrayList<NoticeNFiles> searchTitle(Connection con, String keyword){
+	public ArrayList<NoticeNFiles> searchTitle(Connection con, String keyword,int currentPage, int limit){
 		
 		ArrayList<NoticeNFiles> list = null;
 		PreparedStatement pstmt = null;
@@ -228,7 +320,13 @@ public class NoticeDao {
 		
 		try {
 			pstmt= con.prepareStatement(query);
+			
+			int startRow = (currentPage - 1) * limit + 1;
+			int endRow = startRow + limit - 1;
+			
 			pstmt.setString(1, keyword);
+			pstmt.setInt(2, startRow); 
+			pstmt.setInt(3, endRow);
 			
 			rset = pstmt.executeQuery();
 			
@@ -258,7 +356,7 @@ public class NoticeDao {
 	}
 
 	
-	public ArrayList<NoticeNFiles> searchContent(Connection con, String keyword){
+	public ArrayList<NoticeNFiles> searchContent(Connection con, String keyword,int currentPage, int limit){
 		
 		ArrayList<NoticeNFiles> list = null;
 		PreparedStatement pstmt = null;
@@ -267,7 +365,13 @@ public class NoticeDao {
 		
 		try {
 			pstmt= con.prepareStatement(query);
+			
+			int startRow = (currentPage - 1) * limit + 1;
+			int endRow = startRow + limit - 1;
+			
 			pstmt.setString(1, keyword);
+			pstmt.setInt(2, startRow); 
+			pstmt.setInt(3, endRow);
 			
 			rset = pstmt.executeQuery();
 			
@@ -355,5 +459,192 @@ public class NoticeDao {
 	 
 	}
 
+
+	public int getListCount(Connection con) {
+		Statement stmt = null;
+		int listCount = 0;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("listCount");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			if(rset.next()){
+				listCount = rset.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			close(stmt);
+			close(rset);
+		}
+		
+		return listCount;
+	}
+
+	public int selectFno(Connection con, int nNo) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		
+		String query = prop.getProperty("selectFno");
+		
+		try {
+			
+			pstmt = con.prepareStatement(query);
+
+			pstmt.setInt(1, nNo);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = rset.getInt("F_NO");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			close(rset);
+			close(pstmt);
+			
+		}
+		
+		return result;
+		
+	}
+
+	public int filesUpdate(Connection con, NoticeNFiles n, int fNo) {
+
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("filesUpdate");
+		
+		try {
+			
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, n.getfName());
+			pstmt.setInt(2, fNo);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
+
+	public String selectOriginFname(Connection con, int fNo) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String result = null;
+		
+		String query = prop.getProperty("selectOriginFname");
+		
+		try {
+			
+			pstmt = con.prepareStatement(query);
+
+			pstmt.setInt(1, fNo);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = rset.getString("F_NAME");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			close(rset);
+			close(pstmt);
+			
+		}
+		
+		return result;
+		
+	}
+
+	public NoticeNFiles selectUpdateOne(Connection con, int nno) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		NoticeNFiles nf = null;
+		
+		int result = 0;
+		
+		String query = prop.getProperty("selectUpdateOne"); 
+		
+		try{
+			
+		pstmt = con.prepareStatement(query);
+		
+		pstmt.setInt(1, nno);
+		
+		rset = pstmt.executeQuery();
+		
+		if(rset.next()){
+			nf = new NoticeNFiles();
+			
+			nf.setnNo(rset.getInt("N_NO"));
+			nf.setnTitle(rset.getString("N_TITLE"));
+			nf.setnWriter(rset.getString("E_NAME"));
+			nf.setnContent(rset.getString("N_CONTENT"));
+			nf.setnCount(rset.getInt("N_COUNT"));
+			nf.setnDate(rset.getDate("N_DATE"));
+			nf.setfName(rset.getString("F_NAME"));
+								
+		}
+		
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			close(rset);
+			close(pstmt);
+			
+		}
+		
+		return nf;
+		
+	}
+
+	public int updateNoticeWIthNewFile(Connection con, NoticeNFiles n) {
+
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateNoticeWIthNewFile");
+		
+		try {
+			
+			pstmt = con.prepareStatement(query);
+
+			pstmt.setString(1, n.getnTitle());
+			pstmt.setString(2, n.getnContent());
+			pstmt.setInt(3, n.getnNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
 	
 }

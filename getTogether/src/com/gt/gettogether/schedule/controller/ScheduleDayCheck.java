@@ -9,23 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import com.gt.gettogether.schedule.model.service.ScheduleService;
 import com.gt.gettogether.schedule.model.vo.Schedule;
 
 /**
- * Servlet implementation class ScheduleOkInsertList
+ * Servlet implementation class ScheduleDayCheck
  */
-@WebServlet("/schedule_inli.do")
-public class ScheduleOkInsertList extends HttpServlet {
+@WebServlet("/schedule_ckli.do")
+public class ScheduleDayCheck extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ScheduleOkInsertList() {
+    public ScheduleDayCheck() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,21 +32,11 @@ public class ScheduleOkInsertList extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int eNo = Integer.parseInt(request.getParameter("empNo"));
-		String sDate = request.getParameter("sDate");
+		String date = request.getParameter("ckli");
+		ArrayList<Schedule> list = new ScheduleService().scheduleDayList(eNo , date);
 		
-		ArrayList<Schedule> list = new ScheduleService().selectDayOkList(eNo , sDate);
+		response.getWriter().print(list.size());
 		
-		JSONArray result = new JSONArray();
-		JSONObject userlist = null;
-		for(Schedule user : list){
-			userlist = new JSONObject();
-			userlist.put("sTitle",user.getsTitle());
-			userlist.put("sColor", user.getsColor());
-			result.add(userlist);
-		}
-		response.setContentType("application/json; charset=UTF-8");
-		response.getWriter().print(result.toJSONString());
-	
 	}
 
 	/**

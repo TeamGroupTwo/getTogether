@@ -17,12 +17,6 @@ public class GetHttpSessionConfigurator extends Configurator{
        public void modifyHandshake(ServerEndpointConfig config, 
                                    HandshakeRequest request, 
                                    HandshakeResponse response)
-       {
-    	// config는 기존 설정 부분을 가져와서 수정할 때 사용하는 객체
-    	// request : HttpServletRequest와 동일한 역할을 수행하는 객체
-    	// response : HttpServletResponse와 동일한 역할을 수행하는 객체
-           config.getUserProperties().put("chat_id", (String)((HttpSession)request.getHttpSession()).getAttribute("chat_id"));
-           System.out.println("config : "+(String)((HttpSession)request.getHttpSession()).getAttribute("chat_id"));
-       }
+       {}
    
 }

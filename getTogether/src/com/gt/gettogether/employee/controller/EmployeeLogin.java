@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.gt.gettogether.chat.model.vo.OnlineUserList;
 import com.gt.gettogether.employee.model.service.EmployeeService;
 import com.gt.gettogether.employee.model.vo.Employee;
 
@@ -24,7 +25,7 @@ public class EmployeeLogin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String eId = request.getParameter("eId");
-		String ePwd = request.getParameter("ePwd");
+		String ePwd = request.getParameter("empPwd");
 		
 		Employee emp = new Employee();
 		emp.seteId(eId);
@@ -32,6 +33,9 @@ public class EmployeeLogin extends HttpServlet {
 		
 		EmployeeService es = new EmployeeService();
 		emp = es.selectEmployee(emp);
+		
+		if(emp != null)	OnlineUserList.addEmployee(emp);
+		System.out.println(OnlineUserList.getInstance());
 	
 		response.setContentType("application/json; charset=UTF-8");
 		new Gson().toJson(emp, response.getWriter());

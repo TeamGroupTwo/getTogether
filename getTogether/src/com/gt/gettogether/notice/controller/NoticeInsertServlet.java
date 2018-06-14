@@ -104,24 +104,7 @@ public class NoticeInsertServlet extends HttpServlet {
 				}
 					
 			}
-				
-				
-				
-				
-				
-//				int result3 = new BoardService().insertBoard(b);
-//				
-//				
-//				
-//				if(result2 > 0 ){
-//					response.sendRedirect(request.getContextPath()+"/selectList.bo");
-//				}else{
-//					
-//					request.setAttribute("msg", "게시판 작성 실패!!");
-//					request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
-//				}
-		
-		
+
 		
 		
 		

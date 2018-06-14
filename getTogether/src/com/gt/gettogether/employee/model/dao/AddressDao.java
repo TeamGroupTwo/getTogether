@@ -51,8 +51,7 @@ public class AddressDao {
 			
 			while(rset.next()){
 				Employee a = new Employee();
-				
-				
+		
 				a.seteName(rset.getString("E_NAME"));
 				a.setrCode(rset.getString("R_NAME"));
 				a.setEmail(rset.getString("EMAIL"));

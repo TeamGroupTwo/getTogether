@@ -8,6 +8,7 @@
       border-radius:20px;
       width : 25px;
       height: 15px;
+      color : white;
     }
     #label-color1{
       background : #F7FE2E;
@@ -43,6 +44,7 @@
   </head>
   <body>
   <div class="label-colorcode">
+  	<button type='button' id="label-color0" value="#F7FE2E" hidden="hidden"></button>
     <button type='button' id="label-color1" value="#F7FE2E"></button>
     <button type='button' id="label-color2" value="#00FFFF"></button>
     <button type='button' id="label-color3" value="#FA58AC"></button>
@@ -53,12 +55,15 @@
     <button type='button' id="label-color8" value="#088A4B"></button>
     <button type='button' id="label-color9" value="#FF0000"></button>
     <button type='button' id="label-color10" value="#A9BCF5"></button>
-    <input id = "colorcode"type="text" style="display : none"/>
+    <input id ="colorcode" type="text" style="display : none"/>
     </div>
     <script>
-    $('.label-colorcode').children().on('click',function(){
-    	$('#colorcode').attr('value',$(this).val());
-    	var code = $('#colorcode').val();
+    $('.label-colorcode button').each(function(idx){
+    	$(this).click(function() {
+    		$('.label-colorcode button').text('');
+			$('#colorcode').val($(this).val());
+			$(this).text('V');
+		});
     });
     </script>
   </body>

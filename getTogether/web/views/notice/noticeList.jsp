@@ -3,7 +3,12 @@
 
 <%
 	ArrayList<NoticeNFiles> list = (ArrayList<NoticeNFiles>)request.getAttribute("list");
-	
+	PageInfo pi = (PageInfo)request.getAttribute("pi");
+	int listCount =pi.getListCount();
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
 %>
 
 <!DOCTYPE html>
@@ -227,7 +232,41 @@
 			</table>											   			  	<!-- Table End -->
 			<p></p>
 			<button id="writeTextBtn" onclick="writeTextBtn();">글작성</button>     	            									  <!-- 글작성 버튼  -->
-	
+	<!-- 페이징 처리할 부분 -->
+	<br /><br /><br /><br />
+	<div class="pagingArea" align="center">
+		
+		<!-- 첫 페이지 이동 -->
+		<button onclick="location.href='/gt/selectList.no?currentPage=1'">[처음]</button>
+		
+		<!-- 한 페이지씩 앞으로 이동 -->
+		<%if(currentPage <=1) {%>
+			<button disabled>&lt;</button>
+		<%}else {%>
+		<button onclick="location.href='/gt/selectList.no?currentPage=<%= currentPage-1%>'">&lt;</button>
+		<%}%>
+		
+		
+		<!-- 각 페이지 별 리스트 작성 -->
+		<% for(int i = startPage; i <= endPage; i++){ %>
+			<% if(i == currentPage) {%>
+				<button disabled><%= i %></button>	
+			<%} else {%>
+			 	<button onclick="location.href='/gt/selectList.no?currentPage=<%=i%>'"><%=i%></button>
+			<%}%>		
+		<%}%>
+		
+		
+		<!-- 한 페이지씩 뒤로 이동 -->
+		<%if(currentPage >=maxPage) {%>
+			<button disabled>&gt;</button>
+		<%}else {%>
+		<button onclick="location.href='/gt/selectList.no?currentPage=<%= currentPage+1%>'">&gt;</button>
+		<%}%>
+		
+		<!-- 마지막 페이지 이동 -->
+		<button onclick="location.href='/gt/selectList.no?currentPage=<%=maxPage%>'">[마지막]</button>
+	</div>
 			</div>
 	</div>
 	
@@ -279,11 +318,10 @@
 		               <button type="submit" style="background:rgb(95,77,140); color:white; height:25px; cursor: pointer; border:0; border-radius: .25em;">등록하기</button>
 		            </div>
 			</div>
+			</form>	
 			
-			
-			
-			</form>
 	</div>
+	
 	
 	<script>
 		$(function(){

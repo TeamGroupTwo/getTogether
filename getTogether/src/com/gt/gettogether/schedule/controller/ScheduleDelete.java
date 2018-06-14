@@ -29,11 +29,11 @@ public class ScheduleDelete extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int sNo = Integer.parseInt(request.getParameter("sNo"));
-		System.out.println("ë¸ë¦¿íŠ¸ ì„œë¸”ë › : "+ sNo);
+		System.out.println("µ¨¸´Æ® ¼­ºí·¿ : "+ sNo);
 		
-		int result = new ScheduleService().deleteMember(sNo);
+		int result = new ScheduleService().deleteSchdeule(sNo);
 		
-		System.out.println("ë¸ë¦¿íŠ¸ ì„œë¸”ë › ë¦¬ì €íŠ¸ : " + result);
+		System.out.println("µ¨¸´Æ® ¼­ºí·¿ ¸®ÀúÆ® : " + result);
 		
 	}
 

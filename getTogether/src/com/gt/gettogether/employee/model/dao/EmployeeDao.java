@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import com.gt.gettogether.employee.model.vo.Employee;
@@ -69,7 +71,7 @@ public class EmployeeDao {
 		int result = 0;
 		
 		String query = prop.getProperty("updateEmployee");
-		
+		System.out.println("DAO : "+emp);
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, emp.getePassword());
@@ -114,10 +116,10 @@ public class EmployeeDao {
 		return result;
 	}
 
-	public int findId(Connection con, Employee emp) {
+	public Employee findId(Connection con, Employee emp) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		int result = -1;
+		Employee eResult = null;
 		
 		try {
 			pstmt = con.prepareStatement(prop.getProperty("findId"));
@@ -127,8 +129,10 @@ public class EmployeeDao {
 			
 			rset = pstmt.executeQuery();
 			
-			if(rset.next())
-				result = rset.getInt("RESULT");
+			if(rset.next()){
+				eResult = new Employee();
+				eResult.seteId(rset.getString("E_ID"));
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -138,17 +142,17 @@ public class EmployeeDao {
 			close(pstmt);			
 		}
 		
-		return result;
+		return eResult;
 	}
 
-	public int findPassword(Connection con, Employee emp) {
+	public Employee findPassword(Connection con, Employee emp) {
 		
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		int result = -1;
+		Employee eResult = null;
 		
 		try {
-			pstmt = con.prepareStatement(prop.getProperty("findId"));
+			pstmt = con.prepareStatement(prop.getProperty("findPassword"));
 			pstmt.setInt(1, emp.geteNo());
 			pstmt.setString(2, emp.geteName());
 			pstmt.setString(3, emp.getEmail());
@@ -156,8 +160,10 @@ public class EmployeeDao {
 			
 			rset = pstmt.executeQuery();
 			
-			if(rset.next())
-				result = rset.getInt("RESULT");
+			if(rset.next()){
+				eResult = new Employee();
+				eResult.setePassword(rset.getString("E_PASSWORD"));
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -167,7 +173,212 @@ public class EmployeeDao {
 			close(pstmt);			
 		}
 		
+		return eResult;
+	}
+
+	public ArrayList<Employee> employeeList(Connection con) {
+		ArrayList<Employee> list = null;
+				
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("employeeList");
+		
+		try {
+			stmt = con.prepareStatement(prop.getProperty("employeeList"));
+			
+			rset = stmt.executeQuery(query);
+			
+			list = new ArrayList<Employee>();
+			
+			while(rset.next()){
+				Employee e = new Employee();
+				
+				e.seteNo(rset.getInt("E_NO"));
+				e.seteId(rset.getString("E_ID"));
+				e.seteName(rset.getString("E_NAME"));
+				e.setdCode(rset.getString("D_NAME"));
+				e.setrCode(rset.getString("R_NAME"));
+				e.setPhone(rset.getString("PHONE"));
+				e.setEmail(rset.getString("EMAIL"));
+				
+				list.add(e);
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(stmt);
+		}
+		
+		System.out.println("DAO 단 : "+list);
+		
+		return list;
+	}
+
+	public ArrayList<Employee> searchDepartmentName(Connection con, String keyword) {
+		
+		ArrayList<Employee> list = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = prop.getProperty("searchDepartment");
+		
+		try {
+			pstmt= con.prepareStatement(query);
+			
+			
+			pstmt.setString(1, keyword);
+			
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<Employee>();
+			while(rset.next()){
+				Employee e = new Employee();
+				
+				e.seteNo(rset.getInt("E_NO"));
+				e.seteId(rset.getString("E_ID"));
+				e.seteName(rset.getString("E_NAME"));
+				e.setdCode(rset.getString("D_NAME"));
+				e.setrCode(rset.getString("R_NAME"));
+				e.setPhone(rset.getString("PHONE"));
+				e.setEmail(rset.getString("EMAIL"));
+				
+				list.add(e);
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		System.out.println("제목 search 했을 시 DAO 값 : "+list);
+		
+		return list;
+	}
+
+	public ArrayList<Employee> searchEmployeeName(Connection con, String keyword) {
+
+		ArrayList<Employee> list = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = prop.getProperty("searchEmployeeName");
+		
+		try {
+			pstmt= con.prepareStatement(query);
+			
+			
+			pstmt.setString(1, keyword);
+			
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<Employee>();
+			while(rset.next()){
+				Employee e = new Employee();
+				
+				e.seteNo(rset.getInt("E_NO"));
+				e.seteId(rset.getString("E_ID"));
+				e.seteName(rset.getString("E_NAME"));
+				e.setdCode(rset.getString("D_NAME"));
+				e.setrCode(rset.getString("R_NAME"));
+				e.setPhone(rset.getString("PHONE"));
+				e.setEmail(rset.getString("EMAIL"));
+				
+				list.add(e);
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		System.out.println("제목 search 했을 시 DAO 값 : "+list);
+		
+		return list;
+		
+	}
+
+	public int employeeInsert(Connection con,Employee emp) {
+		
+		int result = 0;
+
+		PreparedStatement pstmt = null;
+		
+		String query = prop.getProperty("employeeInsert");
+	
+		try {
+			
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, emp.geteNo());
+			pstmt.setString(2, emp.geteId());
+			pstmt.setString(3, emp.getePassword());
+			pstmt.setString(4, emp.geteName());
+			pstmt.setString(5, emp.getrCode());
+			pstmt.setString(6, emp.getdCode());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		
+		}finally{
+			close(pstmt);
+		}
+		System.out.println("직원 추가 DAO : " +result);
+		
 		return result;
 	}
 
+	public int adminUpdate(Connection con, Employee emp) {
+		
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("adminUpdate");
+		
+		try{
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, emp.getrCode());
+			pstmt.setString(2, emp.getdCode());
+			pstmt.setInt(3,emp.geteNo());
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			close(pstmt);
+		}
+		System.out.println("수정한 Dao result 값  : "+result );
+		return result;
+	}
+	
+	public int deleteEmployee(Connection con, String[] dellist2) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteEmployee");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			for(int i = 0 ; i < dellist2.length ; i++) {
+				
+				pstmt.setInt(1, Integer.parseInt(dellist2[i]));
+				System.out.println(Integer.parseInt(dellist2[i]));
+				result += pstmt.executeUpdate();
+			}			
+			
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		System.out.println("Dao delete : "+result);
+		return result;
+	}
+	
 }

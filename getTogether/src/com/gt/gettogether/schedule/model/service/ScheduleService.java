@@ -26,24 +26,24 @@ public class ScheduleService {
 		
 		Connection con = getConnection();
 		
-		System.out.println("ì—¬ê¸´ ì„œë¹„ìŠ¤ ë“¤ì–´ì™“ë‹¤ " + s);
+		System.out.println("¿©±ä ¼­ºñ½º µé¾î¿Ó´Ù " + s);
 		
-		int result = new ScheduleDao().insertMember(con, s);
+		int result = new ScheduleDao().insertSchdeule(con, s);
 		
 		if(result > 0) commit(con);
 		else rollback(con);
 		
 		close(con);
 		
-		System.out.println("ì„œë¹„ìŠ¤ ë‚˜ê°„ë‹¤ "  + result);
+		System.out.println("¼­ºñ½º ³ª°£´Ù "  + result);
 		
 		return result;
 	}
 	
-	public int updateMember(Schedule s) {
+	public int updateSchdeule(Schedule s) {
 		Connection con = getConnection();
 		
-		int result = new ScheduleDao().updateMember(con, s);
+		int result = new ScheduleDao().updateSchdeule(con, s);
 		
 		if(result > 0) commit(con);
 		else rollback(con);
@@ -53,10 +53,10 @@ public class ScheduleService {
 		return result;
 	}
 
-	public int deleteMember(int sNo) {
+	public int deleteSchdeule(int sNo) {
 		Connection con = getConnection();
 		
-		int result = new ScheduleDao().deleteMember(con , sNo);
+		int result = new ScheduleDao().deleteSchdeule(con , sNo);
 		
 		if(result > 0) commit(con);
 		else rollback(con);
@@ -76,13 +76,24 @@ public class ScheduleService {
 		return list;
 	}
 
-	public ArrayList<Schedule> selectDayOkList(int eNo , String sDate) {
+	public ArrayList<Schedule> scheduleDayList(int eNo, String date) {
 		Connection con = getConnection();
 		
-		ArrayList<Schedule> list = new ScheduleDao().selectDayOkList(con , eNo , sDate);
-
+		ArrayList<Schedule> list = new ScheduleDao().scheduleDayList(con , eNo , date);
+		
 		close(con);
 		
 		return list;
 	}
+
+	public ArrayList<Schedule> updateview(int sNo, String sTitle) {
+		Connection con = getConnection();
+		
+		ArrayList<Schedule> upview = new ScheduleDao().updateview(con , sNo , sTitle);
+		
+		close(con);
+		
+		return upview;
+	}
+
 }

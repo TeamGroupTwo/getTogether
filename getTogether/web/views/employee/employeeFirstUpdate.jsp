@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css?family=Righteous|Nanum+Gothic|Do+Hyeon" rel="stylesheet">
 <script src="<%=request.getContextPath()%>/resources/js/jquery-3.3.1.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <style>
@@ -12,20 +13,64 @@
 		margin : auto;
 	}
 	#container {
+		position : absolute;
+		display : inline-block;
+		top : 50%;
+		left : 50%;
+		margin-left : -300px;
+		margin-top : -300px;
+		width : 600px;
+		height : 600px;
+		background : white;
 		text-align: center;
-		width : 800px;
-		height : 800px;
-		background: white;
+	}
+	.fu-input-wrap{
+		margin-top : 10px;
+		margin-right: 135px;
+	}   
+	.fu-input{
+	width : 335px;
+	border: 1px solid white;
+	border-bottom: 3px solid #5f4d8c;
+	border-bottom-left-radius: .2em;
+	border-bottom-right-radius: .2em;
+	font-family: 'Nanum Gothic', sans-serif;
+	color:#606060;
+	font-size : 1em;
+   	font-weight : bolder;
+   	letter-spacing : -1px;
+   	white-space : nowrap;
+   	padding-top : 0px;
+   	-webkit-box-shadow: 0 0 0 30px #fff inset ;
+    float: right;
+    margin-bottom: 8px;
+   }
+   .fu-btn-font {
+   	font-family: 'Nanum Gothic', sans-serif;
+   	font-weight : bolder;
+   	letter-spacing : -1px;
+   	white-space : nowrap;
+   }
+  	.fu-input:focus{
+		outline: none;
+	}
+	.fu-label{
+		font-family: 'Nanum Gothic', sans-serif;
+		color : #404040;
+		font-weight : bolder;
+		font-size : 1.2em;
+		letter-spacing : -2px;
+      	white-space : nowrap; 
+      	margin-right: 5px;
+      	float: right;
 	}
 	#profile {
       border-radius : 50%;
       border :1px solid #404040;
       margin : auto;
-      width : 100px;
-      height : 100px;
-   }
-   #file-box {
-   
+      width : 80px;
+      height : 80px;
+      margin-bottom: 5px;
    }
    #file-select{
    	position: absolute; 
@@ -55,13 +100,43 @@
    border: 1px solid #ebebeb; 
    border-bottom-color: #e2e2e2; 
    border-radius: .25em; 
+   height : 15px;
+   font-family: 'Nanum Gothic', sans-serif;
+	color : #404040;
+	font-weight : bolder;
+	font-size : 1em;
+	letter-spacing : -1px;
+    white-space : nowrap; 
    }
    .checkLight {
+    position: absolute;
+   	display : inline-block;
     border-radius: 50%;
     margin : auto;
     width : 13px;
     height : 13px;
     background: #ED3200;
+   	right : 120px;
+   }
+   #pwdLight {
+   	top : 328px;
+   }
+   #pwdDupLight{
+   	top : 363px;
+   }
+   #phoneLight{
+   	top : 398px;
+   }
+   #emailLight{
+   	top : 433px;
+   }
+   #email{
+   	width : 150px;
+   	margin-right: 185px;
+   }
+   #selfEmail {
+    width : 150px;
+   	margin-right: 185px;
    }
    .fu-btn{
    	background: #404040;
@@ -69,18 +144,77 @@
    	border-radius: .25em;
    	color : white;
    }
+   .fu-title{
+   		color : #5f4d8c;
+		text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	-moz-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	-webkit-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	vertical-align: middle;
+   		margin-top: 20px;
+      	margin-bottom: 20px;
+   		font-family: 'Do Hyeon', sans-serif;
+   		font-size : 2.2em;
+      	font-weight : bolder;
+      	letter-spacing : -1px;
+      	white-space : nowrap;
+   }
+   #emailLbl{
+   	margin: 0px;
+   	font-family: 'Nanum Gothic', sans-serif;
+	color : #404040;
+	font-weight : bolder;
+	font-size : 1.2em;
+	letter-spacing : -2px;
+    white-space : nowrap; 
+    margin-right: 5px;
+    position: absolute;
+    top : 422px;
+    right : 295px;
+   }
+   #emailList{
+    -webkit-appearance: none;
+    -moz-appearance: none; 
+    appearance: none;
+    background: url('/gt/resources/images/common/listdown.png') no-repeat 95% 50%; 
+    background-size : 14px;
+    position: absolute;
+    top : 426px;
+    right : 136px;
+    width : 154px;
+    border: 1px solid white;
+    border-bottom: 3px solid #5f4d8c;
+    border-bottom-left-radius: .2em;
+	border-bottom-right-radius: .2em;
+	font-family: 'Nanum Gothic', sans-serif;
+	color : #404040;
+	font-weight : bolder;
+	font-size : 1em;
+	letter-spacing : -1px;
+    white-space : nowrap;
+   }
+   #emailList:focus{
+	outline: none;	
+   }
+
    #emailBtn{
+   	position : absolute;
    	display: inline-block;
    	width : 40px;
    	height : 25px;
+   	top : 422px;
+   	right : 62px;
    }
    #emailBtn:hover{
    	cursor: pointer;
    }
    #firstUpdateBtn{
+   	position : absolute;
    	width : 50px;
    	height : 25px;
+   	bottom: 20px;
+   	left: 265px;
    }
+   
    /* 팝업 영역 css*/
    #popup-wrap{
    	display: none;
@@ -102,13 +236,97 @@
   	opacity: .5;
  	filter: alpha(opacity=50);
  	}
- 	#popup-content{
-	position: absolute;
-   	background : pink;
-   	width : 300px;
-   	height : 300px;
-	z-index: 50;
+ 	#popup-border{
+		position : absolute;
+		display : inline-block;
+		top : 50%;
+		left : 50%;
+		margin-left : -200px;
+		margin-top : -200px;
+		width : 400px;
+		height : 400px;
+		background : #5f4d8c;
+		text-align: center;
+		z-index: 50;
    }
+ 	#popup-content{
+		position : absolute;
+		display : inline-block;
+		top : 50%;
+		left : 50%;
+		margin-left : -190px;
+		margin-top : -190px;
+		width : 380px;
+		height : 380px;
+		background : white;
+		text-align: center;
+		z-index: 50;
+   }
+   #emailTitle{
+   	margin-top: 50px;
+   	margin-bottom: 70px;
+   }
+   .popup-btn{
+  		display: inline-block;
+		padding-top : 5px;
+		text-align : center;
+		font-family: 'Nanum Gothic', sans-serif;
+		margin-top : 5px;
+		margin-bottom : 5px;
+		background: #404040;
+		border-radius: .25em;
+		color : white;
+		font-size : 1.2em;
+      	font-weight : bolder;
+      	letter-spacing : -1px;
+      	white-space : nowrap;
+      	width: 50px;
+		height : 25px;
+		font-size: 12pt;
+		padding-bottom: 5px;
+   }
+   .popup-btn:hover{
+	   cursor : pointer;
+   }
+   #popup-ok{
+   	background: #5f4d8c;
+   }
+   #popup-close{
+   	display: block;
+   	margin-top: 75px;
+   	margin-left: 160px;
+   }
+   #verifyLbl{
+   		font-family: 'Nanum Gothic', sans-serif;
+		color : #606060;
+		font-weight : bolder;
+		font-size : 1.4em;
+		letter-spacing : -2px;
+      	white-space : nowrap; 
+      	margin-right: 5px;
+      	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	-moz-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+     	-webkit-text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+   }
+   #verifyCode{
+   		width : 130px;
+   		border: 1px solid white;
+   		border-bottom: 3px solid #5f4d8c;
+   		border-bottom-left-radius: .2em;
+   		border-bottom-right-radius: .2em;
+   		font-family: 'Nanum Gothic', sans-serif;
+		color : #404040;
+		font-size : 1em;
+      	font-weight : bolder;
+      	letter-spacing : -1px;
+      	white-space : nowrap;
+      	padding-top : 0px;
+      	-webkit-box-shadow: 0 0 0 30px #fff inset ; 
+      	-webkit-text-fill-color: #000;
+   }
+   #verifyCode:focus{
+		outline: none;
+	}
 </style>
 <title>최초 정보 기입</title>
 </head>
@@ -117,80 +335,78 @@
 	<!-- 팝업창 영역 -->	
 	<div id="popup-wrap">
 		<div id="popup-bg"></div>
-		<div id="popup-content">
-			인증번호 : <input type="text" id="verifyCode"/>
-			<div id="popup-ok">확인</div>
-			<div id="popup-close" onclick="popupClose();">닫기</div>
+		<div id="popup-border">
+			<div id="popup-content">
+				<p class="fu-title" id="emailTitle">이메일 인증</p>
+				<label id="verifyLbl">인증번호 </label><input type="text" id="verifyCode"/>
+				<div class="popup-btn" id="popup-ok">확인</div>
+				<div class="popup-btn" id="popup-close" onclick="popupClose();">닫기</div>
+			</div>
 		</div>
 	</div>
 	
 	<div id="container">
 		<form action="<%=request.getContextPath()%>/firstUpdate.emp" method="POST" id="firstUpdateForm" encType="multipart/form-data">
-		  	<div class="hAll" id="profile" style="content:url('/gt/resources/images/common/profile.png');"></div>
+		  	
+		  	<p class="fu-title">최초 정보 기입</p>
+	  		
+	  		<div id="profile" style="content:url('/gt/resources/images/common/profile.png');"></div>
+		  	
 		  	<div id="fileBox">
 		  		<input type="text" id="file-text" disabled="disabled"/>
-		  		<label id="file-lbl" for="file-select">이미지 선택</label>
+		  		<label class="fu-btn-font" id="file-lbl" for="file-select">이미지 선택</label>
 		  		<input type="file" id="file-select" name="empProfile" accept="image/*"/>
 		  	</div>
-		  	<table id="fu-table">
-		  		<tr>
-		  			<td>이름 : </td>
-		  			<td colspan="2"><input type="text" id="empName" disabled="disabled"/></td>
-		  		</tr>
-		  		<tr>
-		  			<td>사번 : </td>
-		  			<td colspan="2"><input type="text" id="empNo" disabled="disabled"/></td>
-		  		</tr>
-		  		<tr>
-		  			<td>아이디 : </td>
-		  			<td colspan="2"><input type="text" name="empId" id="empId" disabled="disabled"/>
-		  			<input type="text" name="rId" id="rId" hidden="hidden"/></td>
-		  		</tr>
-		  		<tr>
-		  			<td>비밀번호 : </td>
-		  			<td><input type="password" name="empPwd" id="empPwd" size="40" placeholder=" 영문, 숫자, 기호를 조합한 8~16자리, 대소문자 구분" oninput="checkPwd();"/></td>
-		  			<td><div class="checkLight" id="pwdLight"></div></td>
-		  		</tr>
-		  		<tr>
-		  			<td>확인 : </td>
-		  			<td><input type="password" id="empPwd2" oninput="dupCheckPwd();"/></td>
-		  			<td><div class="checkLight" id="pwdDupLight"></div></td>
-		  		</tr>
-		  		<tr>
-		  			<td>연락처 : </td>
-		  			<td><input type="tel" name="phone" placeholder=" '-'없이 입력"  id="phone" oninput="checkPhone();"/></td>
-		  			<td><div class="checkLight" id="phoneLight"></div></td>
-		  		</tr>
-		  		<tr>
-		  			<td>이메일 : </td>
-		  			<td>
-		  				<input type="text" id="rEmail" name="rEmail" hidden="hidden"/>
-		  				<input type="email" name="email" id="email" size="10"/>
-		  				<label id="emailLbl">@</label>
-		  				<input type="email" name="selfEmail" id="selfEmail" hidden="hidden"/>
-		  				<select name="emailList" id="emailList" >
-		  					<option value="none">계정선택</option>
-		  					<option value="naver.com">naver.com</option>
-		  					<option value="gmail.com">gmail.com</option>
-		  					<option value="hanmail.net">hanmail.net</option>
-		  					<option value="nate.com">nate.com</option>
-		  					<option value="self">직접입력</option>
-		  				</select>
-		  				<div class="fu-btn" id="emailBtn" onclick="checkEmail();">확인</div>	
-		  			</td>
-		  			<td><div class="checkLight" id="emailLight"></div></td>
-		  		</tr>
-		  		<tr>
-		  			<td>부서 : </td>
-		  			<td colspan="2"><input type="text" id="empDept" disabled="disabled"/></td>
-		  		</tr>
-		  		<tr>
-		  			<td>직급 : </td>
-		  			<td colspan="2"><input type="text" id="empRank" disabled="disabled"/></td>
-		  		</tr>
-		  	</table>
+		  	
+		  	<div class="fu-input-wrap">
+			  	<input type="text" class="fu-input" id="empName" disabled="disabled"/>
+			  	<label class="fu-label">이름 </label>		  	
+		  
+		  	<input type="text" class="fu-input" id="empNo" disabled="disabled"/>
+		  	<label class="fu-label">사번 </label>
+		  	
+		  	<input type="text" class="fu-input" name="empId" id="empId" disabled="disabled"/>
+		  	<label class="fu-label">아이디 </label>
+  			<input type="text" name="rId" id="rId" hidden="hidden"/>
+		  	
+		  	<input type="password" class="fu-input" name="empPwd" id="empPwd" size="40" placeholder="영문, 숫자, 기호를 조합한 8~16자리, 대소문자 구분" oninput="checkPwd();"/>
+		  	<label class="fu-label">비밀번호 </label>
+		  	<div class="checkLight" id="pwdLight"></div>
+			
+
+			<input type="password" class="fu-input" id="empPwd2" oninput="dupCheckPwd();"/>
+		  	<label class="fu-label">확인 </label>
+		  	<div class="checkLight" id="pwdDupLight"></div>
+		  	
+		  	<input type="tel" class="fu-input" name="phone" placeholder="'-'없이 입력"  id="phone" oninput="checkPhone();"/>
+		  	<label class="fu-label">연락처 </label>
+		  	<div class="checkLight" id="phoneLight"></div>
+		  	
+		  	<input type="text" id="rEmail" name="rEmail" hidden="hidden"/>
+		  	<input type="email" class="fu-input" name="email" id="email"/>
+		  	<input type="email" class="fu-input" name="selfEmail" id="selfEmail" hidden="hidden"/>
+		  	<label class="fu-label">이메일 </label>
+		  	<label id="emailLbl">@</label>
+		  	<select name="emailList" id="emailList" >
+ 					<option value="none">계정선택</option>
+ 					<option value="naver.com">naver.com</option>
+ 					<option value="gmail.com">gmail.com</option>
+ 					<option value="hanmail.net">hanmail.net</option>
+ 					<option value="nate.com">nate.com</option>
+ 					<option value="self">직접입력</option>
+ 			</select>
+		  	<div class="fu-btn fu-btn-font" id="emailBtn" onclick="checkEmail();">확인</div>	
+		  	<div class="checkLight" id="emailLight"></div>
+		  	
+		  	<input type="text" class="fu-input" id="empDept" disabled="disabled"/>
+		  	<label class="fu-label">부서 </label>
+		  	
+		  	<input type="text" class="fu-input" id="empRank" disabled="disabled"/>
+		  	<label class="fu-label">직급 </label>
+		  	</div>
+		  	
 		  	<div id='recaptcha' class="g-recaptcha" data-sitekey="6LevAFwUAAAAAMcuT6usZRZ5dYdVEHMS1HMDttL3" data-callback="onSubmit" data-size="invisible"></div>   
-			<div class="fu-btn" id="firstUpdateBtn" onclick="firstUpdate();">확인</div>		
+			<div class="fu-btn fu-btn-font" id="firstUpdateBtn" onclick="firstUpdate();">확인</div>		
 		</form>
 	</div>
 	
@@ -262,11 +478,23 @@
 					$("#email").css("display","none");
 					$("#emailLbl").css("display","none");
 					$("#selfEmail").removeAttr("hidden");
+					$("#selfEmail").css({
+						"width": "235px",
+						"margin-right" : "100px"
+					});
+					$("#emailList").css({
+						"right" : "137px",
+						"width" : "90px"
+					});
 				}
 				else{
 					$("#email").css("display","inline-block");
 					$("#emailLbl").css("display","inline-block");
 					$("#selfEmail").attr("hidden","hidden");
+					$("#emailList").css({
+						"right" : "136px",
+						"width" : "154px"
+					});
 				}
 			});
 			
@@ -426,6 +654,9 @@
 		}
 		
 		function onSubmit() {
+			sessionStorage.setItem('loginProfile', $("#file-text").val());
+			sessionStorage.setItem('loginEmail', $("#rEmail").val());
+			sessionStorage.setItem('loginPhone', $("#phone").val());
 			$("#firstUpdateForm").submit();
 		}
 			

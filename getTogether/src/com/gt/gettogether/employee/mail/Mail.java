@@ -33,16 +33,16 @@ public class Mail {
 		Message msg = new MimeMessage(session);
 		
 		try {
-			// ë°œì‹ ì ë©”ì¼ ì£¼ì†Œ
+			// ¹ß½ÅÀÚ ¸ŞÀÏ ÁÖ¼Ò
 			msg.setFrom(new InternetAddress(new MyAuthentication().getMail(), "GETTOGETHER", "UTF-8"));
-			// ìˆ˜ì‹ ì ë©”ì¼ ì£¼ì†Œ
+			// ¼ö½ÅÀÚ ¸ŞÀÏ ÁÖ¼Ò
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			
-			// ë©”ì¼ ì œëª©
-			msg.setSubject("GETTOGETHER ì¸ì¦ë²ˆí˜¸ ë©”ì¼ì…ë‹ˆë‹¤.");
+			// ¸ŞÀÏ Á¦¸ñ
+			msg.setSubject("GETTOGETHER ÀÎÁõ¹øÈ£ ¸ŞÀÏÀÔ´Ï´Ù.");
 			
-			// ë©”ì¼ ë‚´ìš©
-			msg.setContent("ì¸ì¦ë²ˆí˜¸ : [" + verifyCode + "]", "text/html; charset=UTF-8");
+			// ¸ŞÀÏ ³»¿ë
+			msg.setContent("ÀÎÁõ¹øÈ£ : [" + verifyCode + "]", "text/html; charset=UTF-8");
 			
 			Transport.send(msg);
 			
@@ -63,6 +63,8 @@ public class Mail {
 		
 		for(int i = 0; i < 8; i++)
 			code.append(characterRange[(int)(Math.random()*characterRange.length)]);
+		
+		System.out.println("code : " + code.toString());
 	
 		return code.toString();
 	}

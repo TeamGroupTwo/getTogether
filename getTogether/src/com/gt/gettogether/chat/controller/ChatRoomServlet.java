@@ -3,13 +3,15 @@ package com.gt.gettogether.chat.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import static com.gt.gettogether.chat.controller.EnterChatRoomServlet.roomList;
+
+import com.google.gson.Gson;
+import com.gt.gettogether.chat.model.vo.ChatRoom;
 
 @WebServlet("/chatRoom.do")
 public class ChatRoomServlet extends HttpServlet {
@@ -25,22 +27,23 @@ public class ChatRoomServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		// 참여할 방 이름
-		String room = request.getParameter("chatRoom");
+		// 사용자의 이름 받아오기
+		String user = request.getParameter("user");
 		
-		// 사용자의 채팅id 받아오기
-		HttpSession session = request.getSession();
-		session.setAttribute("chat_id", request.getParameter("name"));
+		ArrayList<ChatRoom> myRoomList = new ArrayList<ChatRoom>();
 		
-		// 기존에 있던 채팅방 리스트 가져오기
-		ServletContext application = request.getServletContext();
-		ArrayList<String> roomList = (ArrayList<String>)application.getAttribute("roomList");
+		// 채팅방 참여자 중 본인이 해당하는 채팅방의 리스트 선별
+		for(ChatRoom c : roomList) {
+			if(c.getAllUser().contains(user)) myRoomList.add(c);
+		}
 		
-		// 정상적으로 등록하여 방 리스트가 갱신되었다면 채팅방으로 jsp 전달하기
-		if(!roomList.isEmpty()){
-			request.setAttribute("room", room);
-			request.getRequestDispatcher("views/common/header.jsp").forward(request, response);
-		}		
+		// 채팅방이 없다면 none을 반환
+		if(myRoomList.isEmpty()){
+			new Gson().toJson("none", response.getWriter());
+		} else {
+			new Gson().toJson(myRoomList, response.getWriter());
+		}
+		
 	}
 
 	/**

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gt.gettogether.employee.model.service.EmployeeService;
 import com.gt.gettogether.employee.model.vo.Employee;
+import com.gt.gettogether.employee.wrapper.LoginWrapper;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -32,7 +33,7 @@ public class EmployeeFirstUpdate extends HttpServlet {
 		
 		String profile = mrequest.getFilesystemName("empProfile");
 		String id = mrequest.getParameter("rId");
-		String password = mrequest.getParameter("empPwd");
+		String password = LoginWrapper.getSha512(mrequest.getParameter("empPwd"));
 		String phone = mrequest.getParameter("phone");
 		String email = mrequest.getParameter("rEmail");	
 		
@@ -46,11 +47,9 @@ public class EmployeeFirstUpdate extends HttpServlet {
 		int result = new EmployeeService().updateEmployee(e);
 		
 		if(result > 0) {
-			System.out.println("업데이트 성공");
 			response.sendRedirect("main.jsp");
 		}
 		else {
-			System.out.println("업데이트 실패");
 			response.sendRedirect("views/employee/employeeFirstUpdate.jsp");
 		}
 	

@@ -39,10 +39,6 @@
 	        position:relative;
 	        top:1px;
         }
-        .memo_list{
-        	text-align : left;
-            font-size : 20px;
-        }
         #insertBtn {
         	color : #ffffff;
         	font-size : 18px;
@@ -56,7 +52,7 @@
             -webkit-transition-duration: 0.4s;
 			position: relative;
 			top : 450px;
-			left : 185px;
+			left : 145px;
         }
         #deleteBtn {
         	color : #ffffff;
@@ -71,7 +67,7 @@
             -webkit-transition-duration: 0.4s;
 			position: relative;
 			top : 450px;
-            left : 185px;
+            left : 145px;
         }
         #deleteBtn:hover {
        		cursor : pointer;
@@ -91,7 +87,7 @@
             -webkit-transition-duration: 0.4s;
 			position: relative;
 			top : 450px;
-            left : 185px;
+            left : 145px;
         }
         #checkBtn:hover {
        		cursor : pointer;
@@ -119,7 +115,7 @@
             -webkit-transition-duration: 0.4s;
             position: relative;
 			top : 450px;
-			left : 185px;
+			left : 145px;
         }
         #okBtn:hover {
         	cursor : pointer;
@@ -140,7 +136,7 @@
             -webkit-transition-duration: 0.4s;
             position: relative;
 			top : 450px;
-			left : 185px;
+			left : 145px;
         }
         #resetBtn:hover {
         	cursor : pointer;
@@ -149,4 +145,8 @@
         }
         .memoBtn{
         	text-align: center;
+        }
+        #memo_body{
+        font-size : 20px;
+        text-align : left;
         }
